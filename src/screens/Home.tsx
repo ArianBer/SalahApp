@@ -1,10 +1,14 @@
-import React from 'react'
-import { Text } from 'react-native';
+import React from "react";
+import { TextBox, ViewBox } from "../styles/theme";
 
-const Home = () => {
+function Home() {
   return (
-    <Text>Home</Text>
-  )
-};
+    <ViewBox flex={1} backgroundColor="mainBackground">
+      <TextBox variant="lg" margin="md">
+        Home Screen
+      </TextBox>
+    </ViewBox>
+  );
+}
 
 export default Home;

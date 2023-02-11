@@ -1,11 +1,14 @@
-import React from 'react'
-import { Text } from 'react-native';
+import React from "react";
+import { TextBox, ViewBox } from "../styles/theme";
 
-const Settings = () => {
+function Settings() {
   return (
-    <Text>Settings</Text>
-  )
+    <ViewBox flex={1} backgroundColor="mainBackground">
+      <TextBox color="mainText" variant="xlBold">
+        Settings
+      </TextBox>
+    </ViewBox>
+  );
 }
 
 export default Settings;
-
