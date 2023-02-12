@@ -1,5 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
-import BottomNavigator from './src/navigation/BottomNavigator';
+import BottomNavigator from './src/navigation/bottomNavigator/BottomNavigator';
 
 function App() {
   return (
