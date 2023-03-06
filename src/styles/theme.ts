@@ -7,6 +7,9 @@ export const lightTheme = createTheme({
     mainBackground: Colors.lightGrey,
     mainText: Colors.blackRussian,
     lightGreen: Colors.lightGreen,
+    white: Colors.white,
+    darkGreen: Colors.darkGreen,
+    dargGreenWithOpacity: Colors.darkGreenWithOpacity
   },
   spacing: {
     xs: 4,
@@ -15,6 +18,10 @@ export const lightTheme = createTheme({
     lg: 16,
     xl: 20,
     xxl: 24,
+    xxxl: 28,
+    xxxxl: 30,
+    xxxxxl: 38,
+    xxxxxxl: 45,
   },
   breakpoints: {
     phone: 0,

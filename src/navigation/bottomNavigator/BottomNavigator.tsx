@@ -1,10 +1,11 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { IconHome, IconCalendarMinus, IconDotsCircleHorizontal } from 'tabler-icons-react-native';
-import { HomeStackNavigator, PrayerTimesNavigator, SettingsStackNavigator } from "../stackNavigator/StackNavigator";
+import { IconHome, IconCalendarMinus, IconDotsCircleHorizontal, IconCompass } from 'tabler-icons-react-native';
+import { HomeStackNavigator, KiblaStackNavigator, PrayerTimesNavigator, SettingsStackNavigator } from "../stackNavigator/StackNavigator";
 import { SetActiveTabScreenIcon } from "./ActiveTabScreenIcon";
 
 const Tab = createBottomTabNavigator();
+
 const screenOptions = {
   tabBarStyle:{
     height:94,
@@ -13,7 +14,8 @@ const screenOptions = {
   tabBarInactiveTintColor: '#090E1B',
   tabBarItemStyle:{
     paddingVertical: 25
-  }
+  },
+  headerShown: false
 };
 
 const BottomNavigator = () => {
@@ -33,6 +35,14 @@ const BottomNavigator = () => {
         options={{
           tabBarLabel: 'Takvimi',
           tabBarIcon: ({focused}) => <SetActiveTabScreenIcon  focused={focused} icon={<IconCalendarMinus size={23} color="black" />} />,
+        }}
+      />
+      <Tab.Screen 
+        name="Kibla" 
+        component={KiblaStackNavigator}
+        options={{
+          tabBarLabel: 'Kibla',
+          tabBarIcon: ({focused}) => <SetActiveTabScreenIcon focused={focused} icon={<IconCompass size={23} color="black" />} />,
         }}
       />
       <Tab.Screen 

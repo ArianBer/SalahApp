@@ -1,7 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Home, PrayerTimes, Settings} from '../../screens/index';
-
+import { Home, Kibla, PrayerTimes, Settings, SinglePrayer } from '../../screens';
 const Stack = createStackNavigator();
 
 const screenOptionStyle = {
@@ -10,8 +9,9 @@ const screenOptionStyle = {
 
 const HomeStackNavigator = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={Home}  options={{headerShown: false}}/>
+    <Stack.Navigator screenOptions={screenOptionStyle}>
+      <Stack.Screen name="Home" component={Home}/>
+      <Stack.Screen name="SinglePrayer" component={SinglePrayer}/>
     </Stack.Navigator>
   );
 }
@@ -32,4 +32,12 @@ const PrayerTimesNavigator = () => {
   );
 }
 
-export { HomeStackNavigator, SettingsStackNavigator, PrayerTimesNavigator };
+const KiblaStackNavigator = () => {
+  return (
+    <Stack.Navigator screenOptions={screenOptionStyle}>
+      <Stack.Screen name="Kibla" component={Kibla} />
+    </Stack.Navigator>
+  );
+}
+
+export { HomeStackNavigator, SettingsStackNavigator, PrayerTimesNavigator, KiblaStackNavigator };
