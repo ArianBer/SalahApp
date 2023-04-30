@@ -22,6 +22,7 @@ export const lightTheme = createTheme({
     xxxxl: 30,
     xxxxxl: 38,
     xxxxxxl: 45,
+    xxxxxxxl: 50
   },
   breakpoints: {
     phone: 0,
