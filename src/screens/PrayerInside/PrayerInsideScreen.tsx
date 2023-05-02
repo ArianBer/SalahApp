@@ -1,0 +1,116 @@
+import { ResizeMode, Video } from "expo-av";
+import React, { useRef } from "react";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { IconArrowLeft, IconFile } from "tabler-icons-react-native";
+import { TextBox, ViewBox } from "../../styles/theme";
+import { Prayers } from "../Home";
+
+type PrayerKey = keyof typeof Prayers;
+
+const prayerText = {
+  [Prayers.abdesi]: {
+    description: "",
+    title: "Abdesi",
+  },
+  [Prayers.sabahu]: {
+    title: "Namazi i sabahut",
+    description: "2 rekate",
+  },
+  [Prayers.dreka]: {
+    title: "Namazi i drekes",
+    description: "4 rekate",
+  },
+  [Prayers.ikindia]: {
+    title: "Namazi i ikindise",
+    description: "4 rekate",
+  },
+  [Prayers.akshami]: {
+    title: "Namazi i akshamit",
+    description: "3 rekate",
+  },
+  [Prayers.jacia]: {
+    title: "Namazi i jacise",
+    description: "4 rekate",
+  },
+};
+
+const styles = StyleSheet.create({
+  video: {
+    flex: 1,
+  },
+});
+
+export function PrayerInsideScreen({
+  route,
+  navigation,
+}: {
+  route: any;
+  navigation: any;
+}) {
+  const { top } = useSafeAreaInsets();
+  const video = useRef(null);
+  const prayer = (route?.params?.prayer ?? "") as PrayerKey | "";
+
+  const onPressBack = () => {
+    navigation.goBack();
+  };
+
+  const onPressLearn = () => {
+    navigation?.navigate("PrayerInsideLearn");
+  };
+
+  if (!prayer) {
+    return <ViewBox />;
+  }
+
+  return (
+    <ViewBox flex={1} style={{ paddingTop: top }}>
+      <ViewBox height={50} justifyContent="center">
+        <TouchableOpacity
+          onPress={onPressBack}
+          style={{ height: "100%", paddingHorizontal: 20 }}
+        >
+          <IconArrowLeft size={28} />
+        </TouchableOpacity>
+      </ViewBox>
+      <ViewBox flex={1}>
+        <Video
+          ref={video}
+          style={styles.video}
+          source={{
+            uri: "https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+          }}
+          useNativeControls
+          resizeMode={ResizeMode.COVER}
+          isLooping
+        />
+      </ViewBox>
+      <ViewBox flexDirection="row" width="100%" pt="xl" px="xxxl" pb="9xl">
+        <ViewBox flex={1}>
+          <TextBox variant="xlBold" color="mainText">
+            {prayerText[prayer]?.title}
+          </TextBox>
+          <TextBox variant="xl" color="mainText">
+            {prayerText[prayer]?.description}
+          </TextBox>
+        </ViewBox>
+        <TouchableOpacity onPress={onPressLearn}>
+          <ViewBox
+            height={44}
+            backgroundColor="lightGreen"
+            flexDirection="row"
+            alignItems="center"
+            px="lg"
+            borderRadius={40}
+          >
+            <IconFile />
+            <TextBox ml="xs" variant="xlBold">
+              Meso
+            </TextBox>
+          </ViewBox>
+        </TouchableOpacity>
+      </ViewBox>
+    </ViewBox>
+  );
+}

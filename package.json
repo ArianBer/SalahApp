@@ -37,7 +37,8 @@
     "react-native-web": "~0.18.9",
     "spherical-geometry-js": "^3.0.0",
     "styled-components": "^5.3.6",
-    "tabler-icons-react-native": "^1.118.0"
+    "tabler-icons-react-native": "^1.118.0",
+    "expo-av": "~13.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
