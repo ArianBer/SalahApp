@@ -6,6 +6,12 @@ import { IconArrowLeft, IconFile } from "tabler-icons-react-native";
 import { TextBox, ViewBox } from "../../styles/theme";
 import { Prayers } from "../Home";
 
+import SabahuVideo from "../../assets/videos/Sabahu.mp4";
+import DrekaVideo from "../../assets/videos/Jacia.mp4";
+import IkindiaVideo from "../../assets/videos/Jacia.mp4";
+import AkshamiVideo from "../../assets/videos/Akshami.mp4";
+import JaciaVideo from "../../assets/videos/Jacia.mp4";
+
 type PrayerKey = keyof typeof Prayers;
 
 const prayerText = {
@@ -33,6 +39,14 @@ const prayerText = {
     title: "Namazi i jacise",
     description: "4 rekate",
   },
+};
+
+const prayerVideos = {
+  [Prayers.sabahu]: SabahuVideo,
+  [Prayers.dreka]: DrekaVideo,
+  [Prayers.ikindia]: IkindiaVideo,
+  [Prayers.akshami]: AkshamiVideo,
+  [Prayers.jacia]: JaciaVideo,
 };
 
 const styles = StyleSheet.create({
@@ -78,12 +92,9 @@ export function PrayerInsideScreen({
         <Video
           ref={video}
           style={styles.video}
-          source={{
-            uri: "https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
-          }}
+          source={prayerVideos[prayer]}
           useNativeControls
           resizeMode={ResizeMode.COVER}
-          isLooping
         />
       </ViewBox>
       <ViewBox flexDirection="row" width="100%" pt="xl" px="xxxl" pb="9xl">

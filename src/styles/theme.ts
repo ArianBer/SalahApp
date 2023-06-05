@@ -4,6 +4,7 @@ import { Fonts } from "./Fonts";
 
 export const lightTheme = createTheme({
   colors: {
+    ...Colors,
     mainBackground: Colors.lightGrey,
     mainText: Colors.blackRussian,
     lightGreen: Colors.lightGreen,
@@ -13,6 +14,10 @@ export const lightTheme = createTheme({
   },
   spacing: {
     xs: 4,
+    "6": 6,
+    "2": 2,
+    "24": 24,
+    "54": 54,
     sm: 8,
     md: 12,
     lg: 16,
@@ -37,6 +42,11 @@ export const lightTheme = createTheme({
     xs: {
       fontSize: 12,
     },
+    "sm-medium": {
+      fontSize: 14,
+      lineHeight: 17,
+      fontFamily: Fonts.Medium,
+    },
     sm: {
       fontSize: 14,
     },
@@ -46,6 +56,10 @@ export const lightTheme = createTheme({
     },
     md: {
       fontSize: 16,
+    },
+    "md-bold": {
+      fontSize: 16,
+      fontFamily: Fonts.Bold,
     },
     lg: {
       fontSize: 18,
