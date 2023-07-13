@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
-import PrayerBox from '../components/prayerBanner/PrayerBanner';
-import { TextBox, ViewBox } from '../styles/theme';
-import { ScrollView } from 'react-native';
-import { usePrayerTimes } from '../hooks/usePrayerTimes';
-import prayerData from '../data/times.json';
-import PrayerTimeBox from '../components/prayerTimeBox/PrayerTimeBox';
-import { DaysList } from '../components/daysList/DaysList';
+import React, { useState } from "react";
+import { ScrollView } from "react-native";
+import PrayerBox from "../components/prayerBanner/PrayerBanner";
+import { TextBox, ViewBox } from "../styles/theme";
+import { usePrayerTimes } from "../hooks/usePrayerTimes";
+import prayerData from "../data/times.json";
+import PrayerTimeBox from "../components/prayerTimeBox/PrayerTimeBox";
+import { DaysList } from "../components/daysList/DaysList";
 
-const PrayerTimeBoxes = ({ prayerTimes }: any) => {
+function PrayerTimeBoxes({ prayerTimes }: any) {
   return (
     <>
       {Object.entries(prayerTimes).map(([prayerName, prayerTime]) => (
@@ -20,9 +20,9 @@ const PrayerTimeBoxes = ({ prayerTimes }: any) => {
       ))}
     </>
   );
-};
+}
 
-const PrayerTimes = () => {
+function PrayerTimes() {
   const today = new Date();
   const [selectedDate, setSelectedDate] = useState(today);
   const date = new Date(String(selectedDate));
@@ -32,21 +32,29 @@ const PrayerTimes = () => {
 
   return (
     <ViewBox flex={1} backgroundColor="mainBackground">
-      <TextBox fontSize={32} marginTop='xxxxxxxl' fontWeight='bold' marginHorizontal='xxxxxl' marginBottom='xl'>Takvimi</TextBox>
-      <PrayerBox isAbsolute={false} icon={null} customIcon={true}/>
-      <ViewBox height='auto'>
-        <DaysList onDateSelection={(date: any) => setSelectedDate(date)}/>
+      <TextBox
+        fontSize={32}
+        marginTop="xxxxxxxl"
+        fontWeight="bold"
+        marginHorizontal="xxxxxl"
+        marginBottom="xl"
+      >
+        Takvimi
+      </TextBox>
+      <PrayerBox isAbsolute={false} icon={null} customIcon />
+      <ViewBox height="auto">
+        <DaysList onDateSelection={(date: any) => setSelectedDate(date)} />
       </ViewBox>
       <ScrollView>
-        <ViewBox marginTop='xxl' >
+        <ViewBox marginTop="xxl">
           <PrayerTimeBoxes
             prayerTimes={filterPrayerTimes(month, day)}
-            ishaIconColor='#56791D'
+            ishaIconColor="#56791D"
           />
         </ViewBox>
       </ScrollView>
     </ViewBox>
-  )
+  );
 }
 
 export default PrayerTimes;

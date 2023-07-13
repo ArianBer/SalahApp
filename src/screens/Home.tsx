@@ -1,10 +1,11 @@
-import React from "react";
-import { ImageBackground, ScrollView, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { ScrollView, StyleSheet } from "react-native";
 import { IconCalendarMinus } from "tabler-icons-react-native";
-import { NavigationProp } from "@react-navigation/native";
 import PrayerBox from "../components/prayerBanner/PrayerBanner";
 import PrayerVideoItem from "../components/prayerVideoItem/prayerVideoitem";
 import { ViewBox } from "../styles/theme";
+import { HomeHeaderBackground } from "./components/HomeHeaderBackground";
+import { useAppSelector } from "../redux/hooks";
 
 const styles = StyleSheet.create({
   banner: {
@@ -28,6 +29,7 @@ const prayersArray = Object.values(Prayers).map((x) => ({
 }));
 
 function Home({ navigation }: { navigation: any }) {
+  const { activePrayer } = useAppSelector((state) => state.home);
   const handlePrayerPress = (prayer: string) => {
     navigation?.navigate("PrayerInside", { prayer });
   };
@@ -35,28 +37,26 @@ function Home({ navigation }: { navigation: any }) {
   return (
     <ViewBox flex={1} backgroundColor="mainBackground">
       <ScrollView>
-        <ViewBox height={380} width="100%">
-          <ImageBackground
-            source={require("../assets/images/prayerBackground.png")}
-            style={styles.banner}
-            borderRadius={21}
-          >
-            <PrayerBox
-              isAbsolute
-              icon={<IconCalendarMinus size={45} />}
-              customIcon={false}
-            />
-          </ImageBackground>
-        </ViewBox>
+        <HomeHeaderBackground>
+          <PrayerBox
+            isAbsolute
+            icon={<IconCalendarMinus size={45} />}
+            customIcon={false}
+          />
+        </HomeHeaderBackground>
+
         <ViewBox
           flexDirection="row"
           flexWrap="wrap"
           justifyContent="space-between"
-          marginVertical="xxxxxxl"
-          marginHorizontal="lg"
+          marginVertical="54"
+          paddingHorizontal="24"
+          maxWidth={430}
+          style={{ marginLeft: "auto", marginRight: "auto" }}
         >
           {prayersArray.map((prayer) => (
             <PrayerVideoItem
+              activePrayer={activePrayer}
               key={prayer.title}
               title={prayer.title}
               duration={prayer.duration}

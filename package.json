@@ -15,11 +15,13 @@
     "@react-navigation/bottom-tabs": "^6.5.3",
     "@react-navigation/native": "^6.1.2",
     "@react-navigation/stack": "^6.3.15",
+    "@reduxjs/toolkit": "^1.9.5",
     "@shopify/restyle": "^2.3.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-react": "^7.32.1",
     "expo": "~47.0.12",
+    "expo-av": "~13.0.3",
     "expo-constants": "^14.2.1",
     "expo-font": "~11.0.1",
     "expo-notifications": "^0.18.1",
@@ -35,10 +37,10 @@
     "react-native-screens": "~3.18.0",
     "react-native-svg": "^13.4.0",
     "react-native-web": "~0.18.9",
+    "react-redux": "^8.0.7",
     "spherical-geometry-js": "^3.0.0",
     "styled-components": "^5.3.6",
-    "tabler-icons-react-native": "^1.118.0",
-    "expo-av": "~13.0.3"
+    "tabler-icons-react-native": "^1.118.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

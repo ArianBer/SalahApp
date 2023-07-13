@@ -1,18 +1,12 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import {
-  IconCalendarMinus,
-  IconCompass,
-  IconDotsCircleHorizontal,
-  IconHome,
-} from "tabler-icons-react-native";
-import {
   HomeStackNavigator,
   KiblaStackNavigator,
   PrayerTimesNavigator,
   SettingsStackNavigator,
 } from "../stackNavigator/StackNavigator";
-import { SetActiveTabScreenIcon } from "./ActiveTabScreenIcon";
+import { BottomTabBar } from "./components/BottomTabBar";
 
 const Tab = createBottomTabNavigator();
 
@@ -27,58 +21,62 @@ const screenOptions = {
 
 function BottomNavigator() {
   return (
-    <Tab.Navigator initialRouteName="Feed" {...{ screenOptions }}>
+    <Tab.Navigator
+      tabBar={BottomTabBar}
+      initialRouteName="HomeTab"
+      {...{ screenOptions }}
+    >
       <Tab.Screen
-        name="Home"
+        name="HomeTab"
         component={HomeStackNavigator}
-        options={{
-          tabBarLabel: "Ballina",
-          tabBarIcon: ({ focused }) => (
-            <SetActiveTabScreenIcon
-              focused={focused}
-              icon={<IconHome size={23} color="black" />}
-            />
-          ),
-        }}
+        // options={{
+        //   tabBarLabel: "Ballina",
+        //   tabBarIcon: ({ focused }) => (
+        //     <SetActiveTabScreenIcon
+        //       focused={focused}
+        //       icon={<IconHome size={23} color="black" />}
+        //     />
+        //   ),
+        // }}
       />
       <Tab.Screen
-        name="PrayerTimes"
+        name="PrayerTimesTab"
         component={PrayerTimesNavigator}
-        options={{
-          tabBarLabel: "Takvimi",
-          tabBarIcon: ({ focused }) => (
-            <SetActiveTabScreenIcon
-              focused={focused}
-              icon={<IconCalendarMinus size={23} color="black" />}
-            />
-          ),
-        }}
+        // options={{
+        //   tabBarLabel: "Takvimi",
+        //   tabBarIcon: ({ focused }) => (
+        //     <SetActiveTabScreenIcon
+        //       focused={focused}
+        //       icon={<IconCalendarMinus size={23} color="black" />}
+        //     />
+        //   ),
+        // }}
       />
       <Tab.Screen
         name="Kibla"
         component={KiblaStackNavigator}
-        options={{
-          tabBarLabel: "Kibla",
-          tabBarIcon: ({ focused }) => (
-            <SetActiveTabScreenIcon
-              focused={focused}
-              icon={<IconCompass size={23} color="black" />}
-            />
-          ),
-        }}
+        // options={{
+        //   tabBarLabel: "Kibla",
+        //   tabBarIcon: ({ focused }) => (
+        //     <SetActiveTabScreenIcon
+        //       focused={focused}
+        //       icon={<IconCompass size={23} color="black" />}
+        //     />
+        //   ),
+        // }}
       />
       <Tab.Screen
         name="Settings"
         component={SettingsStackNavigator}
-        options={{
-          tabBarLabel: "Tjera",
-          tabBarIcon: ({ focused }) => (
-            <SetActiveTabScreenIcon
-              focused={focused}
-              icon={<IconDotsCircleHorizontal size={23} color="black" />}
-            />
-          ),
-        }}
+        // options={{
+        //   tabBarLabel: "Tjera",
+        //   tabBarIcon: ({ focused }) => (
+        //     <SetActiveTabScreenIcon
+        //       focused={focused}
+        //       icon={<IconDotsCircleHorizontal size={23} color="black" />}
+        //     />
+        //   ),
+        // }}
       />
     </Tab.Navigator>
   );
