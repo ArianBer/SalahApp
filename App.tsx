@@ -1,20 +1,23 @@
-import { NavigationContainer } from '@react-navigation/native';
-import BottomNavigator from './src/navigation/bottomNavigator/BottomNavigator';
-import  { useEffect } from "react";
-import { useLoadFonts } from "./src/hooks/useLoadFonts";
-import { useTranslation } from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { NavigationContainer } from "@react-navigation/native";
+import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import "react-native-gesture-handler";
+import { Provider } from "react-redux";
 import { ThemeProvider } from "./src/components/theme";
+import { useLoadFonts } from "./src/hooks/useLoadFonts";
+import BottomNavigator from "./src/navigation/bottomNavigator/BottomNavigator";
+import { store } from "./src/redux/store";
 
-function App() {
+export default function App() {
   const fontsLoaded = useLoadFonts();
-  const {i18n} = useTranslation();
+  const { i18n } = useTranslation();
 
   useEffect(() => {
     const readData = async () => {
-      await AsyncStorage.getItem('firstLaunchKey').then((response: any) => {
+      await AsyncStorage.getItem("firstLaunchKey").then((response: any) => {
         if (response) {
-          i18n.changeLanguage('al');
+          i18n.changeLanguage("al");
         }
       });
     };
@@ -26,12 +29,12 @@ function App() {
   }
 
   return (
-    <ThemeProvider>
-      <NavigationContainer>
-        <BottomNavigator />
-      </NavigationContainer>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider>
+        <NavigationContainer>
+          <BottomNavigator />
+        </NavigationContainer>
+      </ThemeProvider>
+    </Provider>
   );
 }
-
-export default App;

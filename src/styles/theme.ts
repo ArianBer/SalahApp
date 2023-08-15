@@ -4,15 +4,25 @@ import { Fonts } from "./Fonts";
 
 export const lightTheme = createTheme({
   colors: {
+    ...Colors,
     mainBackground: Colors.lightGrey,
     mainText: Colors.blackRussian,
     lightGreen: Colors.lightGreen,
     white: Colors.white,
     darkGreen: Colors.darkGreen,
-    dargGreenWithOpacity: Colors.darkGreenWithOpacity
+    dargGreenWithOpacity: Colors.darkGreenWithOpacity,
   },
   spacing: {
     xs: 4,
+    "6": 6,
+    "8": 8,
+    "2": 2,
+    "20": 20,
+    "24": 24,
+    "25": 25,
+    "27": 27,
+    "37": 37,
+    "54": 54,
     sm: 8,
     md: 12,
     lg: 16,
@@ -23,7 +33,7 @@ export const lightTheme = createTheme({
     xxxxxl: 38,
     xxxxxxl: 45,
     xxxxxxxl: 50,
-    "9xl": 100,
+    "9xl": 80,
   },
   breakpoints: {
     phone: 0,
@@ -37,6 +47,11 @@ export const lightTheme = createTheme({
     xs: {
       fontSize: 12,
     },
+    "sm-medium": {
+      fontSize: 14,
+      lineHeight: 17,
+      fontFamily: Fonts.Medium,
+    },
     sm: {
       fontSize: 14,
     },
@@ -46,6 +61,14 @@ export const lightTheme = createTheme({
     },
     md: {
       fontSize: 16,
+    },
+    "md-medium": {
+      fontSize: 16,
+      fontFamily: Fonts.Medium,
+    },
+    "md-bold": {
+      fontSize: 16,
+      fontFamily: Fonts.Bold,
     },
     lg: {
       fontSize: 18,

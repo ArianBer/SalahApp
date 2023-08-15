@@ -1,8 +1,8 @@
+/* eslint-disable no-shadow */
 import { useEffect, useState } from "react";
-import {
-  registerForPushNotificationsAsync,
-  sendNotification,
-} from "../services/registerPushNotifications";
+import { useAppDispatch } from "../redux/hooks";
+import { CurrentPrayerType, homeSlice } from "../redux/reducers/homeReducer";
+import { registerForPushNotificationsAsync } from "../services/registerPushNotifications";
 
 type PrayerTime = {
   country: string;
@@ -19,12 +19,17 @@ type PrayerTime = {
 };
 
 export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
-  const [activePrayer, setActivePrayer] = useState("");
+  const [activePrayer, setActivePrayer] = useState<CurrentPrayerType>("dhuhr");
   const [hoursRemaining, setHoursRemaining] = useState("");
   const [secondsRemaining, setSecondsRemaining] = useState("");
   const [now, setNow] = useState(new Date());
   const currentMonth = now.getMonth() + 1;
   const [currentDay, setCurrentDay] = useState(now.getDate());
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(homeSlice.actions.setActivePrayer(activePrayer));
+  }, [activePrayer]);
 
   const extractPrayerTimes = (prayerTime: PrayerTime): Record<string, Date> =>
     Object.keys(prayerTime)
@@ -116,13 +121,6 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
     const timer = setInterval(() => {
       setNow(new Date());
       filterPrayerTimes();
-      if (
-        activePrayer &&
-        hoursRemaining === "0:00" &&
-        secondsRemaining === "00"
-      ) {
-        sendNotification(activePrayer); // Call a function to send the notification
-      }
     }, 1000);
 
     return () => clearInterval(timer);
