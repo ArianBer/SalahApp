@@ -2,13 +2,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import "react-native-gesture-handler";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "./src/components/theme";
 import { useLoadFonts } from "./src/hooks/useLoadFonts";
 import BottomNavigator from "./src/navigation/bottomNavigator/BottomNavigator";
 import { store } from "./src/redux/store";
 
-function App() {
+export default function App() {
   const fontsLoaded = useLoadFonts();
   const { i18n } = useTranslation();
 
@@ -37,5 +38,3 @@ function App() {
     </Provider>
   );
 }
-
-export default App;

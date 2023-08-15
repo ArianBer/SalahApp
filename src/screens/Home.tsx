@@ -6,22 +6,7 @@ import PrayerVideoItem from "../components/prayerVideoItem/prayerVideoitem";
 import { ViewBox } from "../styles/theme";
 import { HomeHeaderBackground } from "./components/HomeHeaderBackground";
 import { useAppSelector } from "../redux/hooks";
-
-const styles = StyleSheet.create({
-  banner: {
-    width: "100%",
-    height: "100%",
-  },
-});
-
-export const Prayers = {
-  abdesi: "Abdesi",
-  sabahu: "Sabahu",
-  dreka: "Dreka",
-  ikindia: "Ikindia",
-  akshami: "Akshami",
-  jacia: "Jacia",
-};
+import { Prayers } from "../constants";
 
 const prayersArray = Object.values(Prayers).map((x) => ({
   title: x,

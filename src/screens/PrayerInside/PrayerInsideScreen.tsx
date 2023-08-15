@@ -4,13 +4,13 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconArrowLeft, IconFile } from "tabler-icons-react-native";
 import { TextBox, ViewBox } from "../../styles/theme";
-import { Prayers } from "../Home";
 
 import SabahuVideo from "../../assets/videos/Sabahu.mp4";
 import DrekaVideo from "../../assets/videos/Jacia.mp4";
 import IkindiaVideo from "../../assets/videos/Jacia.mp4";
 import AkshamiVideo from "../../assets/videos/Akshami.mp4";
 import JaciaVideo from "../../assets/videos/Jacia.mp4";
+import { Prayers } from "../../constants";
 
 type PrayerKey = keyof typeof Prayers;
 

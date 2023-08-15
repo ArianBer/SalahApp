@@ -15,8 +15,13 @@ export const lightTheme = createTheme({
   spacing: {
     xs: 4,
     "6": 6,
+    "8": 8,
     "2": 2,
+    "20": 20,
     "24": 24,
+    "25": 25,
+    "27": 27,
+    "37": 37,
     "54": 54,
     sm: 8,
     md: 12,
@@ -56,6 +61,10 @@ export const lightTheme = createTheme({
     },
     md: {
       fontSize: 16,
+    },
+    "md-medium": {
+      fontSize: 16,
+      fontFamily: Fonts.Medium,
     },
     "md-bold": {
       fontSize: 16,

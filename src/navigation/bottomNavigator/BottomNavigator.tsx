@@ -1,10 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
+import { Kibla, Settings } from "../../screens";
 import {
   HomeStackNavigator,
-  KiblaStackNavigator,
   PrayerTimesNavigator,
-  SettingsStackNavigator,
 } from "../stackNavigator/StackNavigator";
 import { BottomTabBar } from "./components/BottomTabBar";
 
@@ -26,58 +25,10 @@ function BottomNavigator() {
       initialRouteName="HomeTab"
       {...{ screenOptions }}
     >
-      <Tab.Screen
-        name="HomeTab"
-        component={HomeStackNavigator}
-        // options={{
-        //   tabBarLabel: "Ballina",
-        //   tabBarIcon: ({ focused }) => (
-        //     <SetActiveTabScreenIcon
-        //       focused={focused}
-        //       icon={<IconHome size={23} color="black" />}
-        //     />
-        //   ),
-        // }}
-      />
-      <Tab.Screen
-        name="PrayerTimesTab"
-        component={PrayerTimesNavigator}
-        // options={{
-        //   tabBarLabel: "Takvimi",
-        //   tabBarIcon: ({ focused }) => (
-        //     <SetActiveTabScreenIcon
-        //       focused={focused}
-        //       icon={<IconCalendarMinus size={23} color="black" />}
-        //     />
-        //   ),
-        // }}
-      />
-      <Tab.Screen
-        name="Kibla"
-        component={KiblaStackNavigator}
-        // options={{
-        //   tabBarLabel: "Kibla",
-        //   tabBarIcon: ({ focused }) => (
-        //     <SetActiveTabScreenIcon
-        //       focused={focused}
-        //       icon={<IconCompass size={23} color="black" />}
-        //     />
-        //   ),
-        // }}
-      />
-      <Tab.Screen
-        name="Settings"
-        component={SettingsStackNavigator}
-        // options={{
-        //   tabBarLabel: "Tjera",
-        //   tabBarIcon: ({ focused }) => (
-        //     <SetActiveTabScreenIcon
-        //       focused={focused}
-        //       icon={<IconDotsCircleHorizontal size={23} color="black" />}
-        //     />
-        //   ),
-        // }}
-      />
+      <Tab.Screen name="HomeTab" component={HomeStackNavigator} />
+      <Tab.Screen name="PrayerTimesTab" component={PrayerTimesNavigator} />
+      <Tab.Screen name="Kibla" component={Kibla} />
+      <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>
   );
 }

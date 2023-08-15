@@ -1,10 +1,10 @@
-import React from "react";
-import { IconPlayerPlay } from "tabler-icons-react-native";
-import { Dimensions, TouchableOpacity } from "react-native";
 import { useTheme } from "@shopify/restyle";
-import { TextBox, ThemeType, ViewBox } from "../../styles/theme";
+import React from "react";
+import { TouchableOpacity } from "react-native";
+import { IconPlayerPlay } from "tabler-icons-react-native";
 import { CurrentPrayerType } from "../../redux/reducers/homeReducer";
-import { Prayers } from "../../screens/Home";
+import { TextBox, ThemeType, ViewBox } from "../../styles/theme";
+import { Prayers } from "../../constants";
 
 type PrayerVideoItemProps = {
   title: string;

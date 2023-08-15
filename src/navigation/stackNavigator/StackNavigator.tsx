@@ -30,14 +30,6 @@ function HomeStackNavigator() {
   );
 }
 
-function SettingsStackNavigator() {
-  return (
-    <Stack.Navigator screenOptions={screenOptionStyle}>
-      <Stack.Screen name="Settings" component={Settings} />
-    </Stack.Navigator>
-  );
-}
-
 function PrayerTimesNavigator() {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
@@ -46,17 +38,4 @@ function PrayerTimesNavigator() {
   );
 }
 
-function KiblaStackNavigator() {
-  return (
-    <Stack.Navigator screenOptions={screenOptionStyle}>
-      <Stack.Screen name="Kibla" component={Kibla} />
-    </Stack.Navigator>
-  );
-}
-
-export {
-  HomeStackNavigator,
-  SettingsStackNavigator,
-  PrayerTimesNavigator,
-  KiblaStackNavigator,
-};
+export { HomeStackNavigator, PrayerTimesNavigator };
