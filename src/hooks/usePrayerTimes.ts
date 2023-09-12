@@ -76,14 +76,13 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   const getPrayerTimesForToday = (
     month: string,
     day: string
-  ): Record<string, Date> | undefined => {
+  ): Record<string, Date> => {  // Change the return type here
     const prayerTimesToday = prayerTimes.find(
       (prayerTime) =>
         prayerTime.month === month &&
         prayerTime.day === day &&
         prayerTime.country === "xk"
     );
-
     if (prayerTimesToday) {
       return extractPrayerTimes(prayerTimesToday);
     }
@@ -98,6 +97,14 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
     if (prayerTimesForToday) {
       remainingTimeUntilNextPrayer(prayerTimesForToday);
     }
+  };
+
+  const filterPrayerTimesPerDayMonth = (day: any, month: any)=> {
+    const prayerTimesForToday = getPrayerTimesForToday(
+      month.toString(),
+      day.toString()
+    );
+    return prayerTimesForToday;
   };
 
   useEffect(() => {
@@ -130,6 +137,7 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
     getPrayerTimesForToday,
     remainingTimeUntilNextPrayer,
     filterPrayerTimes,
+    filterPrayerTimesPerDayMonth,
     activePrayer,
     secondsRemaining,
     hoursRemaining,
