@@ -83,6 +83,10 @@ export const lightTheme = createTheme({
     "2xl": {
       fontSize: 24,
     },
+    "2xlBold": {
+      fontSize: 24,
+      fontFamily: Fonts.Bold,
+    },
     "3xl": {
       fontSize: 32,
     },

@@ -28,8 +28,7 @@ function PrayerTimes() {
   const date = new Date(String(selectedDate));
   const month = String(date.getMonth() + 1);
   const day = String(date.getDate());
-  const { filterPrayerTimes } = usePrayerTimes(prayerData);
-
+  const { filterPrayerTimesPerDayMonth } = usePrayerTimes(prayerData);
   return (
     <ViewBox flex={1} backgroundColor="mainBackground">
       <TextBox
@@ -48,7 +47,7 @@ function PrayerTimes() {
       <ScrollView>
         <ViewBox marginTop="xxl">
           <PrayerTimeBoxes
-            prayerTimes={filterPrayerTimes(month, day)}
+            prayerTimes={filterPrayerTimesPerDayMonth(day, month)}
             ishaIconColor="#56791D"
           />
         </ViewBox>

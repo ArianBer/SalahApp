@@ -1,6 +1,6 @@
+/* eslint-disable no-shadow */
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "../redux/hooks";
-// eslint-disable-next-line import/namespace
 import { CurrentPrayerType, homeSlice } from "../redux/reducers/homeReducer";
 import { registerForPushNotificationsAsync } from "../services/registerPushNotifications";
 
@@ -31,74 +31,23 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
     dispatch(homeSlice.actions.setActivePrayer(activePrayer));
   }, [activePrayer]);
 
-  useEffect(() => {
-    registerForPushNotificationsAsync();
-
-    const prayerTimesForToday = getPrayerTimesForToday();
-    remainingTimeUntilNextPrayer(prayerTimesForToday);
-
-    if (!Object.keys(prayerTimesForToday).length) {
-      setCurrentDay(currentDay + 1);
-    }
-  }, [currentDay]);
-
-  const getPrayerTimesForToday = (): Record<string, Date> => {
-    const prayerTimesToday = prayerTimes.find(
-      (prayerTime) =>
-        prayerTime.month === String(currentMonth) &&
-        prayerTime.day === String(currentDay) &&
-        prayerTime.country === "xk"
-    );
-
-    if (prayerTimesToday) {
-      return Object.keys(prayerTimesToday)
-        .filter((key) =>
-          ["imsak", "sunrise", "dhuhr", "asr", "maghrib", "isha"].includes(key)
-        )
-        .reduce((obj: Record<string, Date>, key: string) => {
-          const [hours, minutes, seconds] = prayerTimesToday[key].split(":");
-          obj[key] = new Date(
-            now.getFullYear(),
-            currentMonth - 1,
-            currentDay,
-            Number(hours),
-            Number(minutes),
-            Number(seconds)
-          );
-          return obj;
-        }, {});
-    }
-    return {};
-  };
-
-  const filterPrayerTimes = (
-    month: string,
-    day: string
-  ): Record<string, Date> => {
-    const prayerTimesToday = prayerTimes.find(
-      (prayerTime) => prayerTime.month === month && prayerTime.day === day
-    );
-
-    if (prayerTimesToday) {
-      return Object.keys(prayerTimesToday)
-        .filter((key) =>
-          ["imsak", "sunrise", "dhuhr", "asr", "maghrib", "isha"].includes(key)
-        )
-        .reduce((obj: Record<string, Date>, key: string) => {
-          const [hours, minutes, seconds] = prayerTimesToday[key].split(":");
-          obj[key] = new Date(
-            now.getFullYear(),
-            currentMonth - 1,
-            currentDay,
-            Number(hours),
-            Number(minutes),
-            Number(seconds)
-          );
-          return obj;
-        }, {});
-    }
-    return {};
-  };
+  const extractPrayerTimes = (prayerTime: PrayerTime): Record<string, Date> =>
+    Object.keys(prayerTime)
+      .filter((key) =>
+        ["imsak", "sunrise", "dhuhr", "asr", "maghrib", "isha"].includes(key)
+      )
+      .reduce((obj: Record<string, Date>, key: string) => {
+        const [hours, minutes, seconds] = prayerTime[key].split(":");
+        obj[key] = new Date(
+          now.getFullYear(),
+          currentMonth - 1,
+          currentDay,
+          Number(hours),
+          Number(minutes),
+          Number(seconds)
+        );
+        return obj;
+      }, {});
 
   const remainingTimeUntilNextPrayer = (
     prayerTimesForToday: Record<string, Date>
@@ -124,10 +73,71 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
     }
   };
 
+  const getPrayerTimesForToday = (
+    month: string,
+    day: string
+  ): Record<string, Date> => {  // Change the return type here
+    const prayerTimesToday = prayerTimes.find(
+      (prayerTime) =>
+        prayerTime.month === month &&
+        prayerTime.day === day &&
+        prayerTime.country === "xk"
+    );
+    if (prayerTimesToday) {
+      return extractPrayerTimes(prayerTimesToday);
+    }
+    return {};
+  };
+
+  const filterPrayerTimes = (): void => {
+    const prayerTimesForToday = getPrayerTimesForToday(
+      currentMonth.toString(),
+      currentDay.toString()
+    );
+    if (prayerTimesForToday) {
+      remainingTimeUntilNextPrayer(prayerTimesForToday);
+    }
+  };
+
+  const filterPrayerTimesPerDayMonth = (day: any, month: any)=> {
+    const prayerTimesForToday = getPrayerTimesForToday(
+      month.toString(),
+      day.toString()
+    );
+    return prayerTimesForToday;
+  };
+
+  useEffect(() => {
+    registerForPushNotificationsAsync();
+    const prayerTimesForToday = getPrayerTimesForToday(
+      currentMonth.toString(),
+      currentDay.toString()
+    );
+    const now1 = new Date();
+    const latestPrayerTime = Math.max(
+      ...Object.values(prayerTimesForToday).map((date) => date.getTime())
+    );
+
+    if (latestPrayerTime < now1.getTime()) {
+      setCurrentDay(currentDay + 1);
+    }
+  }, [currentDay]);
+
+  useEffect(() => {
+    filterPrayerTimes();
+    const timer = setInterval(() => {
+      setNow(new Date());
+      filterPrayerTimes();
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [currentDay]);
+
   return {
     getPrayerTimesForToday,
     remainingTimeUntilNextPrayer,
     filterPrayerTimes,
+    filterPrayerTimesPerDayMonth,
     activePrayer,
     secondsRemaining,
     hoursRemaining,
