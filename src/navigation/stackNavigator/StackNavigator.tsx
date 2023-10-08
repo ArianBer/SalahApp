@@ -1,12 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import {
-  Home,
-  Kibla,
-  PrayerTimes,
-  Settings,
-  SinglePrayer,
-} from "../../screens";
+import { Home, PrayerTimes, SinglePrayer } from "../../screens";
 import { PrayerInsideScreen } from "../../screens/PrayerInside";
 import { PrayerInsideLearnScreen } from "../../screens/PrayerInsideLearn";
 

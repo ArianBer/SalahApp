@@ -40,10 +40,20 @@ function Settings({ navigation }: { navigation: any }) {
           />
         </SettingsRowsContainer>
 
-        <SettingsRowsContainer title="Test" mt="25">
+        <SettingsRowsContainer mt="25">
           <SettingsRow title="Gjuha" subTitle="Zgjedh gjuhen" />
-          <SettingsRow title="Test" subTitle="test" />
-          <SettingsRow title="Test 2" subTitle="test, test" hideBottomLine />
+          <SettingsRow
+            title="Notifikacionet"
+            subTitle="ndrysho"
+            hideBottomLine
+          />
+        </SettingsRowsContainer>
+        <SettingsRowsContainer mt="25">
+          <SettingsRow
+            title="Aplikacione te tjera"
+            subTitle="Shiko"
+            hideBottomLine
+          />
         </SettingsRowsContainer>
       </ScrollView>
     </ViewBox>
