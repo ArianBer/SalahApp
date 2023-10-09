@@ -2,7 +2,10 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "../redux/hooks";
 import { CurrentPrayerType, homeSlice } from "../redux/reducers/homeReducer";
-import { registerForPushNotificationsAsync } from "../services/registerPushNotifications";
+import {
+  registerForPushNotificationsAsync,
+  sendNotification,
+} from "../services/registerPushNotifications";
 
 type PrayerTime = {
   country: string;
@@ -76,7 +79,7 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   const getPrayerTimesForToday = (
     month: string,
     day: string
-  ): Record<string, Date> => {  // Change the return type here
+  ): Record<string, Date> => {
     const prayerTimesToday = prayerTimes.find(
       (prayerTime) =>
         prayerTime.month === month &&
@@ -99,7 +102,7 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
     }
   };
 
-  const filterPrayerTimesPerDayMonth = (day: any, month: any)=> {
+  const filterPrayerTimesPerDayMonth = (day: any, month: any) => {
     const prayerTimesForToday = getPrayerTimesForToday(
       month.toString(),
       day.toString()

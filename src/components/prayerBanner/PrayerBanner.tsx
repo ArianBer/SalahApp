@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { usePrayerTimes } from "../../hooks/usePrayerTimes";
 import { TextBox, ViewBox } from "../../styles/theme";
 import prayerData from "../../data/times.json";
 import { retrunIconPrayerTimes } from "../../services/returnIconsFromPrayerTime";
+import { sendNotification } from "../../services/registerPushNotifications";
 
 type PrayerBannerProps = {
   isAbsolute: boolean;
@@ -17,6 +18,7 @@ function PrayerBox({ isAbsolute, icon, customIcon }: PrayerBannerProps) {
     hoursRemaining,
     secondsRemaining,
   } = usePrayerTimes(prayerData);
+
   useEffect(() => {
     const prayerTimesForToday = getPrayerTimesForToday();
     remainingTimeUntilNextPrayer(prayerTimesForToday);
