@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import React from "react";
+import { ScrollView } from "react-native";
 import { IconCalendarMinus } from "tabler-icons-react-native";
 import PrayerBox from "../components/prayerBanner/PrayerBanner";
 import PrayerVideoItem from "../components/prayerVideoItem/prayerVideoitem";
@@ -29,7 +29,6 @@ function Home({ navigation }: { navigation: any }) {
             customIcon={false}
           />
         </HomeHeaderBackground>
-
         <ViewBox
           flexDirection="row"
           flexWrap="wrap"

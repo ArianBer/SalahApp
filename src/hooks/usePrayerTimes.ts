@@ -2,10 +2,8 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "../redux/hooks";
 import { CurrentPrayerType, homeSlice } from "../redux/reducers/homeReducer";
-import {
-  registerForPushNotificationsAsync,
-  sendNotification,
-} from "../services/registerPushNotifications";
+import { registerForPushNotificationsAsync } from "../services/registerPushNotifications";
+import * as Notifications from "expo-notifications";
 
 type PrayerTime = {
   country: string;
@@ -29,6 +27,46 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   const currentMonth = now.getMonth() + 1;
   const [currentDay, setCurrentDay] = useState(now.getDate());
   const dispatch = useAppDispatch();
+  const notificationScheduled: Record<string, boolean> = {};
+  let callPrayer = false;
+
+  const schedulePrayerNotifications = (
+    prayerTimesForToday: Record<string, Date>
+  ) => {
+    Object.entries(prayerTimesForToday).forEach(([prayerName, prayerTime]) => {
+      const timeRemaining = prayerTime.getTime() - now.getTime();
+
+      if (timeRemaining > 0 && !notificationScheduled[prayerName]) {
+        sendLocalNotification(prayerName, timeRemaining / 1000);
+        notificationScheduled[prayerName] = true;
+        callPrayer = false;
+      }
+    });
+  };
+
+  const sendLocalNotification = async (
+    prayerName: string,
+    triggerTime: number
+  ) => {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "SalahApp",
+        body: `It's time for ${prayerName} prayer!`,
+      },
+      trigger: {
+        seconds: triggerTime,
+      },
+    });
+  };
+
+  useEffect(() => {
+    const prayerTimesForToday = getPrayerTimesForToday(
+      currentMonth.toString(),
+      currentDay.toString()
+    );
+
+    schedulePrayerNotifications(prayerTimesForToday);
+  }, [activePrayer]);
 
   useEffect(() => {
     dispatch(homeSlice.actions.setActivePrayer(activePrayer));

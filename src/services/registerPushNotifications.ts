@@ -38,14 +38,3 @@ export const registerForPushNotificationsAsync = async () => {
   const token1 = tokenMatch || "";
   return token1;
 };
-
-export const sendNotification = (prayerName: string) => {
-  console.warn(prayerName);
-
-  Notifications.scheduleNotificationAsync({
-    content: {
-      body: `Namazi i ${prayerName} ka hyr!`,
-    },
-    trigger: null,
-  });
-};
