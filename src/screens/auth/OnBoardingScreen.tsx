@@ -2,7 +2,7 @@ import React, { ReactNode, useState } from "react";
 import { TextBox, ViewBox } from "../../styles/theme";
 import AppIntroSlider from "react-native-app-intro-slider";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../styles/Color";
 import SalahImage from "../../components/onboarding/SalahImage";
 import AbdesImage from "../../components/onboarding/AbdesImage";
@@ -63,10 +63,12 @@ const OnBoardingScreen = () => {
 
     return (
       <ViewBox
+        mt="40"
         paddingHorizontal="37"
-        paddingTop="20"
         justifyContent="center"
         alignItems="center"
+        flex={1}
+        style={{ marginBottom: 200 }}
       >
         {item.image}
         <TextBox variant="2xlBold" color="blackRussian" mt="20">
@@ -82,26 +84,39 @@ const OnBoardingScreen = () => {
 
   const renderNextButton = (lastSlide?: boolean) => {
     return (
-      <ViewBox width="100%" mt="20" justifyContent="center" alignItems="center">
-        <Button
-          onPress={() => {
-            if (lastSlide) {
-              handleContinuePress();
-              return;
-            }
-            ref.current?.goToSlide(activeSlide + 1);
-            setActiveSlide((prevSlide) => prevSlide + 1);
-          }}
-          text="Vazho"
-          width={180}
-        />
-      </ViewBox>
+      <>
+        <ViewBox
+          width="100%"
+          height={70}
+          justifyContent="flex-end"
+          alignItems="center"
+        >
+          <Button
+            onPress={() => {
+              if (lastSlide) {
+                handleContinuePress();
+                return;
+              }
+              ref.current?.goToSlide(activeSlide + 1);
+              setActiveSlide((prevSlide) => prevSlide + 1);
+            }}
+            text="Vazho"
+            width={180}
+          />
+        </ViewBox>
+        {lastSlide && <ViewBox height={60}></ViewBox>}
+      </>
     );
   };
 
   const renderSkipButton = () => {
     return (
-      <ViewBox width="100%" alignItems="center" mt="20">
+      <ViewBox
+        width="100%"
+        alignItems="center"
+        justifyContent="center"
+        height={60}
+      >
         <Pressable onPress={handleContinuePress}>
           <TextBox variant="md" color="green" textDecorationLine="underline">
             Skip
