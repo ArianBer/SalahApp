@@ -10,6 +10,9 @@ import BottomNavigator from "./src/navigation/bottomNavigator/BottomNavigator";
 import { store } from "./src/redux/store";
 // import * as SplashScreen from "expo-splash-screen";
 import { View } from "react-native";
+import { useAppSelector } from "./src/redux/hooks";
+import AuthNavigator from "./src/navigation/AuthNavigator";
+import RootNavigator from "./src/navigation/RootNavigator";
 // import { timeout } from "./src/utilts/timeout";
 
 // SplashScreen.preventAutoHideAsync();
@@ -44,9 +47,7 @@ export default function App() {
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <Provider store={store}>
         <ThemeProvider>
-          <NavigationContainer>
-            <BottomNavigator />
-          </NavigationContainer>
+          <RootNavigator />
         </ThemeProvider>
       </Provider>
     </View>
