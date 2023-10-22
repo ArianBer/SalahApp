@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react";
 import { StyleSheet, ImageBackground } from "react-native";
-// eslint-disable-next-line import/namespace
 import { CurrentPrayerType } from "../../redux/reducers/homeReducer";
 import { ViewBox } from "../../styles/theme";
 

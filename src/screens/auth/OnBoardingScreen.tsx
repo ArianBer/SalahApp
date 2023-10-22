@@ -104,7 +104,7 @@ const OnBoardingScreen = () => {
             width={180}
           />
         </ViewBox>
-        {lastSlide && <ViewBox height={60}></ViewBox>}
+        {lastSlide && <ViewBox height={60} />}
       </>
     );
   };

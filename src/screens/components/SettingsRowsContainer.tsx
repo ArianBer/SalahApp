@@ -16,7 +16,7 @@ export const SettingsRowsContainer = ({
         {title}
       </TextBox>
     )}
-    <ViewBox mt="8" width="100%" backgroundColor="white" borderRadius={14}>
+    <ViewBox mt="8" width="100%" backgroundColor="white" borderRadius="14">
       {children}
     </ViewBox>
   </ViewBox>

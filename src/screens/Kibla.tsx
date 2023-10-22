@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { TouchableOpacity, StyleSheet } from "react-native";
-import { Magnetometer, DeviceMotion } from "expo-sensors";
 import * as Location from "expo-location";
-import LPF from "lpf";
-import { SvgXml } from "react-native-svg";
 import * as Permissions from "expo-permissions";
-import { TextBox, ViewBox } from "../styles/theme";
+import { DeviceMotion, Magnetometer } from "expo-sensors";
+import LPF from "lpf";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { SvgXml } from "react-native-svg";
 import { Fonts } from "../styles";
+import { TextBox, ViewBox } from "../styles/theme";
 
 function CompassSvg({ svgStyle }: { svgStyle?: any }) {
   const svgMarkup = `<svg width="394" height="394" viewBox="0 0 394 394" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -33,7 +33,7 @@ function CompassSvg({ svgStyle }: { svgStyle?: any }) {
   </svg>
   `;
 
-  return <SvgXml xml={svgMarkup} width="301px" height="301" style={svgStyle} />;
+  return <SvgXml xml={svgMarkup} width={301} height={301} style={svgStyle} />;
 }
 
 function MeccaSvg({ svgColor }: { svgColor?: any }) {
@@ -65,7 +65,6 @@ function RotatePhoneSvg() {
 function Kibla() {
   const [subscription, setSubscription] = useState<any>(null);
   const [magnetometer, setMagnetometer] = useState<number>(0);
-  const styles = st();
 
   const [sub, setSub] = useState<any>(null);
 
@@ -97,11 +96,11 @@ function Kibla() {
     const { status } = await Location.getForegroundPermissionsAsync();
 
     if (status === "undetermined") {
-      const { statusLocation } = await Permissions.askAsync(
+      const response = await Permissions.askAsync(
         Permissions.LOCATION_FOREGROUND
       );
 
-      if (statusLocation !== "granted") {
+      if (!response.granted) {
         setLoading(false);
         setError(true);
         return;
@@ -256,7 +255,7 @@ function Kibla() {
       </ViewBox>
       <ViewBox
         marginTop="54"
-        borderRadius={14}
+        borderRadius="14"
         paddingHorizontal="54"
         paddingVertical="lg"
         backgroundColor="darkGreen"
@@ -319,39 +318,35 @@ function Kibla() {
   );
 }
 
-const st = () =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      paddingVertical: 15,
-      paddingHorizontal: 15,
-    },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+  },
 
-    list: {
-      flexGrow: 0,
-      marginBottom: 16,
-    },
-    bigList: {
-      marginBottom: 24,
-    },
-    svg: {
-      position: "absolute",
-      justifyContent: "center",
-      alignItems: "center",
-      bottom: 0,
-      top: 0,
-      left: 0,
-      right: 0,
-    },
-    arrow: {
-      paddingBottom: 24,
-      alignItems: "center",
-      justifyContent: "center",
-      paddingTop: 12,
-    },
-    dot: (active: boolean) => ({
-      transform: [{ scale: active ? 1.2 : 1 }],
-    }),
-  });
+  list: {
+    flexGrow: 0,
+    marginBottom: 16,
+  },
+  bigList: {
+    marginBottom: 24,
+  },
+  svg: {
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
+    bottom: 0,
+    top: 0,
+    left: 0,
+    right: 0,
+  },
+  arrow: {
+    paddingBottom: 24,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: 12,
+  },
+});
 
 export default Kibla;

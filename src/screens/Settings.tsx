@@ -29,7 +29,7 @@ function Settings({ navigation }: { navigation: any }) {
             Preferencat
           </TextBox>
         </ViewBox>
-        <ViewBox style={{ marginHorizontal: 30, width: 28 }}></ViewBox>
+        <ViewBox style={{ marginHorizontal: 30, width: 28 }} />
       </ViewBox>
       <ScrollView contentContainerStyle={{ paddingHorizontal: 26 }}>
         <SettingsRowsContainer title="Lokacioni" mt="25">

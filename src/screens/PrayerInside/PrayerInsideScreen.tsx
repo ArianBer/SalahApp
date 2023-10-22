@@ -75,7 +75,7 @@ export function PrayerInsideScreen({
   };
 
   if (!prayer) {
-    return <ViewBox />;
+    return <></>;
   }
 
   return (
@@ -113,7 +113,7 @@ export function PrayerInsideScreen({
             flexDirection="row"
             alignItems="center"
             px="lg"
-            borderRadius={40}
+            borderRadius="40"
           >
             <IconFile />
             <TextBox ml="xs" variant="xlBold">

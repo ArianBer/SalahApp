@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { usePrayerTimes } from "../../hooks/usePrayerTimes";
-import { TextBox, ViewBox } from "../../styles/theme";
+import React, { useEffect } from "react";
 import prayerData from "../../data/times.json";
+import { usePrayerTimes } from "../../hooks/usePrayerTimes";
 import { retrunIconPrayerTimes } from "../../services/returnIconsFromPrayerTime";
-import { sendNotification } from "../../services/registerPushNotifications";
+import { TextBox, ViewBox } from "../../styles/theme";
 
 type PrayerBannerProps = {
   isAbsolute: boolean;
@@ -40,7 +39,7 @@ function PrayerBox({ isAbsolute, icon, customIcon }: PrayerBannerProps) {
       position={isAbsolute ? "absolute" : "relative"}
       style={{ bottom: isAbsolute ? 45 : 0 }}
       marginHorizontal="xxl"
-      borderRadius={14}
+      borderRadius="14"
       alignItems="center"
       justifyContent="space-between"
       paddingRight="xxxxl"

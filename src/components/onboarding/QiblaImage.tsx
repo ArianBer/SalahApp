@@ -163,9 +163,6 @@ const QiblaImage = (props: SvgProps) => (
           x={133}
           y={78}
           maskUnits="userSpaceOnUse"
-          //   style={{
-          //     maskType: "luminance",
-          //   }}
         >
           <Path
             fill="#fff"

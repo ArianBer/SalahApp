@@ -62,7 +62,7 @@ export function TabBarItem({
         width={58}
         height={34}
         backgroundColor={isFocused ? "lightGreen" : "white"}
-        borderRadius={37}
+        borderRadius="37"
         justifyContent="center"
         alignItems="center"
       >

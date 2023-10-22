@@ -39,7 +39,7 @@ function PrayerVideoItem({
         borderWidth={1}
         borderColor="dargGreenWithOpacity"
         marginBottom="sm"
-        borderRadius={10}
+        borderRadius="10"
         backgroundColor={isActive ? "darkGreen" : "white"}
         paddingTop="xxxxl"
         paddingBottom="xl"
@@ -51,7 +51,7 @@ function PrayerVideoItem({
           backgroundColor={isActive ? "white" : "darkGreen"}
           alignItems="center"
           justifyContent="center"
-          borderRadius={50}
+          borderRadius="50"
         >
           {isActive ? (
             <IconPlayerPlay

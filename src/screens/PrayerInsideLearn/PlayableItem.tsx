@@ -35,7 +35,7 @@ export function PlayableItem({
           <ViewBox
             height={46}
             width={46}
-            borderRadius={23}
+            borderRadius="23"
             backgroundColor="lightGreen"
             justifyContent="center"
             alignItems="center"
@@ -53,21 +53,15 @@ export function PlayableItem({
             position="absolute"
             height={14}
             width={14}
-            left="0%"
             zIndex={1}
-            borderRadius={12}
+            borderRadius="12"
             backgroundColor="darkGreen"
           />
-          <ViewBox
-            width="0%"
-            height={2}
-            borderRadius={20}
-            backgroundColor="darkGreen"
-          />
+          <ViewBox height={2} borderRadius="20" backgroundColor="darkGreen" />
           <ViewBox
             width="70%"
             height={2}
-            borderRadius={20}
+            borderRadius="20"
             backgroundColor="grey"
           />
         </ViewBox>
