@@ -1,21 +1,16 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { NavigationContainer } from "@react-navigation/native";
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import "react-native-gesture-handler";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "./src/components/theme";
 import { useLoadFonts } from "./src/hooks/useLoadFonts";
-import BottomNavigator from "./src/navigation/bottomNavigator/BottomNavigator";
 import { store } from "./src/redux/store";
-// import * as SplashScreen from "expo-splash-screen";
+import * as SplashScreen from "expo-splash-screen";
 import { View } from "react-native";
-import { useAppSelector } from "./src/redux/hooks";
-import AuthNavigator from "./src/navigation/AuthNavigator";
 import RootNavigator from "./src/navigation/RootNavigator";
-// import { timeout } from "./src/utilts/timeout";
+import { timeout } from "./src/utilts/timeout";
 
-// SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const fontsLoaded = useLoadFonts();
@@ -34,8 +29,8 @@ export default function App() {
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
-      // await timeout(1);
-      // await SplashScreen.hideAsync();
+      await timeout(1);
+      await SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
 
