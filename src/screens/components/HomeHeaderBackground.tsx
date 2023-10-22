@@ -41,6 +41,8 @@ export function HomeHeaderBackground({ children }: HomeHeaderBackgroundProps) {
         source={imageSourse}
         style={styles.banner}
         borderRadius={21}
+        borderTopLeftRadius={0}
+        borderTopRightRadius={0}
       >
         {children}
       </ImageBackground>

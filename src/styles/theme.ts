@@ -14,15 +14,23 @@ export const lightTheme = createTheme({
   },
   spacing: {
     xs: 4,
+    "4": 4,
     "6": 6,
     "8": 8,
+    "10": 10,
+    "12": 12,
+    "14": 14,
+    "16": 16,
     "2": 2,
     "20": 20,
     "24": 24,
     "25": 25,
     "27": 27,
     "37": 37,
+    "40": 40,
     "54": 54,
+    "100": 100,
+    "140": 140,
     sm: 8,
     md: 12,
     lg: 16,
@@ -70,6 +78,11 @@ export const lightTheme = createTheme({
       fontSize: 16,
       fontFamily: Fonts.Bold,
     },
+    lg_bold: {
+      fontSize: 18,
+      fontFamily: Fonts.Bold,
+    },
+    lg_medium: { fontSize: 18, fontFamily: Fonts.Medium },
     lg: {
       fontSize: 18,
     },
@@ -101,6 +114,12 @@ export const lightTheme = createTheme({
     "5xl": {
       fontSize: 48,
     },
+  },
+  borderRadii: {
+    "2": 2,
+    "4": 4,
+    "8": 8,
+    "14": 14,
   },
 });
 
