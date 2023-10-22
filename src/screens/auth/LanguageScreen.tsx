@@ -4,15 +4,18 @@ import LanguageButton from "../../components/LanguageButton";
 import Button from "../../components/Button";
 import { IconArrowRight } from "tabler-icons-react-native";
 import { useNavigation } from "@react-navigation/native";
-
-const languages = ["Albanian", "English", "Turkish", "German", "Macedonian"];
+import { useAppDispatch } from "../../redux/hooks";
+import { languageSlice } from "../../redux/reducers/languageReducer";
+import { languages, LanguageProps } from "../../services/translation/languges";
 
 const LanguageScreen = () => {
-  const [selectedLanguage, setSelectedLanguage] = useState("");
+  const [selectedLanguage, setSelectedLanguage] = useState<LanguageProps>({name: '', value: ''});
   const navigation = useNavigation<any>();
-
-  const onChangeLanguage = (language: string) => {
+  const dispatch = useAppDispatch();
+   
+  const onChangeLanguage = (language: LanguageProps) => {
     setSelectedLanguage(language);
+    dispatch(languageSlice.actions.changeLanguage(language));
   };
 
   const renderLanguages = () => {
@@ -21,10 +24,10 @@ const LanguageScreen = () => {
 
       return (
         <LanguageButton
-          key={lng}
+          key={lng.value}
           onPress={() => onChangeLanguage(lng)}
           isSelected={isSelected}
-          language={lng}
+          language={lng.name}
           mt="8"
         />
       );
