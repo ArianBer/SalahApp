@@ -16,7 +16,7 @@ const initialState: InitialState = {
   },
 };
 
-export const selectCountrySlice = createSlice({
+export const selectCountry = createSlice({
   name: "country",
   initialState,
   reducers: {
@@ -26,6 +26,6 @@ export const selectCountrySlice = createSlice({
   },
 });
 
-export const { changeCountry } = selectCountrySlice.actions;
+export const { changeCountry } = selectCountry.actions;
 
-export default selectCountrySlice.reducer;
+export default selectCountry.reducer;
