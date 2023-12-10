@@ -4,15 +4,21 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface InitialState {
   countrySelected: {
-    name: String,
-    value: String,
+    country: string;
+    countryCode: string;
+    city: string;
+    longitude: string;
+    latitude: string;
   };
 }
 
 const initialState: InitialState = {
-  countrySelected : {
-    name: "Kosovo",
-    value: "xk",
+  countrySelected: {
+    country: "Kosovo",
+    countryCode: "xk",
+    city: "Prishtina",
+    longitude: "000",
+    latitude: "000",
   },
 };
 
@@ -20,7 +26,13 @@ export const selectCountry = createSlice({
   name: "country",
   initialState,
   reducers: {
-    changeCountry: (state, action: PayloadAction<{name: String, value: String}>) => {
+    changeCountry: (state, action: PayloadAction<{
+      country: string;
+      countryCode: string;
+      city: string;
+      longitude: string;
+      latitude: string;
+    }>) => {
       state.countrySelected = action.payload;
     },
   },

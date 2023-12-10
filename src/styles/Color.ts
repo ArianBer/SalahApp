@@ -10,4 +10,5 @@ export const Colors = {
   blackRussian: "#090E1B",
   darkGreenWithOpacity: "rgba(86, 121, 29, 0.4)",
   silver: "#CDCDCD",
+  darkGrey:'4B9C60'
 };

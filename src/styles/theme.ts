@@ -10,6 +10,7 @@ export const lightTheme = createTheme({
     lightGreen: Colors.lightGreen,
     white: Colors.white,
     darkGreen: Colors.darkGreen,
+    darkGrey: Colors.darkGrey,
     dargGreenWithOpacity: Colors.darkGreenWithOpacity,
   },
   spacing: {

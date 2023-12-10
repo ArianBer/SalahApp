@@ -1,9 +1,10 @@
 /* eslint-disable no-shadow */
 import { useEffect, useState } from "react";
-import { useAppDispatch } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { CurrentPrayerType, homeSlice } from "../redux/reducers/homeReducer";
 import { registerForPushNotificationsAsync } from "../services/registerPushNotifications";
 import * as Notifications from "expo-notifications";
+import { useOnlinePrayerTimes } from "./useOnlinePrayerTimes";
 
 type PrayerTime = {
   country: string;
@@ -27,8 +28,23 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   const currentMonth = now.getMonth() + 1;
   const [currentDay, setCurrentDay] = useState(now.getDate());
   const dispatch = useAppDispatch();
+  const {country}  = useAppSelector((state) => state);
   const notificationScheduled: Record<string, boolean> = {};
-  let callPrayer = false;
+  const localLanguages = ['Kosovo', 'Shqiperi', 'Maqedoni'];
+
+  if (!localLanguages.includes(country.countrySelected.country)) {
+    const {activePrayers, secondsRemaining, hoursRemaining} = useOnlinePrayerTimes(country.countrySelected);
+
+    return {
+      getPrayerTimesForToday: () => ({}),
+      remainingTimeUntilNextPrayer: () => {},
+      filterPrayerTimes: () => {},
+      filterPrayerTimesPerDayMonth: (day: any, month: any) => ({}),
+      activePrayer: activePrayers,
+      secondsRemaining: secondsRemaining,
+      hoursRemaining: hoursRemaining,
+    };
+  }
 
   const schedulePrayerNotifications = (
     prayerTimesForToday: Record<string, Date>
@@ -39,7 +55,6 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
       if (timeRemaining > 0 && !notificationScheduled[prayerName]) {
         sendLocalNotification(prayerName, timeRemaining / 1000);
         notificationScheduled[prayerName] = true;
-        callPrayer = false;
       }
     });
   };
@@ -122,7 +137,7 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
       (prayerTime) =>
         prayerTime.month === month &&
         prayerTime.day === day &&
-        prayerTime.country === "xk"
+        prayerTime.country === country.countrySelected.countryCode
     );
     if (prayerTimesToday) {
       return extractPrayerTimes(prayerTimesToday);
