@@ -1,5 +1,4 @@
 import "react-native-gesture-handler";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -10,7 +9,6 @@ import { useLoadFonts } from "./src/hooks/useLoadFonts";
 import RootNavigator from "./src/navigation/RootNavigator";
 import { store } from "./src/redux/store";
 import { timeout } from "./src/utilts/timeout";
-
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
@@ -19,11 +17,7 @@ export default function App() {
 
   useEffect(() => {
     const readData = async () => {
-      await AsyncStorage.getItem("firstLaunchKey").then((response: any) => {
-        if (response) {
-          i18n.changeLanguage("al");
-        }
-      });
+      i18n.changeLanguage('al');
     };
     readData();
   }, [i18n]);

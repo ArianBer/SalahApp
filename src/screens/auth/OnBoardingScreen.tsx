@@ -11,6 +11,7 @@ import SalahVideoImage from "../../components/onboarding/SalahVideoImage";
 import DuaImage from "../../components/onboarding/DuaImage";
 import Button from "../../components/Button";
 import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 type SlideItemProps = {
   key: number;
@@ -57,7 +58,9 @@ const OnBoardingScreen = () => {
   const ref = React.useRef<AppIntroSlider<SlideItemProps>>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const navigation = useNavigation<any>();
+  const {t} = useTranslation();
 
+  console.log(t('ablution'))
   const _renderItem = (props: { item: SlideItemProps }) => {
     const { item } = props;
 
@@ -100,7 +103,7 @@ const OnBoardingScreen = () => {
               ref.current?.goToSlide(activeSlide + 1);
               setActiveSlide((prevSlide) => prevSlide + 1);
             }}
-            text="Vazho"
+            text={t('continue')}
             width={180}
           />
         </ViewBox>

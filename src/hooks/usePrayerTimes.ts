@@ -22,6 +22,7 @@ type PrayerTime = {
 
 export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   const [activePrayer, setActivePrayer] = useState<CurrentPrayerType>("dhuhr");
+  const [prevPrayer, setPrevPrayer] = useState<CurrentPrayerType>("dhuhr");
   const [hoursRemaining, setHoursRemaining] = useState("");
   const [secondsRemaining, setSecondsRemaining] = useState("");
   const [now, setNow] = useState(new Date());
@@ -30,7 +31,7 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   const dispatch = useAppDispatch();
   const {country}  = useAppSelector((state) => state);
   const notificationScheduled: Record<string, boolean> = {};
-  const localLanguages = ['Kosovo', 'Shqiperi', 'Maqedoni'];
+  const localLanguages = ['Kosova', 'Shqiperi', 'Maqedoni'];
 
   if (!localLanguages.includes(country.countrySelected.country)) {
     const {activePrayers, secondsRemaining, hoursRemaining} = useOnlinePrayerTimes(country.countrySelected);

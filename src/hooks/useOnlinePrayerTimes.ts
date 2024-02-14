@@ -67,6 +67,12 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
   }, [prayerTimes]);
 
   useEffect(() => {
+    if(activePrayers === 'Imsak'){
+      setCurrentDay(prev => prev + 1)
+    }
+  }, [activePrayers])
+
+  useEffect(() => {
     const fetchPrayerTimes = async () => {
       try {
         const response = await fetch(

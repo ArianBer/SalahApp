@@ -9,7 +9,8 @@ import { Modal, Pressable, StyleSheet } from "react-native";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import countriesData from "../../data/countriesData";
-import { authSlice } from "../../redux/reducers/authReducer";
+import { IconSquareRoundedX } from "tabler-icons-react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const localLanguages = ['Kosova', 'Shqiperi', 'Maqedoni'];
 const LocationScreen = () => {
@@ -17,16 +18,27 @@ const LocationScreen = () => {
   const dispatch = useAppDispatch();
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const navigation = useNavigation<any>();
 
   const openModal = (country: any) => {
     setSelectedCountry(country);
     setModalVisible(true);
   };
 
-  const closeModel = () => {
+  const citySelected = (city: any) => {
+    const countrySelcted = countriesData.find((country) => country.country === selectedCountry)
+    const address = {
+      country: selectedCountry,
+      city: city,
+      countryCode: countrySelcted?.countrycode,
+      longitude: '',
+      latitude: '',
+    }
+
+    dispatch(selectCountry.actions.changeCountry(address))
     setSelectedCountry(null);
     setModalVisible(false);
-    dispatch(authSlice.actions.setIsOnBoarded(true));
+    navigation?.navigate("LocationSelected")
   };
   
   const request = async () => {
@@ -61,7 +73,7 @@ const LocationScreen = () => {
         }
 
         dispatch(selectCountry.actions.changeCountry(address))
-        dispatch(authSlice.actions.setIsOnBoarded(true))
+        navigation?.navigate("LocationSelected")
       }
     }
   };
@@ -117,18 +129,20 @@ const LocationScreen = () => {
             setModalVisible(!modalVisible);
           }}>
           <ViewBox style={styles.centeredView}>
-            <ViewBox style={styles.modalView}>
-              {
-                countriesData
-                .find((country) => country.country === selectedCountry)?.cities.map((city) => (
-                  <Pressable
-                    style={styles.itemStyle}
-                    onPress={() => closeModel()}>
-                    <TextBox style={styles.textItem} key={city.name}>{city.name}</TextBox>
-                  </Pressable>
-                ))}
-            </ViewBox>
+          <ViewBox style={styles.modalView}>
+            <Pressable style={styles.closeIcon} onPress={() => setModalVisible(!modalVisible)}>
+              <IconSquareRoundedX/>
+            </Pressable>
+            {countriesData
+              .find((country) => country.country === selectedCountry)?.cities.map((city) => (
+                <Pressable
+                  style={styles.itemStyle}
+                  onPress={() => citySelected(city.name)}>
+                  <TextBox style={styles.textItem} key={city.name}>{city.name}</TextBox>
+                </Pressable>
+              ))}
           </ViewBox>
+        </ViewBox>
         </Modal>
       </ViewBox>
     </ViewBox>
@@ -136,6 +150,9 @@ const LocationScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   centeredView: {
     flex: 1,
     justifyContent: 'center',
@@ -145,12 +162,11 @@ const styles = StyleSheet.create({
   },
   modalView: {
     backgroundColor: 'white',
-    width:'100%',
+    width: '100%',
     paddingTop: 15,
     borderRadius: 20,
     alignItems: 'center',
     shadowColor: '#000',
-    textAlign: 'center',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -159,25 +175,23 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  closeIcon: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    padding: 10,
+    zIndex: 1,
+  },
   itemStyle: {
     borderBottomWidth: 1,
-    borderBottomColor:'#D9D9D9',
+    borderBottomColor: '#D9D9D9',
     paddingVertical: 23,
     width: '100%',
     textAlign: 'center',
   },
-  TextBoxStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    TextBoxAlign: 'center',
-  },
-  modalTextBox: {
-    marginBottom: 15,
-    TextBoxAlign: 'center',
-  },
   textItem: {
     fontSize: 18,
-    fontWeight:'600',
+    fontWeight: '600',
     textAlign: 'center',
   }
 });
