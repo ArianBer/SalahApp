@@ -20,3 +20,4 @@ function persist<State>(
 }
 
 export default persist;
+

@@ -2,17 +2,22 @@ import React, { useState } from "react";
 import { TextBox, ViewBox } from "../../styles/theme";
 import LocationImage from "../../components/onboarding/LocationImage";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import LanguageButton from "../../components/LanguageButton";
-import {selectCountry} from "../../redux/reducers/countryReducer";
+import LanguageButton, { flags } from "../../components/LanguageButton";
+import { selectCountry } from "../../redux/reducers/countryReducer";
 import { useAppDispatch } from "../../redux/hooks";
-import { Modal, Pressable, StyleSheet } from "react-native";
+import { Image, Modal, Pressable, StyleSheet } from "react-native";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import countriesData from "../../data/countriesData";
 import { IconSquareRoundedX } from "tabler-icons-react-native";
 import { useNavigation } from "@react-navigation/native";
 
-const localLanguages = ['Kosova', 'Shqiperi', 'Maqedoni'];
+const localLanguages = [
+  { name: "Kosova", iconSource: flags.xk },
+  { name: "Shqiperi", iconSource: flags.al },
+  { name: "Maqedoni", iconSource: flags.mk },
+];
+
 const LocationScreen = () => {
   const { top, bottom } = useSafeAreaInsets();
   const dispatch = useAppDispatch();
@@ -26,21 +31,23 @@ const LocationScreen = () => {
   };
 
   const citySelected = (city: any) => {
-    const countrySelcted = countriesData.find((country) => country.country === selectedCountry)
+    const countrySelcted = countriesData.find(
+      (country) => country.country === selectedCountry
+    );
     const address = {
       country: selectedCountry,
       city: city,
       countryCode: countrySelcted?.countrycode,
-      longitude: '',
-      latitude: '',
-    }
+      longitude: "",
+      latitude: "",
+    };
 
-    dispatch(selectCountry.actions.changeCountry(address))
+    dispatch(selectCountry.actions.changeCountry(address));
     setSelectedCountry(null);
     setModalVisible(false);
-    navigation?.navigate("LocationSelected")
+    navigation?.navigate("LocationSelected");
   };
-  
+
   const request = async () => {
     const { status } = await Location.getForegroundPermissionsAsync();
 
@@ -60,27 +67,35 @@ const LocationScreen = () => {
       const { latitude, longitude } = coords;
       let response = await Location.reverseGeocodeAsync({
         latitude,
-        longitude
+        longitude,
       });
 
       for (let item of response) {
         const address = {
-          country: item.country,
-          city: item.city,
-          countryCode: item.isoCountryCode,
-          longitude: longitude,
-          latitude: latitude,
-        }
+          country: item.country ?? "",
+          city: item.city ?? "",
+          countryCode: item.isoCountryCode ?? "",
+          longitude: longitude?.toString(),
+          latitude: latitude?.toString(),
+        };
 
-        dispatch(selectCountry.actions.changeCountry(address))
-        navigation?.navigate("LocationSelected")
+        dispatch(selectCountry.actions.changeCountry(address));
+        navigation?.navigate("LocationSelected");
       }
     }
   };
 
   const renderLoactions = () => {
-    return localLanguages.map((lng) => (
-      <LanguageButton key={lng} language={lng} onPress={() => openModal(lng)} mt="4" />
+    return localLanguages.map((item) => (
+      <LanguageButton
+        key={item.name}
+        language={item.name}
+        languageIcon={
+          <Image style={{ height: 24, width: 24 }} source={item.iconSource} />
+        }
+        onPress={() => openModal(item.name)}
+        mt="4"
+      />
     ));
   };
 
@@ -101,25 +116,23 @@ const LocationScreen = () => {
       <ViewBox width="100%" paddingHorizontal="37" mt="20">
         {renderLoactions()}
         <ViewBox mt="4">
-          <Pressable onPress={request} >
+          <Pressable onPress={request}>
             <ViewBox
               width="100%"
               height={53}
               justifyContent="center"
               alignItems="center"
               borderRadius="14"
-              backgroundColor={'lightGreen'}
+              backgroundColor={"lightGreen"}
             >
-              <TextBox
-                color="blackRussian"
-                variant="lg_medium"
-              >
+              <TextBox color="blackRussian" variant="lg_medium">
                 Gjej lokacionin
               </TextBox>
             </ViewBox>
           </Pressable>
         </ViewBox>
       </ViewBox>
+
       <ViewBox style={styles.centeredView}>
         <Modal
           animationType="slide"
@@ -127,22 +140,30 @@ const LocationScreen = () => {
           visible={modalVisible}
           onRequestClose={() => {
             setModalVisible(!modalVisible);
-          }}>
+          }}
+        >
           <ViewBox style={styles.centeredView}>
-          <ViewBox style={styles.modalView}>
-            <Pressable style={styles.closeIcon} onPress={() => setModalVisible(!modalVisible)}>
-              <IconSquareRoundedX/>
-            </Pressable>
-            {countriesData
-              .find((country) => country.country === selectedCountry)?.cities.map((city) => (
-                <Pressable
-                  style={styles.itemStyle}
-                  onPress={() => citySelected(city.name)}>
-                  <TextBox style={styles.textItem} key={city.name}>{city.name}</TextBox>
-                </Pressable>
-              ))}
+            <ViewBox style={styles.modalView}>
+              <Pressable
+                style={styles.closeIcon}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <IconSquareRoundedX />
+              </Pressable>
+              {countriesData
+                .find((country) => country.country === selectedCountry)
+                ?.cities.map((city) => (
+                  <Pressable
+                    style={styles.itemStyle}
+                    onPress={() => citySelected(city.name)}
+                  >
+                    <TextBox style={styles.textItem} key={city.name}>
+                      {city.name}
+                    </TextBox>
+                  </Pressable>
+                ))}
+            </ViewBox>
           </ViewBox>
-        </ViewBox>
         </Modal>
       </ViewBox>
     </ViewBox>
@@ -155,18 +176,18 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 22,
-    marginHorizontal: '10%'
+    marginHorizontal: "10%",
   },
   modalView: {
-    backgroundColor: 'white',
-    width: '100%',
+    backgroundColor: "white",
+    width: "100%",
     paddingTop: 15,
     borderRadius: 20,
-    alignItems: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -176,7 +197,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   closeIcon: {
-    position: 'absolute',
+    position: "absolute",
     top: 10,
     right: 10,
     padding: 10,
@@ -184,16 +205,16 @@ const styles = StyleSheet.create({
   },
   itemStyle: {
     borderBottomWidth: 1,
-    borderBottomColor: '#D9D9D9',
+    borderBottomColor: "#D9D9D9",
     paddingVertical: 23,
-    width: '100%',
-    textAlign: 'center',
+    width: "100%",
+    textAlign: "center",
   },
   textItem: {
     fontSize: 18,
-    fontWeight: '600',
-    textAlign: 'center',
-  }
+    fontWeight: "600",
+    textAlign: "center",
+  },
 });
 
 export default LocationScreen;

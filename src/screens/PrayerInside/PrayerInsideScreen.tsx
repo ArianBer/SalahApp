@@ -1,5 +1,5 @@
 import { ResizeMode, Video } from "expo-av";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconArrowLeft, IconFile } from "tabler-icons-react-native";
@@ -11,6 +11,7 @@ import IkindiaVideo from "../../assets/videos/Jacia.mp4";
 import AkshamiVideo from "../../assets/videos/Akshami.mp4";
 import JaciaVideo from "../../assets/videos/Jacia.mp4";
 import { Prayers } from "../../constants";
+import { ControlStates } from "./constants";
 
 type PrayerKey = keyof typeof Prayers;
 
@@ -63,9 +64,9 @@ export function PrayerInsideScreen({
   navigation: any;
 }) {
   const { top } = useSafeAreaInsets();
-  const video = useRef(null);
+  const video = useRef<Video>(null);
   const prayer = (route?.params?.prayer ?? "") as PrayerKey | "";
-
+  const [controlsState, setControlsState] = useState(ControlStates.Hidden);
   const onPressBack = () => {
     navigation.goBack();
   };
@@ -96,6 +97,14 @@ export function PrayerInsideScreen({
           useNativeControls
           resizeMode={ResizeMode.COVER}
         />
+        <ViewBox
+          pointerEvents={
+            controlsState === ControlStates.Visible ? "auto" : "none"
+          }
+          position="absolute"
+          top="50%"
+          left="50%"
+        ></ViewBox>
       </ViewBox>
       <ViewBox flexDirection="row" width="100%" pt="xl" px="xxxl" pb="9xl">
         <ViewBox flex={1}>

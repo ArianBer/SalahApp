@@ -29,12 +29,13 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   const currentMonth = now.getMonth() + 1;
   const [currentDay, setCurrentDay] = useState(now.getDate());
   const dispatch = useAppDispatch();
-  const {country}  = useAppSelector((state) => state);
+  const country = useAppSelector((state) => state.country);
   const notificationScheduled: Record<string, boolean> = {};
-  const localLanguages = ['Kosova', 'Shqiperi', 'Maqedoni'];
+  const localLanguages = ["Kosova", "Shqiperi", "Maqedoni"];
 
   if (!localLanguages.includes(country.countrySelected.country)) {
-    const {activePrayers, secondsRemaining, hoursRemaining} = useOnlinePrayerTimes(country.countrySelected);
+    const { activePrayers, secondsRemaining, hoursRemaining } =
+      useOnlinePrayerTimes(country.countrySelected);
 
     return {
       getPrayerTimesForToday: () => ({}),
