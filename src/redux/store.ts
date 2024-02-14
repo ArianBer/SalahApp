@@ -4,6 +4,7 @@ import countryReducer from "./reducers/countryReducer";
 import homeReducer from "./reducers/homeReducer";
 import authReducer from "./reducers/authReducer";
 import languageReducer from "./reducers/languageReducer";
+import persistStore from "redux-persist/es/persistStore";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,8 @@ export const store = configureStore({
     language: languageReducer,
   },
 });
+
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 

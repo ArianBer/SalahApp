@@ -8,7 +8,11 @@ import {
 } from "tabler-icons-react-native";
 import { TextBox, ViewBox } from "../../../styles/theme";
 
-export type BottomTabKeys = "HomeTab" | "PrayerTimesTab" | "Kibla" | "Settings";
+export type BottomTabKeys =
+  | "HomeTab"
+  | "PrayerTimesTab"
+  | "Kibla"
+  | "SettingsTab";
 
 type TabBarItemProps = {
   name: BottomTabKeys;
@@ -30,7 +34,7 @@ const getIcon = ({ name }: { name: BottomTabKeys }) => {
     HomeTab: <IconHome />,
     Kibla: <IconCompass />,
     PrayerTimesTab: <IconCalendarMinus />,
-    Settings: <IconSettings />,
+    SettingsTab: <IconSettings />,
   };
 
   return icons[name];
@@ -41,7 +45,7 @@ const getText = ({ name }: { name: BottomTabKeys }) => {
     HomeTab: "Ballina",
     Kibla: "Kibla",
     PrayerTimesTab: "Takvimi",
-    Settings: "Preferencat",
+    SettingsTab: "Preferencat",
   };
 
   return texts[name];

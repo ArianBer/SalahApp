@@ -9,10 +9,11 @@ import { languageSlice } from "../../redux/reducers/languageReducer";
 import { languages, LanguageProps } from "../../services/translation/languges";
 
 const LanguageScreen = () => {
-  const [selectedLanguage, setSelectedLanguage] = useState<LanguageProps>({name: '', value: ''});
+  const [selectedLanguage, setSelectedLanguage] =
+    useState<LanguageProps | null>(null);
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
-   
+
   const onChangeLanguage = (language: LanguageProps) => {
     setSelectedLanguage(language);
     dispatch(languageSlice.actions.changeLanguage(language));
