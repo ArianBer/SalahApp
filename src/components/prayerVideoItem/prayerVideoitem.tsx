@@ -5,6 +5,7 @@ import { IconPlayerPlay } from "tabler-icons-react-native";
 import { CurrentPrayerType } from "../../redux/reducers/homeReducer";
 import { TextBox, ThemeType, ViewBox } from "../../styles/theme";
 import { Prayers } from "../../constants";
+import i18n from "../../services/translation";
 
 type PrayerVideoItemProps = {
   title: string;
@@ -14,12 +15,11 @@ type PrayerVideoItemProps = {
 };
 
 const mapPrayerNames: Record<CurrentPrayerType, string> = {
-  imsak: Prayers.sabahu,
-  sunrise: Prayers.sabahu,
-  dhuhr: Prayers.dreka,
-  asr: Prayers.ikindia,
-  maghrib: Prayers.akshami,
-  isha: Prayers.jacia,
+  sunrise: Prayers.fajr,
+  dhuhr: Prayers.dhuhr,
+  asr: Prayers.asr,
+  maghrib: Prayers.maghrib,
+  isha: Prayers.isha,
 };
 
 function PrayerVideoItem({
@@ -70,7 +70,7 @@ function PrayerVideoItem({
           fontWeight="bold"
           color={isActive ? "white" : "mainText"}
         >
-          {title}
+          {i18n.t(title)}
         </TextBox>
         <TextBox fontSize={12} color={isActive ? "white" : "mainText"}>
           {duration}

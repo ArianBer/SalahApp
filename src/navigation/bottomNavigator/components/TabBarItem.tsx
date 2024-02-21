@@ -7,6 +7,7 @@ import {
   IconSettings,
 } from "tabler-icons-react-native";
 import { TextBox, ViewBox } from "../../../styles/theme";
+import i18n from "../../../services/translation";
 
 export type BottomTabKeys = "HomeTab" | "PrayerTimesTab" | "Kibla" | "Settings";
 
@@ -38,10 +39,10 @@ const getIcon = ({ name }: { name: BottomTabKeys }) => {
 
 const getText = ({ name }: { name: BottomTabKeys }) => {
   const texts: Record<BottomTabKeys, string> = {
-    HomeTab: "Ballina",
-    Kibla: "Kibla",
-    PrayerTimesTab: "Takvimi",
-    Settings: "Preferencat",
+    HomeTab: i18n.t("home"),
+    Kibla: i18n.t("qibla"),
+    PrayerTimesTab: i18n.t("prayer-calendar"),
+    Settings: i18n.t("preferences"),
   };
 
   return texts[name];

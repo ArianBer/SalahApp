@@ -70,7 +70,7 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
     if(activePrayers === 'Imsak'){
       setCurrentDay(prev => prev + 1)
     }
-  }, [activePrayers])
+  }, [activePrayers]);
 
   useEffect(() => {
     const fetchPrayerTimes = async () => {

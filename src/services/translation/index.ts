@@ -1,23 +1,7 @@
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import albania from "./languages/al.json";
-import arabic from "./languages/ar.json";
-import english from "./languages/en.json";
+import {en, al, ar, tr} from './languages';
+import {I18n} from 'i18n-js';
 
-const resources = {
-  "al": albania,
-  "en": english,
-  "ar": arabic,
-};
+const i18n = new I18n({en, al, ar, tr});
+i18n.fallbacks = true;
 
-i18n
-  .use(initReactI18next)
-  .init({
-    resources,
-    fallbackLng: "al",
-    interpolation: {
-      escapeValue: false,
-    },
-  });
-
-export {i18n};
+export default i18n;

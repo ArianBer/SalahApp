@@ -33,7 +33,6 @@ const backgroundImages: Record<CurrentPrayerType, any> = {
 export function HomeHeaderBackground({ children }: HomeHeaderBackgroundProps) {
   const { activePrayer } = useAppSelector((state) => state.home);
 
-  console.warn(activePrayer)
   const imageSourse = backgroundImages[activePrayer];
   return (
     <ViewBox height={380}>

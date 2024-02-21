@@ -11,6 +11,7 @@ import * as Permissions from "expo-permissions";
 import countriesData from "../../data/countriesData";
 import { IconSquareRoundedX } from "tabler-icons-react-native";
 import { useNavigation } from "@react-navigation/native";
+import i18n from "../../services/translation";
 
 const localLanguages = ['Kosova', 'Shqiperi', 'Maqedoni'];
 const LocationScreen = () => {
@@ -54,7 +55,9 @@ const LocationScreen = () => {
       }
     }
 
-    let { coords } = await Location.getCurrentPositionAsync();
+    let { coords } = await Location.getCurrentPositionAsync({
+      enableHighAccuracy: true,
+    });
 
     if (coords) {
       const { latitude, longitude } = coords;
@@ -62,6 +65,7 @@ const LocationScreen = () => {
         latitude,
         longitude
       });
+
 
       for (let item of response) {
         const address = {
@@ -71,6 +75,7 @@ const LocationScreen = () => {
           longitude: longitude,
           latitude: latitude,
         }
+
 
         dispatch(selectCountry.actions.changeCountry(address))
         navigation?.navigate("LocationSelected")
@@ -96,7 +101,7 @@ const LocationScreen = () => {
         <LocationImage />
       </ViewBox>
       <TextBox variant="2xlBold" mt="37" color="blackRussian">
-        Zgjidh lokacionin
+        {i18n.t('select-location')}
       </TextBox>
       <ViewBox width="100%" paddingHorizontal="37" mt="20">
         {renderLoactions()}
@@ -114,7 +119,7 @@ const LocationScreen = () => {
                 color="blackRussian"
                 variant="lg_medium"
               >
-                Gjej lokacionin
+              {i18n.t('find-location')}
               </TextBox>
             </ViewBox>
           </Pressable>

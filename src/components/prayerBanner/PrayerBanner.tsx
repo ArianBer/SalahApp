@@ -3,6 +3,7 @@ import prayerData from "../../data/times.json";
 import { usePrayerTimes } from "../../hooks/usePrayerTimes";
 import { retrunIconPrayerTimes } from "../../services/returnIconsFromPrayerTime";
 import { TextBox, ViewBox } from "../../styles/theme";
+import i18n from "../../services/translation";
 
 type PrayerBannerProps = {
   isAbsolute: boolean;
@@ -70,7 +71,7 @@ function PrayerBox({ isAbsolute, icon, customIcon }: PrayerBannerProps) {
           fontWeight="400"
           lineHeight={15}
         >
-          Deri në {activePrayer}
+         { i18n.t('until') + ' ' +  i18n.t(activePrayer.toLowerCase())}
         </TextBox>
       </ViewBox>
       <ViewBox>
