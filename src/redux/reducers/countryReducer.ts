@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
+import persist from "../../utilts/persist";
 
 interface InitialState {
   countrySelected: {
@@ -40,4 +41,5 @@ export const selectCountry = createSlice({
 
 export const { changeCountry } = selectCountry.actions;
 
-export default selectCountry.reducer;
+export default persist("country", selectCountry.reducer, ["countrySelected"]);
+

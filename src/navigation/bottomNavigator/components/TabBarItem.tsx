@@ -9,7 +9,11 @@ import {
 import { TextBox, ViewBox } from "../../../styles/theme";
 import i18n from "../../../services/translation";
 
-export type BottomTabKeys = "HomeTab" | "PrayerTimesTab" | "Kibla" | "Settings";
+export type BottomTabKeys =
+  | "HomeTab"
+  | "PrayerTimesTab"
+  | "Kibla"
+  | "SettingsTab";
 
 type TabBarItemProps = {
   name: BottomTabKeys;
@@ -31,7 +35,7 @@ const getIcon = ({ name }: { name: BottomTabKeys }) => {
     HomeTab: <IconHome />,
     Kibla: <IconCompass />,
     PrayerTimesTab: <IconCalendarMinus />,
-    Settings: <IconSettings />,
+    SettingsTab: <IconSettings />,
   };
 
   return icons[name];
@@ -42,7 +46,7 @@ const getText = ({ name }: { name: BottomTabKeys }) => {
     HomeTab: i18n.t("home"),
     Kibla: i18n.t("qibla"),
     PrayerTimesTab: i18n.t("prayer-calendar"),
-    Settings: i18n.t("preferences"),
+    SettingsTab: i18n.t("preferences"),
   };
 
   return texts[name];

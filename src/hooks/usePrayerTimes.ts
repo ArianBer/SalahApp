@@ -29,7 +29,7 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   const currentMonth = now.getMonth() + 1;
   const [currentDay, setCurrentDay] = useState(now.getDate());
   const dispatch = useAppDispatch();
-  const {country}  = useAppSelector((state) => state);
+  const country = useAppSelector((state) => state.country);
   const notificationScheduled: Record<string, boolean> = {};
   const localLanguages = ['Kosova', 'Shqiperi', 'Maqedoni'];
   const prayers = ["imsak", "sunrise", "dhuhr", "asr", "maghrib", "isha"];

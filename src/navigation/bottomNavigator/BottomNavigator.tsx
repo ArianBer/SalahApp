@@ -1,9 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
-import { Kibla, Settings } from "../../screens";
+import { Kibla } from "../../screens";
 import {
   HomeStackNavigator,
   PrayerTimesNavigator,
+  SettingsNavigator,
 } from "../stackNavigator/StackNavigator";
 import { BottomTabBar } from "./components/BottomTabBar";
 
@@ -28,7 +29,7 @@ function BottomNavigator() {
       <Tab.Screen name="HomeTab" component={HomeStackNavigator} />
       <Tab.Screen name="PrayerTimesTab" component={PrayerTimesNavigator} />
       <Tab.Screen name="Kibla" component={Kibla} />
-      <Tab.Screen name="Settings" component={Settings} />
+      <Tab.Screen name="SettingsTab" component={SettingsNavigator} />
     </Tab.Navigator>
   );
 }

@@ -10,17 +10,29 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
   const [currentDay, setCurrentDay] = useState(now.getDate());
   const [prayerTimes, setPrayerTime] = useState({});
 
-  const filterPrayerTimes = (prayerTimes: Record<string, string>): Record<string, Date> => {
-    const keysToInclude = ["Imsak", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
-    
+  const filterPrayerTimes = (
+    prayerTimes: Record<string, string>
+  ): Record<string, Date> => {
+    const keysToInclude = [
+      "Imsak",
+      "Sunrise",
+      "Dhuhr",
+      "Asr",
+      "Maghrib",
+      "Isha",
+    ];
+
+    if(!prayerTimes) return {}
+
     return Object.keys(prayerTimes)
-    .filter((key) => keysToInclude.includes(key))
-    .reduce((obj: Record<string, Date>, key: string) => {
-      const [hours, minutes] = prayerTimes[key].split(":");
-      obj[key] = new Date();
-      obj[key].setHours(Number(hours), Number(minutes), 0, 0);
-      return obj;
-    }, {});
+      .filter((key) => keysToInclude.includes(key))
+      .reduce((obj: Record<string, Date>, key: string) => {
+        console.log({ obj });
+        const [hours, minutes] = prayerTimes[key].split(":");
+        obj[key] = new Date();
+        obj[key].setHours(Number(hours), Number(minutes), 0, 0);
+        return obj;
+      }, {});
   };
 
   const remainingTimeUntilNextPrayer = (
@@ -38,7 +50,7 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
         const timeB = new Date(b[1]);
         return timeA.getTime() - timeB.getTime();
       });
-  
+
     if (remainingTimes.length) {
       const nextPrayer = remainingTimes[0][0];
       setActivePrayer(nextPrayer);
@@ -47,7 +59,7 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
       const hoursRemaining = Math.floor(timeRemaining / 3600000);
       const minutesRemaining = Math.floor((timeRemaining % 3600000) / 60000);
       const secondsRemaining = Math.floor((timeRemaining % 60000) / 1000);
-  
+
       setHoursRemaining(
         `${hoursRemaining.toString().padStart(2, "0")}:${minutesRemaining
           .toString()
@@ -67,8 +79,8 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
   }, [prayerTimes]);
 
   useEffect(() => {
-    if(activePrayers === 'Imsak'){
-      setCurrentDay(prev => prev + 1)
+    if (activePrayers === "Imsak") {
+      setCurrentDay((prev) => prev + 1);
     }
   }, [activePrayers]);
 
@@ -76,10 +88,13 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
     const fetchPrayerTimes = async () => {
       try {
         const response = await fetch(
-          `https://api.aladhan.com/v1/timings/${currentDay}-${currentMonth}-${now.getFullYear()}?latitude=${countrySelected.latitude}&longitude=${countrySelected.longitude}&method=2`
+          `https://api.aladhan.com/v1/timings/${currentDay}-${currentMonth}-${now.getFullYear()}?latitude=${
+            countrySelected.latitude
+          }&longitude=${countrySelected.longitude}&method=2`
         );
 
         const data = await response.json();
+
         setPrayerTime(data.data.timings);
       } catch (error) {
         console.error("Error fetching prayer times:", error);

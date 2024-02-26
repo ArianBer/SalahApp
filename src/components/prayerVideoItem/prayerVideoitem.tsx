@@ -66,14 +66,11 @@ function PrayerVideoItem({
         </ViewBox>
         <TextBox
           fontSize={20}
-          marginTop="xs"
+          marginTop="10"
           fontWeight="bold"
           color={isActive ? "white" : "mainText"}
         >
           {i18n.t(title)}
-        </TextBox>
-        <TextBox fontSize={12} color={isActive ? "white" : "mainText"}>
-          {duration}
         </TextBox>
       </ViewBox>
     </TouchableOpacity>
