@@ -58,9 +58,8 @@ const OnBoardingScreen = () => {
   const ref = React.useRef<AppIntroSlider<SlideItemProps>>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const navigation = useNavigation<any>();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
-  console.log(t('ablution'))
   const _renderItem = (props: { item: SlideItemProps }) => {
     const { item } = props;
 
@@ -103,7 +102,7 @@ const OnBoardingScreen = () => {
               ref.current?.goToSlide(activeSlide + 1);
               setActiveSlide((prevSlide) => prevSlide + 1);
             }}
-            text={t('continue')}
+            text={t("continue")}
             width={180}
           />
         </ViewBox>

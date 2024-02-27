@@ -1,5 +1,4 @@
 import * as Location from "expo-location";
-import * as Permissions from "expo-permissions";
 import { DeviceMotion, Magnetometer } from "expo-sensors";
 import LPF from "lpf";
 import React, { useEffect, useState } from "react";
@@ -93,18 +92,12 @@ function Kibla() {
   const request = async () => {
     setLoading(true);
 
-    const { status } = await Location.getForegroundPermissionsAsync();
+    let { status } = await Location.requestForegroundPermissionsAsync();
 
-    if (status === "undetermined") {
-      const response = await Permissions.askAsync(
-        Permissions.LOCATION_FOREGROUND
-      );
-
-      if (!response.granted) {
-        setLoading(false);
-        setError(true);
-        return;
-      }
+    if (status !== Location.PermissionStatus.GRANTED) {
+      setLoading(false);
+      setError(true);
+      return;
     }
 
     const location = await Location.getCurrentPositionAsync({});

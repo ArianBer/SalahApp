@@ -32,6 +32,7 @@ const OtherApplicationsComponent = () => {
       <SettingsRow
         iconUrl={data.image}
         title={title}
+        titleProps={{ variant: "lg_bold" }}
         onPress={() => onPressLink(isIos ? ios : android)}
       />
     );
@@ -44,6 +45,7 @@ const OtherApplicationsComponent = () => {
       <SettingsRow
         icon={<YoutubeLogo />}
         title={title}
+        titleProps={{ variant: "lg_bold" }}
         onPress={() => onPressLink(url)}
       />
     );
@@ -53,7 +55,12 @@ const OtherApplicationsComponent = () => {
     <SettingsRowsContainer mt="25" title="Aplikacione te tjera">
       {renderApplication()}
       {renderYoutube()}
-      <SettingsRow title="Tjera..." hideBottomLine onPress={onPressMoreApps} />
+      <SettingsRow
+        title="Tjera..."
+        hideBottomLine
+        onPress={onPressMoreApps}
+        titleProps={{ variant: "lg_bold" }}
+      />
     </SettingsRowsContainer>
   );
 };

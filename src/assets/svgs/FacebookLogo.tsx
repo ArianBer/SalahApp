@@ -2,25 +2,10 @@ import * as React from "react";
 import Svg, { SvgProps, LinearGradient, Stop, Path } from "react-native-svg";
 
 const FacebookLogo = (props: SvgProps) => (
-  <Svg width={48} height={48} {...props}>
-    <LinearGradient
-      id="a"
-      x1={9.993}
-      x2={40.615}
-      y1={9.993}
-      y2={40.615}
-      gradientUnits="userSpaceOnUse"
-    >
-      <Stop offset={0} stopColor="#2aa4f4" />
-      <Stop offset={1} stopColor="#007ad9" />
-    </LinearGradient>
+  <Svg width={22} height={22} fill="none" {...props}>
     <Path
-      fill="url(#a)"
-      d="M24 4C12.954 4 4 12.954 4 24s8.954 20 20 20 20-8.954 20-20S35.046 4 24 4z"
-    />
-    <Path
-      fill="#fff"
-      d="M26.707 29.301h5.176l.813-5.258h-5.989v-2.874c0-2.184.714-4.121 2.757-4.121h3.283V12.46c-.577-.078-1.797-.248-4.102-.248-4.814 0-7.636 2.542-7.636 8.334v3.498H16.06v5.258h4.948v14.452c.98.146 1.973.246 2.992.246.921 0 1.82-.084 2.707-.204V29.301z"
+      fill="#316FF6"
+      d="M22 11.028C22 4.94 17.072 0 11 0S0 4.94 0 11.028a11.03 11.03 0 0 0 8.8 10.807v-7.5H6.6v-3.307h2.2V8.27a3.86 3.86 0 0 1 3.85-3.86h2.75v3.308h-2.2c-.605 0-1.1.497-1.1 1.103v2.206h3.3v3.308h-3.3V22c5.555-.551 9.9-5.25 9.9-10.972Z"
     />
   </Svg>
 );

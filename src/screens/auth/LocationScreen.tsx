@@ -1,16 +1,15 @@
-import React, { useState } from "react";
-import { TextBox, ViewBox } from "../../styles/theme";
-import LocationImage from "../../components/onboarding/LocationImage";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import LanguageButton, { flags } from "../../components/LanguageButton";
-import { selectCountry } from "../../redux/reducers/countryReducer";
-import { useAppDispatch } from "../../redux/hooks";
-import { Image, Modal, Pressable, StyleSheet } from "react-native";
-import * as Location from "expo-location";
-import * as Permissions from "expo-permissions";
-import countriesData from "../../data/countriesData";
-import { IconSquareRoundedX } from "tabler-icons-react-native";
 import { useNavigation } from "@react-navigation/native";
+import * as Location from "expo-location";
+import React, { useState } from "react";
+import { Image, Modal, Pressable, StyleSheet } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { IconSquareRoundedX } from "tabler-icons-react-native";
+import LanguageButton, { flags } from "../../components/LanguageButton";
+import LocationImage from "../../components/onboarding/LocationImage";
+import countriesData from "../../data/countriesData";
+import { useAppDispatch } from "../../redux/hooks";
+import { selectCountry } from "../../redux/reducers/countryReducer";
+import { TextBox, ViewBox } from "../../styles/theme";
 
 const localLanguages = [
   { name: "Kosova", iconSource: flags.xk },
@@ -49,16 +48,10 @@ const LocationScreen = () => {
   };
 
   const request = async () => {
-    const { status } = await Location.getForegroundPermissionsAsync();
+    let { status } = await Location.requestForegroundPermissionsAsync();
 
-    if (status === "undetermined") {
-      const response = await Permissions.askAsync(
-        Permissions.LOCATION_FOREGROUND
-      );
-
-      if (!response.granted) {
-        return;
-      }
+    if (status !== Location.PermissionStatus.GRANTED) {
+      return;
     }
 
     let { coords } = await Location.getCurrentPositionAsync();

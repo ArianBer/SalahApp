@@ -10,10 +10,10 @@ import { Pressable } from "react-native";
 
 const LocationScreen = () => {
   const { top, bottom } = useSafeAreaInsets();
-  const {country}  = useAppSelector((state) => state);
+  const { country } = useAppSelector((state) => state);
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
-  
+
   const handleContinuePress = () => {
     dispatch(authSlice.actions.setIsOnBoarded(true));
   };
@@ -29,14 +29,10 @@ const LocationScreen = () => {
       <ViewBox width={"100%"} alignItems={"center"}>
         <LocationImage />
       </ViewBox>
-      <TextBox
-        color="blackRussian"
-        variant="md"
-        mt="37"
-        >
+      <TextBox color="blackRussian" variant="md" mt="37">
         Lokacioni i vendosur
-        </TextBox>
-      <TextBox variant="2xlBold" mt='2' color="blackRussian">
+      </TextBox>
+      <TextBox variant="2xlBold" mt="2" color="blackRussian">
         {country.countrySelected.city}, {country.countrySelected.country}
       </TextBox>
 
@@ -47,8 +43,13 @@ const LocationScreen = () => {
         mt="140"
       />
       <Pressable onPress={() => navigation?.navigate("Location")}>
-        <TextBox variant="md" mt='20' color="blackRussian" textDecorationLine="underline">
-            Rizgjidh Lokacionin
+        <TextBox
+          variant="md"
+          mt="20"
+          color="blackRussian"
+          textDecorationLine="underline"
+        >
+          Rizgjidh Lokacionin
         </TextBox>
       </Pressable>
     </ViewBox>
@@ -56,4 +57,3 @@ const LocationScreen = () => {
 };
 
 export default LocationScreen;
-

@@ -48,6 +48,7 @@ const OtherApplicationsScreen = () => {
             onPress={() => onPressApplication(data)}
             title={title}
             hideBottomLine={index === length - 1}
+            titleProps={{ variant: "lg_bold" }}
           />
         ))}
       </SettingsRowsContainer>
@@ -71,6 +72,7 @@ const OtherApplicationsScreen = () => {
             icon={<FacebookLogo />}
             onPress={() => onPressOpenLink(url)}
             hideBottomLine={index === length - 1}
+            titleProps={{ variant: "lg_bold" }}
           />
         ))}
       </SettingsRowsContainer>
@@ -90,6 +92,7 @@ const OtherApplicationsScreen = () => {
             icon={<YoutubeLogo />}
             onPress={() => onPressOpenLink(url)}
             hideBottomLine={index === length - 1}
+            titleProps={{ variant: "lg_bold" }}
           />
         ))}
       </SettingsRowsContainer>
@@ -109,6 +112,7 @@ const OtherApplicationsScreen = () => {
             icon={<WebLogo />}
             onPress={() => onPressOpenLink(url)}
             hideBottomLine={index === length - 1}
+            titleProps={{ variant: "lg_bold" }}
           />
         ))}
       </SettingsRowsContainer>
@@ -142,7 +146,7 @@ const OtherApplicationsScreen = () => {
         </ViewBox>
         <ViewBox style={{ paddingHorizontal: 30 }} />
       </ViewBox>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 26 }}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
         {renderApplications()}
         {renderYoutubeLinks()}
         {renderFacebookLinks()}

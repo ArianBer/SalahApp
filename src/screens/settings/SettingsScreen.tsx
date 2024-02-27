@@ -1,12 +1,12 @@
 import React from "react";
 import { ScrollView, Share, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { IconArrowLeft, IconShare, IconTable } from "tabler-icons-react-native";
+import { IconShare } from "tabler-icons-react-native";
 import MILogo from "../../assets/svgs/MILogo";
 import { TextBox, ViewBox } from "../../styles/theme";
+import OtherApplicationsComponent from "../components/OtherApplicationsComponent";
 import { SettingsRow } from "../components/SettingsRow";
 import { SettingsRowsContainer } from "../components/SettingsRowsContainer";
-import OtherApplicationsComponent from "../components/OtherApplicationsComponent";
 
 function SettingsScreen({ navigation }: { navigation: any }) {
   const { top } = useSafeAreaInsets();
@@ -36,13 +36,7 @@ function SettingsScreen({ navigation }: { navigation: any }) {
       backgroundColor="twilightBlue"
     >
       <ViewBox height={50} alignItems="center" width="100%" flexDirection="row">
-        <TouchableOpacity
-          onPress={onPressBack}
-          hitSlop={{ top: 20, bottom: 10 }}
-          style={{ paddingHorizontal: 30 }}
-        >
-          <IconArrowLeft size={28} />
-        </TouchableOpacity>
+        <ViewBox width={88} />
         <ViewBox flex={1} justifyContent="center" alignItems="center">
           <TextBox variant="2xl" color="mainText">
             Preferencat
@@ -56,7 +50,7 @@ function SettingsScreen({ navigation }: { navigation: any }) {
           <IconShare size={28} />
         </TouchableOpacity>
       </ViewBox>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 26 }}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
         <SettingsRowsContainer title="Preferencat" mt="25">
           <SettingsRow
             onPress={onPressLanguage}
@@ -70,13 +64,13 @@ function SettingsScreen({ navigation }: { navigation: any }) {
             title="Zgjedh Lokacionin"
             subTitle="Prishtine, Kosove"
           />
-          <SettingsRow
+          {/* <SettingsRow
             onPress={onPressNotifications}
             icon={<MILogo />}
             title="Notifikacionet"
             subTitle="ndrysho"
             hideBottomLine
-          />
+          /> */}
         </SettingsRowsContainer>
         <OtherApplicationsComponent />
       </ScrollView>
