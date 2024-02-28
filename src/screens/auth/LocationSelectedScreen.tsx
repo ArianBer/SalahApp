@@ -11,10 +11,10 @@ import i18n from "../../services/translation";
 
 const LocationScreen = () => {
   const { top, bottom } = useSafeAreaInsets();
-  const {country}  = useAppSelector((state) => state);
+  const { country } = useAppSelector((state) => state);
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
-  
+
   const handleContinuePress = () => {
     dispatch(authSlice.actions.setIsOnBoarded(true));
   };
@@ -57,4 +57,3 @@ const LocationScreen = () => {
 };
 
 export default LocationScreen;
-

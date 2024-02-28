@@ -9,12 +9,12 @@ import i18n from "../../services/translation";
 
 type PrayerVideoItemProps = {
   title: string;
-  duration: string;
   onPress: () => void;
   activePrayer: CurrentPrayerType;
 };
 
 const mapPrayerNames: Record<CurrentPrayerType, string> = {
+  imsak: "",
   sunrise: Prayers.fajr,
   dhuhr: Prayers.dhuhr,
   asr: Prayers.asr,
@@ -24,7 +24,6 @@ const mapPrayerNames: Record<CurrentPrayerType, string> = {
 
 function PrayerVideoItem({
   title,
-  duration,
   onPress,
   activePrayer,
 }: PrayerVideoItemProps) {
@@ -35,7 +34,7 @@ function PrayerVideoItem({
     <TouchableOpacity onPress={onPress} style={{ width: "32%" }}>
       <ViewBox
         flexDirection="column"
-        height={135}
+        height={130}
         borderWidth={1}
         borderColor="dargGreenWithOpacity"
         marginBottom="sm"
@@ -66,7 +65,7 @@ function PrayerVideoItem({
         </ViewBox>
         <TextBox
           fontSize={20}
-          marginTop="10"
+          marginTop="16"
           fontWeight="bold"
           color={isActive ? "white" : "mainText"}
         >

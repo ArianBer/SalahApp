@@ -1,16 +1,15 @@
-import React, { useState } from "react";
-import { TextBox, ViewBox } from "../../styles/theme";
-import LocationImage from "../../components/onboarding/LocationImage";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import LanguageButton, { flags } from "../../components/LanguageButton";
-import { selectCountry } from "../../redux/reducers/countryReducer";
-import { useAppDispatch } from "../../redux/hooks";
-import { Image, Modal, Pressable, StyleSheet } from "react-native";
-import * as Location from "expo-location";
-import * as Permissions from "expo-permissions";
-import countriesData from "../../data/countriesData";
-import { IconSquareRoundedX } from "tabler-icons-react-native";
 import { useNavigation } from "@react-navigation/native";
+import * as Location from "expo-location";
+import React, { useState } from "react";
+import { Image, Modal, Pressable, StyleSheet } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { IconSquareRoundedX } from "tabler-icons-react-native";
+import LanguageButton, { flags } from "../../components/LanguageButton";
+import LocationImage from "../../components/onboarding/LocationImage";
+import countriesData from "../../data/countriesData";
+import { useAppDispatch } from "../../redux/hooks";
+import { selectCountry } from "../../redux/reducers/countryReducer";
+import { TextBox, ViewBox } from "../../styles/theme";
 import i18n from "../../services/translation";
 
 const localLanguages = [
@@ -50,16 +49,10 @@ const LocationScreen = () => {
   };
 
   const request = async () => {
-    const { status } = await Location.getForegroundPermissionsAsync();
+    let { status } = await Location.requestForegroundPermissionsAsync();
 
-    if (status === "undetermined") {
-      const response = await Permissions.askAsync(
-        Permissions.LOCATION_FOREGROUND
-      );
-
-      if (!response.granted) {
-        return;
-      }
+    if (status !== Location.PermissionStatus.GRANTED) {
+      return;
     }
 
     let { coords } = await Location.getCurrentPositionAsync({
@@ -73,7 +66,6 @@ const LocationScreen = () => {
         longitude,
       });
 
-
       for (let item of response) {
         const address = {
           country: item.country ?? "",
@@ -83,9 +75,8 @@ const LocationScreen = () => {
           latitude: latitude?.toString(),
         };
 
-
-        dispatch(selectCountry.actions.changeCountry(address))
-        navigation?.navigate("LocationSelected")
+        dispatch(selectCountry.actions.changeCountry(address));
+        navigation?.navigate("LocationSelected");
       }
     }
   };
@@ -116,7 +107,7 @@ const LocationScreen = () => {
         <LocationImage />
       </ViewBox>
       <TextBox variant="2xlBold" mt="37" color="blackRussian">
-        {i18n.t('select-location')}
+        {i18n.t("select-location")}
       </TextBox>
       <ViewBox width="100%" paddingHorizontal="37" mt="20">
         {renderLoactions()}
@@ -130,11 +121,8 @@ const LocationScreen = () => {
               borderRadius="14"
               backgroundColor={"lightGreen"}
             >
-              <TextBox
-                color="blackRussian"
-                variant="lg_medium"
-              >
-              {i18n.t('find-location')}
+              <TextBox color="blackRussian" variant="lg_medium">
+                {i18n.t("find-location")}
               </TextBox>
             </ViewBox>
           </Pressable>

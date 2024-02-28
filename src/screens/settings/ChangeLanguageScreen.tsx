@@ -1,26 +1,31 @@
-import React from "react";
-import { TextBox, ViewBox } from "../../styles/theme";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { TouchableOpacity } from "react-native";
-import { IconArrowLeft } from "tabler-icons-react-native";
 import { useNavigation } from "@react-navigation/native";
-import { languages } from "../../services/translation/languges";
+import React from "react";
+import { TouchableOpacity } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { IconArrowLeft } from "tabler-icons-react-native";
 import LanguageButton from "../../components/LanguageButton";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { setLanguage } from "../../redux/reducers/authReducer";
-import i18n from "../../services/translation";
 import { languageSlice } from "../../redux/reducers/languageReducer";
+import i18n from "../../services/translation";
+import { languages } from "../../services/translation/languges";
+import { TextBox, ViewBox } from "../../styles/theme";
 
 const ChangeLanguageScreen = () => {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const {language}  = useAppSelector((state) => state);
+  const { language } = useAppSelector((state) => state);
 
   const onChangeLanguage = (lng: string) => {
-    dispatch(setLanguage(lng));
-    dispatch(languageSlice.actions.changeLanguage(lng));
     i18n.locale = lng;
+    dispatch(setLanguage(lng));
+
+    const newLanguageObj = languages.find(
+      (x) => x.value === lng
+    ) as (typeof languages)[0];
+
+    dispatch(languageSlice.actions.changeLanguage(newLanguageObj));
   };
 
   const renderLanguages = () => {
@@ -30,7 +35,7 @@ const ChangeLanguageScreen = () => {
       return (
         <LanguageButton
           key={lng.value}
-          onPress={() => onChangeLanguage(lng)}
+          onPress={() => onChangeLanguage(lng.value)}
           isSelected={isSelected}
           language={lng.name}
           mt="8"

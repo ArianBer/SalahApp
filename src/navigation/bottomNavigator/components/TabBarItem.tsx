@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useMemo, useState } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import {
   IconCalendarMinus,
@@ -58,6 +58,11 @@ export function TabBarItem({
   name,
   onPress,
 }: TabBarItemProps) {
+  const [text, setText] = useState(getText({ name }));
+  i18n.onChange(() => {
+    setText(getText({ name }));
+  });
+
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -73,8 +78,8 @@ export function TabBarItem({
       >
         {getIcon({ name })}
       </ViewBox>
-      <TextBox mt="2" variant="sm-medium">
-        {getText({ name })}
+      <TextBox mt="2" variant="sm-medium" textAlign="center">
+        {text}
       </TextBox>
     </TouchableOpacity>
   );

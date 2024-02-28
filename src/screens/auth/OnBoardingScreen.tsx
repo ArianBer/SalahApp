@@ -26,6 +26,7 @@ const OnBoardingScreen = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   const navigation = useNavigation<any>();
 
+
   const slides: SlideItemProps[] = [
     {
       key: 1,

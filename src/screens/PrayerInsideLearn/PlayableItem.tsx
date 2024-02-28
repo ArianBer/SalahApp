@@ -1,37 +1,103 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { IconPlayerPlay } from "tabler-icons-react-native";
-import { TextBox, ViewBox } from "../../styles/theme";
+import { IconPlayerPause, IconPlayerPlay } from "tabler-icons-react-native";
+import { AnimatedBox, TextBox, ViewBox } from "../../styles/theme";
+import { Audio } from "expo-av";
+import { FadeIn } from "react-native-reanimated";
 
 interface Props {
   title: string;
-  sound: string;
+  sound: Audio.Sound;
   transliteration: string;
   translation?: string;
+  onPressPlay: () => void;
+  isAnotherSoundPlaying: boolean;
 }
+
+const formatTime = (milliseconds: number): string => {
+  const totalSeconds = Math.floor(milliseconds / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+};
 
 export function PlayableItem({
   sound,
   translation,
   title,
   transliteration,
+  isAnotherSoundPlaying,
+  onPressPlay,
 }: Props) {
-  const isPlaying = false;
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [soundDuration, setSoundDuration] = useState<number | null>(null);
+  const [playbackPosition, setPlaybackPosition] = useState<number | null>(null);
+
+  useEffect(() => {
+    calculateSoundDuration();
+    listenForStatusUpdate();
+  }, [sound]);
+
+  const listenForStatusUpdate = () => {
+    sound?.setOnPlaybackStatusUpdate((status) => {
+      if (status?.["didJustFinish"]) {
+        setIsPlaying(false);
+      }
+      setPlaybackPosition(status["positionMillis"]);
+    });
+  };
+
+  const calculateSoundDuration = async () => {
+    const status = await sound?.getStatusAsync();
+    setSoundDuration(status["durationMillis"]);
+  };
+
+  useEffect(() => {
+    if (isAnotherSoundPlaying) {
+      pauseSound();
+    }
+  }, [isAnotherSoundPlaying]);
+
+  const playSound = async () => {
+    if (sound) {
+      try {
+        onPressPlay();
+
+        await sound?.replayAsync();
+        setIsPlaying(true);
+      } catch (error) {
+        console.log("Failed to play sound", error);
+      }
+    }
+  };
+
+  const pauseSound = async () => {
+    if (sound) {
+      try {
+        await sound.stopAsync();
+        setIsPlaying(false);
+      } catch (error) {
+        console.log("Failed to stop sound", error);
+      }
+    }
+  };
 
   return (
-    <ViewBox
-      py="37"
-      pl="37"
-      pr="27"
+    <AnimatedBox
+      entering={FadeIn.duration(200)}
+      py="20"
+      pl="20"
+      pr="20"
       width="100%"
       borderBottomWidth={1}
-      borderBottomColor="silver"
+      borderBottomColor={isPlaying ? "white" : "silver"}
+      bg={isPlaying ? "white" : undefined}
     >
       <TextBox color="mainText" variant="md-bold">
         {title}
       </TextBox>
       <ViewBox mt="xxxl" width="100%" flexDirection="row" alignItems="center">
-        <TouchableOpacity>
+        <TouchableOpacity onPress={isPlaying ? pauseSound : playSound}>
           <ViewBox
             height={46}
             width={46}
@@ -40,14 +106,20 @@ export function PlayableItem({
             justifyContent="center"
             alignItems="center"
           >
-            <IconPlayerPlay fill="black" radius={20} />
+            {isPlaying ? (
+              <IconPlayerPause fill="black" radius={20} />
+            ) : (
+              <IconPlayerPlay fill="black" radius={20} />
+            )}
           </ViewBox>
         </TouchableOpacity>
 
-        <TextBox ml="xxl" variant="lg" color="mainText">
-          2:02/4:32
+        <TextBox ml="16" variant="lg" color="mainText">
+          {soundDuration !== null && formatTime(playbackPosition || 0) + " / "}
+          {soundDuration !== null && formatTime(soundDuration)}
         </TextBox>
 
+        {/*  //TODO: implement slider later
         <ViewBox flex={1} ml="xl" flexDirection="row" alignItems="center">
           <ViewBox
             position="absolute"
@@ -64,7 +136,7 @@ export function PlayableItem({
             borderRadius="20"
             backgroundColor="grey"
           />
-        </ViewBox>
+        </ViewBox> */}
       </ViewBox>
       <TextBox mt="27" variant="md-medium" color="blackRussian">
         {transliteration}
@@ -75,6 +147,6 @@ export function PlayableItem({
         </TextBox>
         {translation}
       </TextBox>
-    </ViewBox>
+    </AnimatedBox>
   );
 }

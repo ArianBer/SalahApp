@@ -1,6 +1,8 @@
 import { createBox, createText, createTheme } from "@shopify/restyle";
 import { Colors } from "./Color";
 import { Fonts } from "./Fonts";
+import Animated from "react-native-reanimated";
+
 
 export const lightTheme = createTheme({
   colors: {
@@ -146,3 +148,4 @@ export const darkTheme = createTheme<ThemeType>({
 
 export const ViewBox = createBox<ThemeType>();
 export const TextBox = createText<ThemeType>();
+export const AnimatedBox = Animated.createAnimatedComponent(ViewBox);

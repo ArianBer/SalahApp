@@ -1,12 +1,14 @@
 import React, { ReactNode } from "react";
-import { TextBox, ViewBox } from "../../styles/theme";
+import { TextBox, ThemeType, ViewBox } from "../../styles/theme";
 import { Image, TouchableOpacity } from "react-native";
 import { IconChevronRight } from "tabler-icons-react-native";
 import { Colors } from "../../styles/Color";
+import { TextProps } from "@shopify/restyle";
 
 interface SettingsRowProps {
   onPress?: () => void;
   title: string;
+  titleProps?: TextProps<ThemeType>;
   subTitle?: string;
   hideBottomLine?: boolean;
   icon?: ReactNode;
@@ -20,32 +22,40 @@ export const SettingsRow = ({
   subTitle,
   icon,
   iconUrl,
+  titleProps,
 }: SettingsRowProps) => {
   const hasLogo = Boolean(iconUrl || icon);
 
   const renderIcon = () => {
-    if (iconUrl) {
-      return (
-        <Image
-          source={{ uri: iconUrl }}
-          style={{ height: "100%", width: "100%" }}
-        />
-      );
-    }
+    if (!hasLogo) return null;
 
-    if (icon) {
-      return icon;
-    }
-
-    return null;
+    return (
+      <ViewBox
+        p="6"
+        bg="twilightBlue"
+        borderRadius="12"
+        height={40}
+        width={40}
+        justifyContent="center"
+        alignItems="center"
+      >
+        {iconUrl ? (
+          <Image
+            source={{ uri: iconUrl }}
+            style={{ height: "100%", width: "100%" }}
+          />
+        ) : (
+          icon
+        )}
+      </ViewBox>
+    );
   };
 
   return (
     <TouchableOpacity onPress={onPress}>
       <ViewBox
         width="100%"
-        py="20"
-        px="25"
+        p="20"
         borderBottomWidth={hideBottomLine ? 0 : 1}
         borderColor="lightGrey"
         flexDirection="row"
@@ -65,7 +75,7 @@ export const SettingsRow = ({
           </ViewBox>
         )}
         <ViewBox flex={1}>
-          <TextBox variant="xlBold" color="black">
+          <TextBox variant="lg_bold" color="black" {...titleProps}>
             {title}
           </TextBox>
           {subTitle ? (
