@@ -1,28 +1,36 @@
-import React from "react";
-import { TextBox, ViewBox } from "../../styles/theme";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { TouchableOpacity } from "react-native";
-import { IconArrowLeft } from "tabler-icons-react-native";
 import { useNavigation } from "@react-navigation/native";
-import { languages } from "../../services/translation/languges";
-import { useTranslation } from "react-i18next";
+import React from "react";
+import { TouchableOpacity } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { IconArrowLeft } from "tabler-icons-react-native";
 import LanguageButton from "../../components/LanguageButton";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { setLanguage } from "../../redux/reducers/authReducer";
+import { languageSlice } from "../../redux/reducers/languageReducer";
+import i18n from "../../services/translation";
+import { languages } from "../../services/translation/languges";
+import { TextBox, ViewBox } from "../../styles/theme";
 
 const ChangeLanguageScreen = () => {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const selectedLanguage = useAppSelector((state) => state.auth.language);
+  const { language } = useAppSelector((state) => state);
 
   const onChangeLanguage = (lng: string) => {
+    i18n.locale = lng;
     dispatch(setLanguage(lng));
+
+    const newLanguageObj = languages.find(
+      (x) => x.value === lng
+    ) as (typeof languages)[0];
+
+    dispatch(languageSlice.actions.changeLanguage(newLanguageObj));
   };
 
   const renderLanguages = () => {
     return languages.map((lng) => {
-      const isSelected = selectedLanguage === lng.value;
+      const isSelected = language.languageSelected.value === lng.value;
 
       return (
         <LanguageButton
@@ -52,7 +60,7 @@ const ChangeLanguageScreen = () => {
         </TouchableOpacity>
         <ViewBox flex={1} justifyContent="center" alignItems="center">
           <TextBox variant="2xl" color="mainText">
-            Ndrysho gjuhen
+            {i18n.t("edit-language")}
           </TextBox>
         </ViewBox>
         <ViewBox style={{ marginHorizontal: 30, width: 28 }}></ViewBox>

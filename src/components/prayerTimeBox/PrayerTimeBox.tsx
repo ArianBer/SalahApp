@@ -1,8 +1,9 @@
 /* eslint-disable react/function-component-definition */
 import React from "react";
-import { IconBell, IconNotification } from "tabler-icons-react-native";
+import { IconBell } from "tabler-icons-react-native";
 import { retrunIconPrayerTimes } from "../../services/returnIconsFromPrayerTime";
 import { ViewBox, TextBox } from "../../styles/theme";
+import i18n from "../../services/translation";
 
 interface Props {
   prayerName: string;
@@ -32,7 +33,7 @@ const PrayerTimeBox: React.FC<Props> = ({
         <ViewBox flexDirection="row" alignItems="center">
           {retrunIconPrayerTimes(iconPrayer, 30, "#56791D")}
           <TextBox fontWeight="700" fontSize={18} marginLeft="lg">
-            {prayerName}
+            {i18n.t(prayerName)}
           </TextBox>
         </ViewBox>
         <ViewBox flexDirection="row" alignItems="center">

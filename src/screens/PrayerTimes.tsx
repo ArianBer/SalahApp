@@ -6,6 +6,7 @@ import { usePrayerTimes } from "../hooks/usePrayerTimes";
 import prayerData from "../data/times.json";
 import PrayerTimeBox from "../components/prayerTimeBox/PrayerTimeBox";
 import { DaysList } from "../components/daysList/DaysList";
+import i18n from ".././services/translation";
 
 function PrayerTimeBoxes({ prayerTimes }: any) {
   return (
@@ -38,7 +39,7 @@ function PrayerTimes() {
         marginHorizontal="xxxxxl"
         marginBottom="xl"
       >
-        Takvimi
+        {i18n.t('prayer-calendar')}
       </TextBox>
       <PrayerBox isAbsolute={false} icon={null} customIcon />
       <ViewBox height="auto">

@@ -1,8 +1,8 @@
 export const Prayers = {
-  abdesi: "Abdesi",
-  sabahu: "Sabahu",
-  dreka: "Dreka",
-  ikindia: "Ikindia",
-  akshami: "Akshami",
-  jacia: "Jacia",
+  ablution: "ablution",
+  fajr: "fajr",
+  dhuhr: "dhuhr",
+  asr: "asr",
+  maghrib: "maghrib",
+  isha: "isha",
 };

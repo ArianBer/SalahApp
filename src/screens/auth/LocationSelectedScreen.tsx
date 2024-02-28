@@ -7,6 +7,7 @@ import Button from "../../components/Button";
 import { authSlice } from "../../redux/reducers/authReducer";
 import { useNavigation } from "@react-navigation/native";
 import { Pressable } from "react-native";
+import i18n from "../../services/translation";
 
 const LocationScreen = () => {
   const { top, bottom } = useSafeAreaInsets();
@@ -29,27 +30,26 @@ const LocationScreen = () => {
       <ViewBox width={"100%"} alignItems={"center"}>
         <LocationImage />
       </ViewBox>
-      <TextBox color="blackRussian" variant="md" mt="37">
-        Lokacioni i vendosur
-      </TextBox>
-      <TextBox variant="2xlBold" mt="2" color="blackRussian">
+      <TextBox
+        color="blackRussian"
+        variant="md"
+        mt="37"
+        >
+        {i18n.t('location-set')}
+        </TextBox>
+      <TextBox variant="2xlBold" mt='2' color="blackRussian">
         {country.countrySelected.city}, {country.countrySelected.country}
       </TextBox>
 
       <Button
         onPress={handleContinuePress}
-        text="Vazhdo"
+        text={i18n.t('continue')}
         width={190}
         mt="140"
       />
       <Pressable onPress={() => navigation?.navigate("Location")}>
-        <TextBox
-          variant="md"
-          mt="20"
-          color="blackRussian"
-          textDecorationLine="underline"
-        >
-          Rizgjidh Lokacionin
+        <TextBox variant="md" mt='20' color="blackRussian" textDecorationLine="underline">
+          {i18n.t('reselect-the-location')}
         </TextBox>
       </Pressable>
     </ViewBox>

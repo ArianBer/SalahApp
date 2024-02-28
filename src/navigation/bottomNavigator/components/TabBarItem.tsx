@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useMemo, useState } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import {
   IconCalendarMinus,
@@ -7,6 +7,7 @@ import {
   IconSettings,
 } from "tabler-icons-react-native";
 import { TextBox, ViewBox } from "../../../styles/theme";
+import i18n from "../../../services/translation";
 
 export type BottomTabKeys =
   | "HomeTab"
@@ -42,10 +43,10 @@ const getIcon = ({ name }: { name: BottomTabKeys }) => {
 
 const getText = ({ name }: { name: BottomTabKeys }) => {
   const texts: Record<BottomTabKeys, string> = {
-    HomeTab: "Ballina",
-    Kibla: "Kibla",
-    PrayerTimesTab: "Takvimi",
-    SettingsTab: "Preferencat",
+    HomeTab: i18n.t("home"),
+    Kibla: i18n.t("qibla"),
+    PrayerTimesTab: i18n.t("prayer-calendar"),
+    SettingsTab: i18n.t("preferences"),
   };
 
   return texts[name];
@@ -57,6 +58,11 @@ export function TabBarItem({
   name,
   onPress,
 }: TabBarItemProps) {
+  const [text, setText] = useState(getText({ name }));
+  i18n.onChange(() => {
+    setText(getText({ name }));
+  });
+
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -72,8 +78,8 @@ export function TabBarItem({
       >
         {getIcon({ name })}
       </ViewBox>
-      <TextBox mt="2" variant="sm-medium">
-        {getText({ name })}
+      <TextBox mt="2" variant="sm-medium" textAlign="center">
+        {text}
       </TextBox>
     </TouchableOpacity>
   );

@@ -3,6 +3,8 @@ import { ScrollView, Share, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconShare } from "tabler-icons-react-native";
 import MILogo from "../../assets/svgs/MILogo";
+import { useAppSelector } from "../../redux/hooks";
+import i18n from "../../services/translation";
 import { TextBox, ViewBox } from "../../styles/theme";
 import OtherApplicationsComponent from "../components/OtherApplicationsComponent";
 import { SettingsRow } from "../components/SettingsRow";
@@ -10,8 +12,7 @@ import { SettingsRowsContainer } from "../components/SettingsRowsContainer";
 
 function SettingsScreen({ navigation }: { navigation: any }) {
   const { top } = useSafeAreaInsets();
-
-  const onPressBack = () => navigation?.goBack();
+  const {country}  = useAppSelector((state) => state);
 
   const onPressShare = () => {
     Share.share(
@@ -39,7 +40,7 @@ function SettingsScreen({ navigation }: { navigation: any }) {
         <ViewBox width={88} />
         <ViewBox flex={1} justifyContent="center" alignItems="center">
           <TextBox variant="2xl" color="mainText">
-            Preferencat
+            {i18n.t("preferences")}
           </TextBox>
         </ViewBox>
         <TouchableOpacity
@@ -50,25 +51,25 @@ function SettingsScreen({ navigation }: { navigation: any }) {
           <IconShare size={28} />
         </TouchableOpacity>
       </ViewBox>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
-        <SettingsRowsContainer title="Preferencat" mt="25">
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 26 }}>
+        <SettingsRowsContainer title={i18n.t("preferences")} mt="25">
           <SettingsRow
             onPress={onPressLanguage}
             icon={<MILogo />}
-            title="Gjuha"
-            subTitle="Zgjedh gjuhen"
+            title={i18n.t("language")}
+            subTitle={i18n.t("choose-language")}
           />
           <SettingsRow
             onPress={onPressLocation}
             icon={<MILogo />}
-            title="Zgjedh Lokacionin"
-            subTitle="Prishtine, Kosove"
+            title={i18n.t("select-location")}
+            subTitle={country.countrySelected.city + ', ' + country.countrySelected.country}
           />
           {/* <SettingsRow
             onPress={onPressNotifications}
             icon={<MILogo />}
-            title="Notifikacionet"
-            subTitle="ndrysho"
+            title={i18n.t("notifications")}
+            subTitle={i18n.t("edit")}
             hideBottomLine
           /> */}
         </SettingsRowsContainer>

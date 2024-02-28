@@ -22,7 +22,7 @@ type PrayerTime = {
 
 export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   const [activePrayer, setActivePrayer] = useState<CurrentPrayerType>("dhuhr");
-  const [prevPrayer, setPrevPrayer] = useState<CurrentPrayerType>("dhuhr");
+  const [currentPrayer, setCurrentPrayer] = useState<CurrentPrayerType>("dhuhr");
   const [hoursRemaining, setHoursRemaining] = useState("");
   const [secondsRemaining, setSecondsRemaining] = useState("");
   const [now, setNow] = useState(new Date());
@@ -31,17 +31,39 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   const dispatch = useAppDispatch();
   const country = useAppSelector((state) => state.country);
   const notificationScheduled: Record<string, boolean> = {};
-  const localLanguages = ["Kosova", "Shqiperi", "Maqedoni"];
+  const localLanguages = ['Kosova', 'Shqiperi', 'Maqedoni'];
+  const prayers = ["imsak", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 
   if (!localLanguages.includes(country.countrySelected.country)) {
-    const { activePrayers, secondsRemaining, hoursRemaining } =
-      useOnlinePrayerTimes(country.countrySelected);
+    const {activePrayers, secondsRemaining, hoursRemaining} = useOnlinePrayerTimes(country.countrySelected);
+    
+    const today = new Date();
+    const [selectedDate, setSelectedDate] = useState(today);
+    const date = new Date(String(selectedDate));
+    const month = String(date.getMonth() + 1);
+    const day = String(date.getDate());
+
+    const getPrayerTimesForToday = async (
+      month: string,
+      day: string) => {
+        try {
+          const response = await fetch(
+            `https://api.aladhan.com/v1/timings/${day}-${month}-${now.getFullYear()}?latitude=${country.countrySelected.latitude}&longitude=${country.countrySelected.longitude}&method=2`
+          );
+  
+        } catch (error) {
+          console.error("Error fetching prayer times:", error);
+        }
+    };
+
+    getPrayerTimesForToday(day, month);
+
 
     return {
       getPrayerTimesForToday: () => ({}),
       remainingTimeUntilNextPrayer: () => {},
       filterPrayerTimes: () => {},
-      filterPrayerTimesPerDayMonth: (day: any, month: any) => ({}),
+      filterPrayerTimesPerDayMonth: getPrayerTimesForToday,
       activePrayer: activePrayers,
       secondsRemaining: secondsRemaining,
       hoursRemaining: hoursRemaining,
@@ -86,13 +108,13 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   }, [activePrayer]);
 
   useEffect(() => {
-    dispatch(homeSlice.actions.setActivePrayer(activePrayer));
+    dispatch(homeSlice.actions.setActivePrayer(currentPrayer));
   }, [activePrayer]);
 
   const extractPrayerTimes = (prayerTime: PrayerTime): Record<string, Date> =>
     Object.keys(prayerTime)
       .filter((key) =>
-        ["imsak", "sunrise", "dhuhr", "asr", "maghrib", "isha"].includes(key)
+        prayers.includes(key)
       )
       .reduce((obj: Record<string, Date>, key: string) => {
         const [hours, minutes, seconds] = prayerTime[key].split(":");
@@ -111,12 +133,14 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
     prayerTimesForToday: Record<string, Date>
   ): void => {
     const now1 = new Date();
-
     const remainingTimes = Object.entries(prayerTimesForToday)
       .filter(([key, value]) => value.getTime() > now1.getTime())
       .sort((a, b) => a[1].getTime() - b[1].getTime());
 
     if (remainingTimes.length) {
+      let index = prayers.indexOf(remainingTimes[0][0]);
+
+      setCurrentPrayer(prayers[index - 1])
       setActivePrayer(remainingTimes[0][0]);
       const timeRemaining = remainingTimes[0][1].getTime() - now1.getTime();
       const hoursRemaining = Math.floor(timeRemaining / 3600000);
@@ -199,5 +223,6 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
     activePrayer,
     secondsRemaining,
     hoursRemaining,
+    currentPrayer,
   };
 };

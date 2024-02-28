@@ -1,20 +1,23 @@
 import React from "react";
-import { Linking, Platform } from "react-native";
-import MILogo from "../../assets/svgs/MILogo";
+import { Linking } from "react-native";
 import YoutubeLogo from "../../assets/svgs/YoutubeLogo";
-import { LanguageType } from "../../services/translation/languges";
 import { settingsData } from "../settings/settings-data";
 import { SettingsRow } from "./SettingsRow";
 import { SettingsRowsContainer } from "./SettingsRowsContainer";
 import { useNavigation } from "@react-navigation/native";
 import { isIos } from "../../utilts/isIos";
 import { useAppSelector } from "../../redux/hooks";
+import i18n from "../../services/translation";
 
 const OtherApplicationsComponent = () => {
   const navigation = useNavigation<any>();
-  const language = useAppSelector((state) => state.auth.language);
-  const applications = Object.entries(settingsData[language].applications);
-  const youtubeLinks = Object.entries(settingsData[language].youtube);
+  const { language } = useAppSelector((state) => state);
+  const applications = Object.entries(
+    settingsData[language?.languageSelected.value]?.applications
+  );
+  const youtubeLinks = Object.entries(
+    settingsData[language?.languageSelected.value]?.youtube
+  );
 
   const onPressLink = (url: string) => Linking.openURL(url);
 
@@ -52,14 +55,13 @@ const OtherApplicationsComponent = () => {
   };
 
   return (
-    <SettingsRowsContainer mt="25" title="Aplikacione te tjera">
+    <SettingsRowsContainer mt="25" title={i18n.t("other-applications")}>
       {renderApplication()}
       {renderYoutube()}
       <SettingsRow
-        title="Tjera..."
+        title={i18n.t("others") + ".."}
         hideBottomLine
         onPress={onPressMoreApps}
-        titleProps={{ variant: "lg_bold" }}
       />
     </SettingsRowsContainer>
   );

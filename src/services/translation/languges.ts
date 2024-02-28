@@ -18,12 +18,12 @@ export const languages: { name: string; value: LanguageType }[] = [
     name: "Turkish",
     value: "tr",
   },
-  {
-    name: "German",
-    value: "de",
-  },
-  {
-    name: "Macedonian",
-    value: "mk",
-  },
+  // {
+  //   name: "German",
+  //   value: "de",
+  // },
+  // {
+  //   name: "Macedonian",
+  //   value: "mk",
+  // },
 ];

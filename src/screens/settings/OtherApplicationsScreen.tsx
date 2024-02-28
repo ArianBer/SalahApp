@@ -1,10 +1,9 @@
 import React from "react";
 import { TextBox, ViewBox } from "../../styles/theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Linking, Platform, ScrollView, TouchableOpacity } from "react-native";
+import { Linking, ScrollView, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { IconArrowLeft, IconShare } from "tabler-icons-react-native";
-import { LanguageType } from "../../services/translation/languges";
+import { IconArrowLeft } from "tabler-icons-react-native";
 import { ApplicationDataType, settingsData } from "./settings-data";
 import { SettingsRowsContainer } from "../components/SettingsRowsContainer";
 import { SettingsRow } from "../components/SettingsRow";
@@ -13,13 +12,14 @@ import YoutubeLogo from "../../assets/svgs/YoutubeLogo";
 import WebLogo from "../../assets/svgs/WebLogo";
 import { isIos } from "../../utilts/isIos";
 import { useAppSelector } from "../../redux/hooks";
+import i18n from "../../services/translation";
 
 const OtherApplicationsScreen = () => {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation();
-  const language = useAppSelector((state) => state.auth.language);
+  const {language} = useAppSelector((state) => state);
 
-  const { applications, facebook, web, youtube } = settingsData[language];
+  const { applications, facebook, web, youtube } = settingsData[language.languageSelected.value];
 
   const onPressBack = () => navigation.goBack();
 
@@ -40,7 +40,7 @@ const OtherApplicationsScreen = () => {
     }
 
     return (
-      <SettingsRowsContainer mb="20" title="Aplikactionet">
+      <SettingsRowsContainer mb="20" title={i18n.t("applications")}>
         {applicationsArray.map(([title, data], index) => (
           <SettingsRow
             key={index}
@@ -141,7 +141,7 @@ const OtherApplicationsScreen = () => {
         </TouchableOpacity>
         <ViewBox flex={1} justifyContent="center" alignItems="center">
           <TextBox variant="2xl" color="mainText">
-            Aplikacionet
+            {i18n.t("applications")}
           </TextBox>
         </ViewBox>
         <ViewBox style={{ paddingHorizontal: 30 }} />

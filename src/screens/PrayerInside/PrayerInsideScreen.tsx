@@ -9,27 +9,27 @@ import WuduVideo from "./components/WuduVideo";
 import { PrayerKey } from "./videos";
 
 const prayerText = {
-  [Prayers.abdesi]: {
+  [Prayers.ablution]: {
     description: "",
     title: "Abdesi",
   },
-  [Prayers.sabahu]: {
+  [Prayers.fajr]: {
     title: "Namazi i sabahut",
     description: "2 rekate",
   },
-  [Prayers.dreka]: {
+  [Prayers.dhuhr]: {
     title: "Namazi i drekes",
     description: "4 rekate",
   },
-  [Prayers.ikindia]: {
+  [Prayers.asr]: {
     title: "Namazi i ikindise",
     description: "4 rekate",
   },
-  [Prayers.akshami]: {
+  [Prayers.maghrib]: {
     title: "Namazi i akshamit",
     description: "3 rekate",
   },
-  [Prayers.jacia]: {
+  [Prayers.isha]: {
     title: "Namazi i jacise",
     description: "4 rekate",
   },
@@ -49,7 +49,6 @@ export function PrayerInsideScreen({
     navigation?.navigate("PrayerInsideLearn");
   };
 
-  console.log({ prayer });
 
   if (!prayer) {
     return <></>;
@@ -77,7 +76,7 @@ export function PrayerInsideScreen({
           </TextBox>
         </ViewBox>
 
-        {prayer !== Prayers.abdesi && (
+        {prayer !== Prayers.ablution && (
           <TouchableOpacity onPress={onPressLearn}>
             <ViewBox
               height={44}

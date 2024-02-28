@@ -1,36 +1,7 @@
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import albania from "./languages/al.json";
-import arabic from "./languages/ar.json";
-import english from "./languages/en.json";
-import { PartialRecord } from "../../types";
-import { LanguageType } from "./languges";
+import { en, al, tr } from "./languages";
+import { I18n } from "i18n-js";
 
-const resources: PartialRecord<LanguageType, any> = {
-  en: {
-    english,
-  },
-  al: {
-    albania,
-  },
-  de: {
-    english,
-  },
-  mk: {
-    english,
-  },
-  tr: {
-    english,
-  },
-};
+const i18n = new I18n({ en, al, tr });
 
-i18n.use(initReactI18next).init({
-  lng: "al",
-  resources,
-  fallbackLng: "al",
-  interpolation: {
-    escapeValue: false,
-  },
-});
-
-export { i18n };
+i18n.enableFallback = true;
+export default i18n;

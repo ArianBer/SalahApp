@@ -1,7 +1,5 @@
 /* eslint-disable no-shadow */
 import { useEffect, useState } from "react";
-import { setIsOnBoarded } from "../redux/reducers/authReducer";
-import { useDispatch } from "react-redux";
 
 export const useOnlinePrayerTimes = (countrySelected: any) => {
   const [activePrayers, setActivePrayer] = useState<any>("dhuhr");

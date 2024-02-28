@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { TextBox, ViewBox } from "../../styles/theme";
-import LanguageButton from "../../components/LanguageButton";
-import Button from "../../components/Button";
-import { IconArrowRight } from "tabler-icons-react-native";
 import { useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
+import { IconArrowRight } from "tabler-icons-react-native";
+import Button from "../../components/Button";
+import LanguageButton from "../../components/LanguageButton";
 import { useAppDispatch } from "../../redux/hooks";
 import { languageSlice } from "../../redux/reducers/languageReducer";
-import { languages, LanguageProps } from "../../services/translation/languges";
+import i18n from "../../services/translation";
+import { LanguageProps, languages } from "../../services/translation/languges";
+import { TextBox, ViewBox } from "../../styles/theme";
 
 const LanguageScreen = () => {
   const [selectedLanguage, setSelectedLanguage] =
@@ -17,6 +18,7 @@ const LanguageScreen = () => {
   const onChangeLanguage = (language: LanguageProps) => {
     setSelectedLanguage(language);
     dispatch(languageSlice.actions.changeLanguage(language));
+    i18n.locale = language.value;
   };
 
   const renderLanguages = () => {

@@ -6,6 +6,7 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { Fonts } from "../styles";
 import { TextBox, ViewBox } from "../styles/theme";
+import i18n from ".././services/translation";
 
 function CompassSvg({ svgStyle }: { svgStyle?: any }) {
   const svgMarkup = `<svg width="394" height="394" viewBox="0 0 394 394" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -211,14 +212,14 @@ function Kibla() {
 
   const renderError = () => (
     <ViewBox marginBottom="xxxl" alignItems="center">
-      <TextBox marginBottom="md">Lejo qasjen në lokacion</TextBox>
+      <TextBox marginBottom="md">{i18n.t("allow-location-access")}</TextBox>
       <TextBox marginHorizontal="xxxl">
-        Për të kalkuluar drejtimin e kibles, lejo qasjen në lokacionin tuaj.
+        {i18n.t('to-calculate-qibla-direction-allow-access-to-your-location.')}
       </TextBox>
       <TouchableOpacity onPress={() => request()}>
         <ViewBox paddingHorizontal="xxxl" marginTop="xxl" paddingVertical="xxl">
           <TextBox color="mainText" fontSize={20} fontFamily={Fonts.Medium}>
-            Kërko qasjen
+            {i18n.t('request-access')}
           </TextBox>
         </ViewBox>
       </TouchableOpacity>
@@ -234,7 +235,7 @@ function Kibla() {
         fontWeight="bold"
         variant="2xlBold"
       >
-        Kalibro kompasin
+      {i18n.t('calibrate-the-compass')}
       </TextBox>
       <ViewBox width={220}>
         <TextBox
@@ -243,7 +244,7 @@ function Kibla() {
           marginTop="sm"
           textAlign="center"
         >
-          Lëviz telefonin në formën e numrit 8 së paku tri herë
+        {i18n.t('move-the-phone-in-qibla')}
         </TextBox>
       </ViewBox>
       <ViewBox
@@ -255,7 +256,7 @@ function Kibla() {
       >
         <TouchableOpacity onPress={() => setInfo(!info)}>
           <TextBox color="white" fontSize={16} textAlign="center">
-            Vazhdo
+          {i18n.t('continue')}
           </TextBox>
         </TouchableOpacity>
       </ViewBox>
@@ -265,10 +266,10 @@ function Kibla() {
   const renderHorizontal = () => (
     <ViewBox marginBottom="xxxxl" marginHorizontal="xxxl">
       <TextBox marginBottom="xxl" color="mainText" fontSize={24}>
-        Poziciono mirë telefonin
+        {i18n.t('position-the-phone-well')}
       </TextBox>
       <TextBox color="mainText" fontSize={24}>
-        Mbaje telefonin horizontalisht ose vendose në një sipërfaqe të rrafshët
+      {i18n.t('hold-the-phone-horizontally')}
       </TextBox>
     </ViewBox>
   );
@@ -289,7 +290,7 @@ function Kibla() {
         marginBottom="xl"
         variant="3xlBold"
       >
-        Kibla
+        {i18n.t('qibla')}
       </TextBox>
       <ViewBox
         marginTop="9xl"

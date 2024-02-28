@@ -11,10 +11,10 @@ import Abdesi from "../../assets/videos/abdesti.mp4";
 export type PrayerKey = keyof typeof Prayers;
 
 export const prayerVideos = {
-  [Prayers.sabahu]: SabahuVideo,
-  [Prayers.dreka]: DrekaVideo,
-  [Prayers.ikindia]: IkindiaVideo,
-  [Prayers.akshami]: AkshamiVideo,
-  [Prayers.jacia]: JaciaVideo,
-  [Prayers.abdesi]: Abdesi,
+  [Prayers.fajr]: SabahuVideo,
+  [Prayers.dhuhr]: DrekaVideo,
+  [Prayers.asr]: IkindiaVideo,
+  [Prayers.maghrib]: AkshamiVideo,
+  [Prayers.isha]: JaciaVideo,
+  [Prayers.ablution]: Abdesi,
 };
