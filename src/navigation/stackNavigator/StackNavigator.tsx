@@ -1,6 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import { Home, PrayerTimes, SettingsScreen, SinglePrayer } from "../../screens";
+import { Home, PrayerTimes, SettingsScreen } from "../../screens";
 import { PrayerInsideScreen } from "../../screens/PrayerInside";
 import { PrayerInsideLearnScreen } from "../../screens/PrayerInsideLearn";
 import OtherApplicationsScreen from "../../screens/settings/OtherApplicationsScreen";
@@ -18,7 +18,6 @@ function HomeStackNavigator() {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="SinglePrayer" component={SinglePrayer} />
       <Stack.Screen name="PrayerInside" component={PrayerInsideScreen} />
       <Stack.Screen
         name="PrayerInsideLearn"

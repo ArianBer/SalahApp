@@ -15,7 +15,7 @@ export const languages: { name: string; value: LanguageType }[] = [
     value: "en",
   },
   {
-    name: "Turkish",
+    name: "Türkçe",
     value: "tr",
   },
   // {

@@ -38,7 +38,7 @@ export function HomeHeaderBackground({ children }: HomeHeaderBackgroundProps) {
   const imageSourse = backgroundImages[activePrayer] ?? backgroundImages.isha;
 
   return (
-    <ViewBox height={380}>
+    <ViewBox height={440}>
       <ImageBackground
         source={imageSourse}
         style={styles.banner}

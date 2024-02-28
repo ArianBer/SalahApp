@@ -17,8 +17,8 @@ function SettingsScreen({ navigation }: { navigation: any }) {
   const onPressShare = () => {
     Share.share(
       {
-        message: "Shperndaje Aplikacionin SalahApp: https://www.google.com",
-        title: "SalahApp",
+        message: `${i18n.t('share-app')}: https://www.google.com`,
+        title: "Prayer Hub",
       },
       {}
     );

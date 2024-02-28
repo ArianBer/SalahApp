@@ -4,6 +4,7 @@ import { IconPlayerPause, IconPlayerPlay } from "tabler-icons-react-native";
 import { AnimatedBox, TextBox, ViewBox } from "../../styles/theme";
 import { Audio } from "expo-av";
 import { FadeIn } from "react-native-reanimated";
+import i18n from "../../services/translation";
 
 interface Props {
   title: string;
@@ -143,7 +144,7 @@ export function PlayableItem({
       </TextBox>
       <TextBox mt="24" variant="md" color="blackRussian">
         <TextBox color="darkGreen" variant="md-bold">
-          Perkthimi:{" "}
+          {i18n.t('translate')}
         </TextBox>
         {translation}
       </TextBox>

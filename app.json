@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "salah",
-    "slug": "salah",
+    "name": "Prayer Hub",
+    "slug": "prayer-hub",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
@@ -21,7 +21,7 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Allow Salah to use your location."
+          "locationAlwaysAndWhenInUsePermission": "Allow Prayer Hub to use your location."
         }
       ],
       "expo-font"
@@ -29,7 +29,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.donaldisufi1.salah"

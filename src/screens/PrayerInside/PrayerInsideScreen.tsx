@@ -5,35 +5,8 @@ import { IconArrowLeft, IconFile } from "tabler-icons-react-native";
 import { Prayers } from "../../constants";
 import { TextBox, ViewBox } from "../../styles/theme";
 import PrayersVideo from "./components/PrayersVideo";
-import WuduVideo from "./components/WuduVideo";
 import { PrayerKey } from "./videos";
-
-const prayerText = {
-  [Prayers.ablution]: {
-    description: "",
-    title: "Abdesi",
-  },
-  [Prayers.fajr]: {
-    title: "Namazi i sabahut",
-    description: "2 rekate",
-  },
-  [Prayers.dhuhr]: {
-    title: "Namazi i drekes",
-    description: "4 rekate",
-  },
-  [Prayers.asr]: {
-    title: "Namazi i ikindise",
-    description: "4 rekate",
-  },
-  [Prayers.maghrib]: {
-    title: "Namazi i akshamit",
-    description: "3 rekate",
-  },
-  [Prayers.isha]: {
-    title: "Namazi i jacise",
-    description: "4 rekate",
-  },
-};
+import i18n from "../../services/translation";
 
 export function PrayerInsideScreen({
   route,
@@ -44,6 +17,32 @@ export function PrayerInsideScreen({
 }) {
   const { top } = useSafeAreaInsets();
   const prayer = (route?.params?.prayer ?? "") as PrayerKey | "";
+  const prayerText = {
+    [Prayers.ablution]: {
+      description: "",
+      title: i18n.t('ablution'),
+    },
+    [Prayers.fajr]: {
+      title: i18n.t('fajr-prayer'),
+      description: i18n.t("2-rak'ats"),
+    },
+    [Prayers.dhuhr]: {
+      title: i18n.t('dhuhr-prayer'),
+      description: i18n.t("4-rak'ats"),
+    },
+    [Prayers.asr]: {
+      title: i18n.t('asr-prayer'),
+      description: i18n.t("4-rak'ats"),
+    },
+    [Prayers.maghrib]: {
+      title: i18n.t('maghrib-prayer'),
+      description: i18n.t("3-rak'ats"),
+    },
+    [Prayers.isha]: {
+      title: i18n.t('isha-prayer'),
+      description: i18n.t("4-rak'ats"),
+    },
+  };
 
   const onPressLearn = () => {
     navigation?.navigate("PrayerInsideLearn");
@@ -88,7 +87,7 @@ export function PrayerInsideScreen({
             >
               <IconFile />
               <TextBox ml="xs" variant="xlBold">
-                Meso
+                {i18n.t('learn')}
               </TextBox>
             </ViewBox>
           </TouchableOpacity>
