@@ -1,5 +1,6 @@
 /* eslint-disable no-shadow */
 import { useEffect, useState } from "react";
+import { CurrentPrayerType } from "../redux/reducers/homeReducer";
 
 export const useOnlinePrayerTimes = (countrySelected: any) => {
   const [activePrayers, setActivePrayer] = useState<any>("dhuhr");
@@ -9,25 +10,23 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
   const currentMonth = now.getMonth() + 1;
   const [currentDay, setCurrentDay] = useState(now.getDate());
   const [prayerTimes, setPrayerTime] = useState({});
+  const [currentPrayer, setCurrentPrayer] = useState<CurrentPrayerType>("dhuhr");
+  const keysToInclude = [
+    "Imsak",
+    "Sunrise",
+    "Dhuhr",
+    "Asr",
+    "Maghrib",
+    "Isha",
+  ];
 
   const filterPrayerTimes = (
     prayerTimes: Record<string, string>
   ): Record<string, Date> => {
-    const keysToInclude = [
-      "Imsak",
-      "Sunrise",
-      "Dhuhr",
-      "Asr",
-      "Maghrib",
-      "Isha",
-    ];
-
-    if(!prayerTimes) return {}
-
+    
     return Object.keys(prayerTimes)
       .filter((key) => keysToInclude.includes(key))
       .reduce((obj: Record<string, Date>, key: string) => {
-        console.log({ obj });
         const [hours, minutes] = prayerTimes[key].split(":");
         obj[key] = new Date();
         obj[key].setHours(Number(hours), Number(minutes), 0, 0);
@@ -39,6 +38,7 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
     prayerTimesForToday: Record<string, string>
   ) => {
     const filteredPrayerTimes = filterPrayerTimes(prayerTimesForToday);
+
     const now1 = new Date();
     const remainingTimes = Object.entries(filteredPrayerTimes)
       .filter(([key, value]) => {
@@ -53,6 +53,8 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
 
     if (remainingTimes.length) {
       const nextPrayer = remainingTimes[0][0];
+      setCurrentPrayer(keysToInclude[index - 1])
+
       setActivePrayer(nextPrayer);
       const timeRemaining =
         new Date(remainingTimes[0][1]).getTime() - now1.getTime();
@@ -79,12 +81,6 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
   }, [prayerTimes]);
 
   useEffect(() => {
-    if (activePrayers === "Imsak") {
-      setCurrentDay((prev) => prev + 1);
-    }
-  }, [activePrayers]);
-
-  useEffect(() => {
     const fetchPrayerTimes = async () => {
       try {
         const response = await fetch(
@@ -94,7 +90,6 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
         );
 
         const data = await response.json();
-
         setPrayerTime(data.data.timings);
       } catch (error) {
         console.error("Error fetching prayer times:", error);
@@ -102,11 +97,12 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
     };
 
     fetchPrayerTimes();
-  }, [countrySelected, currentMonth, currentDay, now]);
+  }, [countrySelected, currentMonth, currentDay]);
 
   return {
     activePrayers,
     secondsRemaining,
     hoursRemaining,
+    currentPrayer
   };
 };

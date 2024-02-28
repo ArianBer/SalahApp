@@ -108,7 +108,7 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   }, [activePrayer]);
 
   useEffect(() => {
-    dispatch(homeSlice.actions.setActivePrayer(currentPrayer));
+    dispatch(homeSlice.actions.setActivePrayer(activePrayer));
   }, [activePrayer]);
 
   const extractPrayerTimes = (prayerTime: PrayerTime): Record<string, Date> =>

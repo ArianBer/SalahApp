@@ -24,6 +24,7 @@ const LocationScreen = () => {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation<any>();
+  const {language}  = useAppSelector((state) => state);
 
   const openModal = (country: any) => {
     setSelectedCountry(country);
@@ -82,6 +83,8 @@ const LocationScreen = () => {
   };
 
   const renderLoactions = () => {
+    if(language.languageSelected.value !== 'al') return;
+
     return localLanguages.map((item) => (
       <LanguageButton
         key={item.name}
