@@ -1,16 +1,27 @@
 import { useNavigation } from "@react-navigation/native";
+import { StackScreenProps } from "@react-navigation/stack";
 import * as Location from "expo-location";
 import React, { useState } from "react";
-import { Image, Modal, Pressable, StyleSheet } from "react-native";
+import {
+  Alert,
+  Image,
+  Modal,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { IconSquareRoundedX } from "tabler-icons-react-native";
+import { IconArrowLeft, IconSquareRoundedX } from "tabler-icons-react-native";
 import LanguageButton, { flags } from "../../components/LanguageButton";
 import LocationImage from "../../components/onboarding/LocationImage";
 import countriesData from "../../data/countriesData";
-import { useAppDispatch } from "../../redux/hooks";
-import { selectCountry } from "../../redux/reducers/countryReducer";
+import useTranslation from "../../hooks/useTranslation";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import {
+  changeCountry,
+  selectCountry,
+} from "../../redux/reducers/countryReducer";
 import { TextBox, ViewBox } from "../../styles/theme";
-import i18n from "../../services/translation";
 
 const localLanguages = [
   { name: "Kosova", iconSource: flags.xk },
@@ -18,35 +29,39 @@ const localLanguages = [
   { name: "Maqedoni", iconSource: flags.mk },
 ];
 
-const LocationScreen = () => {
-  const { top, bottom } = useSafeAreaInsets();
+const LocationScreen = ({ route }: StackScreenProps<any>) => {
+  const t = useTranslation();
   const dispatch = useAppDispatch();
+  const { top, bottom } = useSafeAreaInsets();
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation<any>();
-  const {language}  = useAppSelector((state) => state);
-
+  const language = useAppSelector((state) => state.language);
+  const isFromSettings = route.params?.isFromSettings;
+  console.log({ isFromSettings });
   const openModal = (country: any) => {
     setSelectedCountry(country);
     setModalVisible(true);
   };
 
   const citySelected = (city: any) => {
+    if (!selectCountry) return;
+
     const countrySelcted = countriesData.find(
       (country) => country.country === selectedCountry
     );
+
     const address = {
-      country: selectedCountry,
-      city: city,
-      countryCode: countrySelcted?.countrycode,
+      country: selectedCountry ?? "",
+      city: city ?? "",
+      countryCode: countrySelcted?.countrycode ?? "",
       longitude: "",
       latitude: "",
     };
 
-    dispatch(selectCountry.actions.changeCountry(address));
-    setSelectedCountry(null);
+    dispatch(changeCountry(address));
     setModalVisible(false);
-    navigation?.navigate("LocationSelected");
+    navigation?.navigate("LocationSelected", { isFromSettings });
   };
 
   const request = async () => {
@@ -57,7 +72,7 @@ const LocationScreen = () => {
     }
 
     let { coords } = await Location.getCurrentPositionAsync({
-      enableHighAccuracy: true,
+      accuracy: Location.LocationAccuracy.High,
     });
 
     if (coords) {
@@ -67,23 +82,28 @@ const LocationScreen = () => {
         longitude,
       });
 
-      for (let item of response) {
-        const address = {
-          country: item.country ?? "",
-          city: item.city ?? "",
-          countryCode: item.isoCountryCode ?? "",
-          longitude: longitude?.toString(),
-          latitude: latitude?.toString(),
-        };
+      const item = response ? response[0] : null;
 
-        dispatch(selectCountry.actions.changeCountry(address));
-        navigation?.navigate("LocationSelected");
+      if (!item) {
+        Alert.alert("Couldn't find your location!");
+        return;
       }
+
+      const address = {
+        country: item.country ?? "",
+        city: item.city ?? "",
+        countryCode: item.isoCountryCode ?? "",
+        longitude: longitude?.toString(),
+        latitude: latitude?.toString(),
+      };
+
+      dispatch(selectCountry.actions.changeCountry(address));
+      navigation?.navigate("LocationSelected", { isFromSettings });
     }
   };
 
   const renderLoactions = () => {
-    if(language.languageSelected.value !== 'al') return;
+    if (language.languageSelected.value !== "al") return;
 
     return localLanguages.map((item) => (
       <LanguageButton
@@ -106,11 +126,34 @@ const LocationScreen = () => {
       alignItems={"center"}
       style={{ paddingTop: top, paddingBottom: bottom }}
     >
-      <ViewBox width={"100%"} alignItems={"center"} pt="20">
-        <LocationImage />
-      </ViewBox>
+      {isFromSettings ? (
+        <ViewBox
+          height={50}
+          alignItems="center"
+          width="100%"
+          flexDirection="row"
+        >
+          <TouchableOpacity
+            onPress={navigation.goBack}
+            hitSlop={{ top: 20, bottom: 10 }}
+            style={{ paddingHorizontal: 30 }}
+          >
+            <IconArrowLeft size={28} />
+          </TouchableOpacity>
+          <ViewBox flex={1} justifyContent="center" alignItems="center">
+            <TextBox variant="2xl" color="mainText">
+              {t("location")}
+            </TextBox>
+          </ViewBox>
+          <ViewBox style={{ marginHorizontal: 30, width: 28 }} />
+        </ViewBox>
+      ) : (
+        <ViewBox width={"100%"} alignItems={"center"} pt="20">
+          <LocationImage />
+        </ViewBox>
+      )}
       <TextBox variant="2xlBold" mt="37" color="blackRussian">
-        {i18n.t("select-location")}
+        {t("select-location")}
       </TextBox>
       <ViewBox width="100%" paddingHorizontal="37" mt="20">
         {renderLoactions()}
@@ -125,7 +168,7 @@ const LocationScreen = () => {
               backgroundColor={"lightGreen"}
             >
               <TextBox color="blackRussian" variant="lg_medium">
-                {i18n.t("find-location")}
+                {t("find-location")}
               </TextBox>
             </ViewBox>
           </Pressable>

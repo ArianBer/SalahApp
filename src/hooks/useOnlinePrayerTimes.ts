@@ -10,20 +10,16 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
   const currentMonth = now.getMonth() + 1;
   const [currentDay, setCurrentDay] = useState(now.getDate());
   const [prayerTimes, setPrayerTime] = useState({});
-  const [currentPrayer, setCurrentPrayer] = useState<CurrentPrayerType>("dhuhr");
-  const keysToInclude = [
-    "Imsak",
-    "Sunrise",
-    "Dhuhr",
-    "Asr",
-    "Maghrib",
-    "Isha",
-  ];
+  const [currentPrayer, setCurrentPrayer] =
+    useState<CurrentPrayerType>("dhuhr");
+  const keysToInclude = ["Imsak", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
 
   const filterPrayerTimes = (
     prayerTimes: Record<string, string>
   ): Record<string, Date> => {
-    
+    if (!prayerTimes) {
+      return {};
+    }
     return Object.keys(prayerTimes)
       .filter((key) => keysToInclude.includes(key))
       .reduce((obj: Record<string, Date>, key: string) => {
@@ -53,7 +49,7 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
 
     if (remainingTimes.length) {
       const nextPrayer = remainingTimes[0][0];
-      setCurrentPrayer(keysToInclude[index - 1])
+      setCurrentPrayer(keysToInclude[index - 1]);
 
       setActivePrayer(nextPrayer);
       const timeRemaining =
@@ -103,6 +99,6 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
     activePrayers,
     secondsRemaining,
     hoursRemaining,
-    currentPrayer
+    currentPrayer,
   };
 };

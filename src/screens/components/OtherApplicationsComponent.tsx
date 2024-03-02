@@ -1,17 +1,18 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Linking } from "react-native";
 import YoutubeLogo from "../../assets/svgs/YoutubeLogo";
+import useTranslation from "../../hooks/useTranslation";
+import { useAppSelector } from "../../redux/hooks";
+import { isIos } from "../../utilts/isIos";
 import { settingsData } from "../settings/settings-data";
 import { SettingsRow } from "./SettingsRow";
 import { SettingsRowsContainer } from "./SettingsRowsContainer";
-import { useNavigation } from "@react-navigation/native";
-import { isIos } from "../../utilts/isIos";
-import { useAppSelector } from "../../redux/hooks";
-import i18n from "../../services/translation";
 
 const OtherApplicationsComponent = () => {
   const navigation = useNavigation<any>();
-  const { language } = useAppSelector((state) => state);
+  const language = useAppSelector((state) => state.language);
+  const t = useTranslation();
   const applications = Object.entries(
     settingsData[language?.languageSelected.value]?.applications
   );
@@ -33,7 +34,7 @@ const OtherApplicationsComponent = () => {
 
     return (
       <SettingsRow
-        iconUrl={data.image}
+        iconUrl={data?.image}
         title={title}
         titleProps={{ variant: "lg_bold" }}
         onPress={() => onPressLink(isIos ? ios : android)}
@@ -55,11 +56,11 @@ const OtherApplicationsComponent = () => {
   };
 
   return (
-    <SettingsRowsContainer mt="25" title={i18n.t("other-applications")}>
+    <SettingsRowsContainer mt="25" title={t("other-applications")}>
       {renderApplication()}
       {renderYoutube()}
       <SettingsRow
-        title={i18n.t("others") + ".."}
+        title={t("others") + ".."}
         hideBottomLine
         onPress={onPressMoreApps}
       />

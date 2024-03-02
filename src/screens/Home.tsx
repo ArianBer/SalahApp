@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ScrollView } from "react-native";
 import { IconCalendarMinus } from "tabler-icons-react-native";
+import i18n from ".././services/translation";
 import PrayerBox from "../components/prayerBanner/PrayerBanner";
 import PrayerVideoItem from "../components/prayerVideoItem/prayerVideoitem";
+import { Prayers } from "../constants";
+import { useAppSelector } from "../redux/hooks";
 import { ViewBox } from "../styles/theme";
 import { HomeHeaderBackground } from "./components/HomeHeaderBackground";
-import { useAppSelector } from "../redux/hooks";
-import { Prayers } from "../constants";
-import i18n from ".././services/translation";
-import { useEffect } from "react";
 
 const prayersArray = Object.values(Prayers).map((x) => ({
   title: x,
@@ -16,17 +15,17 @@ const prayersArray = Object.values(Prayers).map((x) => ({
 
 function Home({ navigation }: { navigation: any }) {
   const { activePrayer } = useAppSelector((state) => state.home);
-  const { language } = useAppSelector((state) => state);
-  
+  const language = useAppSelector((state) => state.language);
+
   const handlePrayerPress = (prayer: string) => {
     navigation?.navigate("PrayerInside", { prayer });
   };
 
   useEffect(() => {
-    if(!language) return;
-    
+    if (!language) return;
+
     i18n.locale = language.languageSelected.value;
-  }, [language])
+  }, [language]);
 
   return (
     <ViewBox flex={1} backgroundColor="mainBackground">

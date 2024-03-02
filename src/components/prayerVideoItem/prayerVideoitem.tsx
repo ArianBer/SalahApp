@@ -6,6 +6,7 @@ import { CurrentPrayerType } from "../../redux/reducers/homeReducer";
 import { TextBox, ThemeType, ViewBox } from "../../styles/theme";
 import { Prayers } from "../../constants";
 import i18n from "../../services/translation";
+import useTranslation from "../../hooks/useTranslation";
 
 type PrayerVideoItemProps = {
   title: string;
@@ -29,6 +30,7 @@ function PrayerVideoItem({
 }: PrayerVideoItemProps) {
   const { colors } = useTheme<ThemeType>();
   const isActive = mapPrayerNames[activePrayer] === title;
+  const t = useTranslation();
 
   return (
     <TouchableOpacity onPress={onPress} style={{ width: "32%" }}>
@@ -69,7 +71,7 @@ function PrayerVideoItem({
           fontWeight="bold"
           color={isActive ? "white" : "mainText"}
         >
-          {i18n.t(title)}
+          {t(title)}
         </TextBox>
       </ViewBox>
     </TouchableOpacity>

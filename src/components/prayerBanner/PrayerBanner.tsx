@@ -4,6 +4,7 @@ import { usePrayerTimes } from "../../hooks/usePrayerTimes";
 import { retrunIconPrayerTimes } from "../../services/returnIconsFromPrayerTime";
 import { TextBox, ViewBox } from "../../styles/theme";
 import i18n from "../../services/translation";
+import useTranslation from "../../hooks/useTranslation";
 
 type PrayerBannerProps = {
   isAbsolute: boolean;
@@ -18,6 +19,7 @@ function PrayerBox({ isAbsolute, icon, customIcon }: PrayerBannerProps) {
     hoursRemaining,
     secondsRemaining,
   } = usePrayerTimes(prayerData);
+  const t = useTranslation();
 
   useEffect(() => {
     const prayerTimesForToday = getPrayerTimesForToday();
@@ -71,7 +73,7 @@ function PrayerBox({ isAbsolute, icon, customIcon }: PrayerBannerProps) {
           fontWeight="400"
           lineHeight={15}
         >
-         { i18n.t('until') + ' ' +  i18n.t(activePrayer.toLowerCase())}
+          {t("until") + " " + t(activePrayer.toLowerCase())}
         </TextBox>
       </ViewBox>
       <ViewBox>

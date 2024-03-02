@@ -10,12 +10,15 @@ import { languageSlice } from "../../redux/reducers/languageReducer";
 import i18n from "../../services/translation";
 import { languages } from "../../services/translation/languges";
 import { TextBox, ViewBox } from "../../styles/theme";
+import useTranslation from "../../hooks/useTranslation";
 
 const ChangeLanguageScreen = () => {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const { language } = useAppSelector((state) => state);
+  const t = useTranslation();
+
+  const language = useAppSelector((state) => state.language);
 
   const onChangeLanguage = (lng: string) => {
     i18n.locale = lng;
@@ -60,7 +63,7 @@ const ChangeLanguageScreen = () => {
         </TouchableOpacity>
         <ViewBox flex={1} justifyContent="center" alignItems="center">
           <TextBox variant="2xl" color="mainText">
-            {i18n.t("edit-language")}
+            {t("edit-language")}
           </TextBox>
         </ViewBox>
         <ViewBox style={{ marginHorizontal: 30, width: 28 }}></ViewBox>

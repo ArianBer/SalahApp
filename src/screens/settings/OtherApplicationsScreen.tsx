@@ -1,25 +1,28 @@
-import React from "react";
-import { TextBox, ViewBox } from "../../styles/theme";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Linking, ScrollView, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { Linking, ScrollView, TouchableOpacity } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconArrowLeft } from "tabler-icons-react-native";
-import { ApplicationDataType, settingsData } from "./settings-data";
-import { SettingsRowsContainer } from "../components/SettingsRowsContainer";
-import { SettingsRow } from "../components/SettingsRow";
 import FacebookLogo from "../../assets/svgs/FacebookLogo";
-import YoutubeLogo from "../../assets/svgs/YoutubeLogo";
 import WebLogo from "../../assets/svgs/WebLogo";
-import { isIos } from "../../utilts/isIos";
+import YoutubeLogo from "../../assets/svgs/YoutubeLogo";
+import useTranslation from "../../hooks/useTranslation";
 import { useAppSelector } from "../../redux/hooks";
-import i18n from "../../services/translation";
+import { TextBox, ViewBox } from "../../styles/theme";
+import { isIos } from "../../utilts/isIos";
+import { SettingsRow } from "../components/SettingsRow";
+import { SettingsRowsContainer } from "../components/SettingsRowsContainer";
+import { ApplicationDataType, settingsData } from "./settings-data";
 
 const OtherApplicationsScreen = () => {
   const { top } = useSafeAreaInsets();
-  const navigation = useNavigation();
-  const {language} = useAppSelector((state) => state);
+  const t = useTranslation();
 
-  const { applications, facebook, web, youtube } = settingsData[language.languageSelected.value];
+  const navigation = useNavigation();
+  const language = useAppSelector((state) => state.language);
+
+  const { applications, facebook, web, youtube } =
+    settingsData[language.languageSelected.value];
 
   const onPressBack = () => navigation.goBack();
 
@@ -40,11 +43,11 @@ const OtherApplicationsScreen = () => {
     }
 
     return (
-      <SettingsRowsContainer mb="20" title={i18n.t("applications")}>
+      <SettingsRowsContainer mb="20" title={t("applications")}>
         {applicationsArray.map(([title, data], index) => (
           <SettingsRow
             key={index}
-            iconUrl={data.image}
+            iconUrl={data?.image}
             onPress={() => onPressApplication(data)}
             title={title}
             hideBottomLine={index === length - 1}
@@ -141,7 +144,7 @@ const OtherApplicationsScreen = () => {
         </TouchableOpacity>
         <ViewBox flex={1} justifyContent="center" alignItems="center">
           <TextBox variant="2xl" color="mainText">
-            {i18n.t("applications")}
+            {t("applications")}
           </TextBox>
         </ViewBox>
         <ViewBox style={{ paddingHorizontal: 30 }} />

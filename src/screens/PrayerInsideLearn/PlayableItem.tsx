@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { TouchableOpacity, View } from "react-native";
-import { IconPlayerPause, IconPlayerPlay } from "tabler-icons-react-native";
-import { AnimatedBox, TextBox, ViewBox } from "../../styles/theme";
 import { Audio } from "expo-av";
+import React, { useEffect, useState } from "react";
+import { TouchableOpacity } from "react-native";
 import { FadeIn } from "react-native-reanimated";
-import i18n from "../../services/translation";
+import { IconPlayerPause, IconPlayerPlay } from "tabler-icons-react-native";
+import useTranslation from "../../hooks/useTranslation";
+import { AnimatedBox, TextBox, ViewBox } from "../../styles/theme";
 
 interface Props {
   title: string;
@@ -33,6 +33,7 @@ export function PlayableItem({
   const [isPlaying, setIsPlaying] = useState(false);
   const [soundDuration, setSoundDuration] = useState<number | null>(null);
   const [playbackPosition, setPlaybackPosition] = useState<number | null>(null);
+  const t = useTranslation();
 
   useEffect(() => {
     calculateSoundDuration();
@@ -144,7 +145,7 @@ export function PlayableItem({
       </TextBox>
       <TextBox mt="24" variant="md" color="blackRussian">
         <TextBox color="darkGreen" variant="md-bold">
-          {i18n.t('translate')}
+          {t("translate")}
         </TextBox>
         {translation}
       </TextBox>

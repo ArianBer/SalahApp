@@ -3,10 +3,11 @@ import React from "react";
 import { Home, PrayerTimes, SettingsScreen } from "../../screens";
 import { PrayerInsideScreen } from "../../screens/PrayerInside";
 import { PrayerInsideLearnScreen } from "../../screens/PrayerInsideLearn";
-import OtherApplicationsScreen from "../../screens/settings/OtherApplicationsScreen";
+import LocationScreen from "../../screens/auth/LocationScreen";
+import LocationSelectedScreen from "../../screens/auth/LocationSelectedScreen";
 import ChangeLanguageScreen from "../../screens/settings/ChangeLanguageScreen";
-import ChangeLocationScreen from "../../screens/settings/ChangeLocationScreen";
 import ChangeNotificationsScreen from "../../screens/settings/ChangeNotificationsScreen";
+import OtherApplicationsScreen from "../../screens/settings/OtherApplicationsScreen";
 
 const Stack = createStackNavigator();
 
@@ -44,7 +45,12 @@ function SettingsNavigator() {
         component={OtherApplicationsScreen}
       />
       <Stack.Screen name="ChangeLanguage" component={ChangeLanguageScreen} />
-      <Stack.Screen name="ChangeLocation" component={ChangeLocationScreen} />
+      {/*using same screen for now*/}
+      <Stack.Screen name="ChangeLocation" component={LocationScreen} />
+      <Stack.Screen
+        name="LocationSelected"
+        component={LocationSelectedScreen}
+      />
       <Stack.Screen
         name="ChangeNotifications"
         component={ChangeNotificationsScreen}

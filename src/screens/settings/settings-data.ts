@@ -94,6 +94,13 @@ export const settingsData: SettingWithLanguageDataType = {
         "https://hadithet.com/?fbclid=IwAR3KczKGrqqrwAVsSb87MyX1RnVXSxVHPJEYC6PGMpLKGsbHlKL5Fb6Hqj0",
     },
     applications: {
+      "Quran Words": {
+        url: {
+          android:
+            "https://play.google.com/store/apps/details?id=com.dawah.quranwords",
+          ios: "https://apps.apple.com/us/app/quranwords/id6446705741",
+        },
+      },
       "Hoxhe Bajram Karabeg": {
         url: {
           ios: "https://t.me/bajramkarabegEnglish",

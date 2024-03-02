@@ -12,6 +12,7 @@ import DuaImage from "../../components/onboarding/DuaImage";
 import Button from "../../components/Button";
 import { useNavigation } from "@react-navigation/native";
 import i18n from "../../services/translation";
+import useTranslation from "../../hooks/useTranslation";
 
 type SlideItemProps = {
   key: number;
@@ -25,37 +26,37 @@ const OnBoardingScreen = () => {
   const ref = React.useRef<AppIntroSlider<SlideItemProps>>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const navigation = useNavigation<any>();
-
+  const t = useTranslation();
 
   const slides: SlideItemProps[] = [
     {
       key: 1,
-      title: i18n.t('prayer-times'),
-      text: i18n.t('prayer-times-desc'),
+      title: t("prayer-times"),
+      text: t("prayer-times-desc"),
       image: <SalahImage />,
     },
     {
       key: 2,
-      title: i18n.t('ablution'),
-      text: i18n.t('ablution-desc'),
+      title: t("ablution"),
+      text: t("ablution-desc"),
       image: <AbdesImage />,
     },
     {
       key: 3,
-      title: i18n.t('qibla'),
-      text: i18n.t('qibla-desc'),
+      title: t("qibla"),
+      text: t("qibla-desc"),
       image: <QiblaImage />,
     },
     {
       key: 4,
-      title: i18n.t('the-prayer'),
-      text: i18n.t('the-prayer-desc'),
+      title: t("the-prayer"),
+      text: t("the-prayer-desc"),
       image: <SalahVideoImage />,
     },
     {
       key: 5,
-      title: i18n.t("the-dhikr-and-du'a-in-prayers"),
-      text: i18n.t("the-dhikr-and-du'a-in-prayers-desc"),
+      title: t("the-dhikr-and-du'a-in-prayers"),
+      text: t("the-dhikr-and-du'a-in-prayers-desc"),
       image: <DuaImage />,
     },
   ];
@@ -102,7 +103,7 @@ const OnBoardingScreen = () => {
               ref.current?.goToSlide(activeSlide + 1);
               setActiveSlide((prevSlide) => prevSlide + 1);
             }}
-            text={i18n.t('continue')}
+            text={t("continue")}
             width={180}
           />
         </ViewBox>
@@ -121,7 +122,7 @@ const OnBoardingScreen = () => {
       >
         <Pressable onPress={handleContinuePress}>
           <TextBox variant="md" color="green" textDecorationLine="underline">
-            {i18n.t('skip')}
+            {t("skip")}
           </TextBox>
         </Pressable>
       </ViewBox>

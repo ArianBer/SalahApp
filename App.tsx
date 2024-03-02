@@ -1,9 +1,8 @@
-import "react-native-gesture-handler";
 import { Audio } from "expo-av";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useCallback, useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import { Platform, View } from "react-native";
+import "react-native-gesture-handler";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { ThemeProvider } from "./src/components/theme";
@@ -16,7 +15,6 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const fontsLoaded = useLoadFonts();
-  const { i18n } = useTranslation();
 
   useEffect(() => {
     if (Platform.OS === "ios") {
@@ -25,13 +23,6 @@ export default function App() {
       });
     }
   }, []);
-
-  useEffect(() => {
-    const readData = async () => {
-      i18n.changeLanguage("al");
-    };
-    readData();
-  }, [i18n]);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {

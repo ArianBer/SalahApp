@@ -7,6 +7,7 @@ import prayerData from "../data/times.json";
 import PrayerTimeBox from "../components/prayerTimeBox/PrayerTimeBox";
 import { DaysList } from "../components/daysList/DaysList";
 import i18n from ".././services/translation";
+import useTranslation from "../hooks/useTranslation";
 
 function PrayerTimeBoxes({ prayerTimes }: any) {
   return (
@@ -24,6 +25,7 @@ function PrayerTimeBoxes({ prayerTimes }: any) {
 }
 
 function PrayerTimes() {
+  const t = useTranslation();
   const today = new Date();
   const [selectedDate, setSelectedDate] = useState(today);
   const date = new Date(String(selectedDate));
@@ -39,7 +41,7 @@ function PrayerTimes() {
         marginHorizontal="xxxxxl"
         marginBottom="xl"
       >
-        {i18n.t('prayer-calendar')}
+        {t("prayer-calendar")}
       </TextBox>
       <PrayerBox isAbsolute={false} icon={null} customIcon />
       <ViewBox height="auto">
