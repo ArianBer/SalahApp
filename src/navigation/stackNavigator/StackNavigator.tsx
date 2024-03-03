@@ -45,7 +45,6 @@ function SettingsNavigator() {
         component={OtherApplicationsScreen}
       />
       <Stack.Screen name="ChangeLanguage" component={ChangeLanguageScreen} />
-      {/*using same screen for now*/}
       <Stack.Screen name="ChangeLocation" component={LocationScreen} />
       <Stack.Screen
         name="LocationSelected"

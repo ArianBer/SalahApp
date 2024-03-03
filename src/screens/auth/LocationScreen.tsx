@@ -61,7 +61,12 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
 
     dispatch(changeCountry(address));
     setModalVisible(false);
-    navigation?.navigate("LocationSelected", { isFromSettings });
+
+    if(!isFromSettings){
+      navigation?.navigate("LocationSelected", { isFromSettings });
+    }else{
+      navigation.navigate("Setting")
+    }
   };
 
   const request = async () => {

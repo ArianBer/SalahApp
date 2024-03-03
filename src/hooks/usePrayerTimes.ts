@@ -184,7 +184,7 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [currentDay]);
+  }, [currentDay, country.countrySelected]);
 
   return {
     getPrayerTimesForToday,
