@@ -4,6 +4,7 @@ import { TouchableOpacity } from "react-native";
 import { FadeIn } from "react-native-reanimated";
 import { IconPlayerPause, IconPlayerPlay } from "tabler-icons-react-native";
 import useTranslation from "../../hooks/useTranslation";
+import i18n from "../../services/translation";
 import { AnimatedBox, TextBox, ViewBox } from "../../styles/theme";
 
 interface Props {
@@ -145,7 +146,7 @@ export function PlayableItem({
       </TextBox>
       <TextBox mt="24" variant="md" color="blackRussian">
         <TextBox color="darkGreen" variant="md-bold">
-          {t("translate")}
+          {i18n.t("translate")}
         </TextBox>
         {translation}
       </TextBox>

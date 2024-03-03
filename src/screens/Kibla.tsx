@@ -7,6 +7,7 @@ import { SvgXml } from "react-native-svg";
 import useTranslation from "../hooks/useTranslation";
 import { Fonts } from "../styles";
 import { TextBox, ViewBox } from "../styles/theme";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 function CompassSvg({ svgStyle }: { svgStyle?: any }) {
   const svgMarkup = `<svg width="394" height="394" viewBox="0 0 394 394" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -74,6 +75,7 @@ function Kibla() {
   const [info, setInfo] = useState<boolean>(true);
 
   const [direction, setDirection] = useState<number>(0);
+  const { top } = useSafeAreaInsets();
 
   const find_angle = (x: number[], y: number[]): number => {
     const d = (degrees: number) => degrees * (Math.PI / 180);
@@ -283,12 +285,12 @@ function Kibla() {
   );
 
   return (
-    <ViewBox flex={1} backgroundColor="white">
+    <ViewBox flex={1} backgroundColor="white" style={{paddingTop: top + 10}}>
       <TextBox
-        marginTop="xxxxxxxl"
+        fontSize={32}
+        fontWeight="bold"
         marginHorizontal="xxxxxl"
         marginBottom="xl"
-        variant="3xlBold"
       >
         {t("qibla")}
       </TextBox>

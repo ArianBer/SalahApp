@@ -4,10 +4,10 @@ import { IconCalendarMinus } from "tabler-icons-react-native";
 import i18n from ".././services/translation";
 import PrayerBox from "../components/prayerBanner/PrayerBanner";
 import PrayerVideoItem from "../components/prayerVideoItem/prayerVideoitem";
-import { Prayers } from "../constants";
-import { useAppSelector } from "../redux/hooks";
 import { ViewBox } from "../styles/theme";
 import { HomeHeaderBackground } from "./components/HomeHeaderBackground";
+import { useAppSelector } from "../redux/hooks";
+import { Prayers } from "../constants";
 
 const prayersArray = Object.values(Prayers).map((x) => ({
   title: x,

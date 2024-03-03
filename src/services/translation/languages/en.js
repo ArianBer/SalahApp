@@ -5,7 +5,7 @@ export const en = {
     "dhuhr": "Dhuhr",
     "asr": "Asr",
     "maghrib": "Maghrib",
-    "isha": "Ishaa",
+    "isha": "Isha",
     "sunrise": "Sunrise",
     "prayer-calendar": "Prayer calendar",
     "reciters": "Reciters",

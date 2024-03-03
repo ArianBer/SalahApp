@@ -5,6 +5,7 @@ import { IconShare } from "tabler-icons-react-native";
 import MILogo from "../../assets/svgs/MILogo";
 import useTranslation from "../../hooks/useTranslation";
 import { useAppSelector } from "../../redux/hooks";
+import i18n from "../../services/translation";
 import { TextBox, ViewBox } from "../../styles/theme";
 import OtherApplicationsComponent from "../components/OtherApplicationsComponent";
 import { SettingsRow } from "../components/SettingsRow";
@@ -18,7 +19,7 @@ function SettingsScreen({ navigation }: { navigation: any }) {
   const onPressShare = () => {
     Share.share(
       {
-        message: `${t("share-app")}: https://www.google.com`,
+        message: `${i18n.t('share-app')}: https://www.google.com`,
         title: "Prayer Hub",
       },
       {}

@@ -1,9 +1,9 @@
 /* eslint-disable no-shadow */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { CurrentPrayerType, homeSlice } from "../redux/reducers/homeReducer";
+import { sendLocalNotification } from "../services/notifications/localNotification";
 import { registerForPushNotificationsAsync } from "../services/registerPushNotifications";
-import * as Notifications from "expo-notifications";
 import { useOnlinePrayerTimes } from "./useOnlinePrayerTimes";
 
 type PrayerTime = {
@@ -35,35 +35,14 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   const localLanguages = ["Kosova", "Shqiperi", "Maqedoni"];
   const prayers = ["imsak", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 
-  if (!localLanguages.includes(country?.countrySelected?.country)) {
-    const { activePrayers, secondsRemaining, hoursRemaining } =
-      useOnlinePrayerTimes(country.countrySelected);
-
-    const today = new Date();
-    const [selectedDate, setSelectedDate] = useState(today);
-    const date = new Date(String(selectedDate));
-    const month = String(date.getMonth() + 1);
-    const day = String(date.getDate());
-
-    const getPrayerTimesForToday = async (month: string, day: string) => {
-      try {
-        const response = await fetch(
-          `https://api.aladhan.com/v1/timings/${day}-${month}-${now.getFullYear()}?latitude=${
-            country.countrySelected.latitude
-          }&longitude=${country.countrySelected.longitude}&method=2`
-        );
-      } catch (error) {
-        console.error("Error fetching prayer times:", error);
-      }
-    };
-
-    getPrayerTimesForToday(day, month);
+  if (!localLanguages.includes(country.countrySelected.country)) {
+    const {activePrayers, secondsRemaining, hoursRemaining} = useOnlinePrayerTimes(country.countrySelected);
 
     return {
       getPrayerTimesForToday: () => ({}),
       remainingTimeUntilNextPrayer: () => {},
       filterPrayerTimes: () => {},
-      filterPrayerTimesPerDayMonth: getPrayerTimesForToday,
+      filterPrayerTimesPerDayMonth: () => ({}),
       activePrayer: activePrayers,
       secondsRemaining: secondsRemaining,
       hoursRemaining: hoursRemaining,
@@ -73,43 +52,18 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   const schedulePrayerNotifications = (
     prayerTimesForToday: Record<string, Date>
   ) => {
+    let nottificationSent = false;
+
     Object.entries(prayerTimesForToday).forEach(([prayerName, prayerTime]) => {
       const timeRemaining = prayerTime.getTime() - now.getTime();
 
-      if (timeRemaining > 0 && !notificationScheduled[prayerName]) {
+      if (timeRemaining > 0 && !notificationScheduled[prayerName] && !nottificationSent) {
+        nottificationSent = true;
         sendLocalNotification(prayerName, timeRemaining / 1000);
         notificationScheduled[prayerName] = true;
       }
     });
   };
-
-  const sendLocalNotification = async (
-    prayerName: string,
-    triggerTime: number
-  ) => {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "SalahApp",
-        body: `It's time for ${prayerName} prayer!`,
-      },
-      trigger: {
-        seconds: triggerTime,
-      },
-    });
-  };
-
-  useEffect(() => {
-    const prayerTimesForToday = getPrayerTimesForToday(
-      currentMonth.toString(),
-      currentDay.toString()
-    );
-
-    schedulePrayerNotifications(prayerTimesForToday);
-  }, [activePrayer]);
-
-  useEffect(() => {
-    dispatch(homeSlice.actions.setActivePrayer(activePrayer));
-  }, [activePrayer]);
 
   const extractPrayerTimes = (prayerTime: PrayerTime): Record<string, Date> =>
     Object.keys(prayerTime)
@@ -125,11 +79,11 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
           Number(seconds)
         );
         return obj;
-      }, {});
+  }, {});
 
   const remainingTimeUntilNextPrayer = (
     prayerTimesForToday: Record<string, Date>
-  ): void => {
+  ) => {
     const now1 = new Date();
     const remainingTimes = Object.entries(prayerTimesForToday)
       .filter(([key, value]) => value.getTime() > now1.getTime())
@@ -188,25 +142,44 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   };
 
   useEffect(() => {
-    registerForPushNotificationsAsync();
     const prayerTimesForToday = getPrayerTimesForToday(
       currentMonth.toString(),
       currentDay.toString()
     );
-    const now1 = new Date();
-    const latestPrayerTime = Math.max(
-      ...Object.values(prayerTimesForToday).map((date) => date.getTime())
-    );
 
-    if (latestPrayerTime < now1.getTime()) {
-      setCurrentDay(currentDay + 1);
+    schedulePrayerNotifications(prayerTimesForToday);
+
+    const setActivePrayer = (prayer) => {
+      dispatch(homeSlice.actions.setActivePrayer(prayer));
+    };
+    
+    if (activePrayer === 'sunrise') {
+      setActivePrayer('sunrise');
+    } else if (activePrayer !== 'dhuhr' && activePrayer === 'imsak') {
+      setActivePrayer('isha');
+    } else if (activePrayer !== 'dhuhr') {
+      setActivePrayer(currentPrayer);
+    } else {
+      setActivePrayer('sunrises');
     }
-  }, [currentDay]);
+
+  }, [activePrayer]);
 
   useEffect(() => {
-    filterPrayerTimes();
+    const prayerTimesForToday = getPrayerTimesForToday(
+      currentMonth.toString(),
+      currentDay.toString()
+    );
+
+    if(now.getTime() > prayerTimesForToday['isha'].getTime()){
+      setCurrentDay(prev => prev +1)
+    }
+  }, [activePrayer, now, currentPrayer]);
+
+  useEffect(() => {
+    registerForPushNotificationsAsync();
+
     const timer = setInterval(() => {
-      setNow(new Date());
       filterPrayerTimes();
     }, 1000);
 
