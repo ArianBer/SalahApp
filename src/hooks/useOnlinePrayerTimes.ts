@@ -72,7 +72,7 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
         return timeA.getTime() - timeB.getTime();
       });
 
-    if (remainingTimes.length) {
+    if (remainingTimes?.length) {
       const nextPrayer = remainingTimes[0][0];
       let index = keysToInclude.indexOf(remainingTimes[0][0]);
 

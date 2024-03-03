@@ -89,7 +89,7 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
       .filter(([key, value]) => value.getTime() > now1.getTime())
       .sort((a, b) => a[1].getTime() - b[1].getTime());
 
-    if (remainingTimes.length) {
+    if (remainingTimes?.length) {
       let index = prayers.indexOf(remainingTimes[0][0]);
 
       setCurrentPrayer(prayers[index - 1]);
