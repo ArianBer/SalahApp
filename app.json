@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Prayer Hub",
-    "slug": "prayer-hub",
+    "slug": "salah",
     "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
@@ -39,12 +39,13 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.donaldisufi1.salah"
+      "bundleIdentifier": "com.donaldisufi1.salah",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Need permission to use sounds"
+      }
     },
     "android": {
       "adaptiveIcon": {

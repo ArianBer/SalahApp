@@ -13,6 +13,7 @@ interface SettingsRowProps {
   hideBottomLine?: boolean;
   icon?: ReactNode;
   iconUrl?: string;
+  hideLogo?: boolean;
 }
 
 export const SettingsRow = ({
@@ -21,13 +22,14 @@ export const SettingsRow = ({
   onPress,
   subTitle,
   icon,
+  hideLogo,
   iconUrl,
   titleProps,
 }: SettingsRowProps) => {
   const hasLogo = Boolean(iconUrl || icon);
 
   const renderIcon = () => {
-    if (!hasLogo) return null;
+    if (hideLogo) return null;
 
     return (
       <ViewBox
@@ -61,19 +63,17 @@ export const SettingsRow = ({
         flexDirection="row"
         alignItems="center"
       >
-        {hasLogo && (
-          <ViewBox
-            height={40}
-            borderRadius="20"
-            width={40}
-            justifyContent="center"
-            alignItems="center"
-            mr="20"
-            bg="twilightBlue"
-          >
-            {renderIcon()}
-          </ViewBox>
-        )}
+        <ViewBox
+          height={40}
+          borderRadius="20"
+          width={40}
+          justifyContent="center"
+          alignItems="center"
+          mr="20"
+          bg="twilightBlue"
+        >
+          {renderIcon()}
+        </ViewBox>
         <ViewBox flex={1}>
           <TextBox variant="lg_bold" color="black" {...titleProps}>
             {title}

@@ -15,6 +15,7 @@ import i18n from "../../services/translation";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconFileText } from "tabler-icons-react-native";
 import { useNavigation } from "@react-navigation/native";
+import useTranslation from "../../hooks/useTranslation";
 
 interface HomeHeaderBackgroundProps {
   children: ReactNode;
@@ -38,16 +39,22 @@ const backgroundImages: Record<CurrentPrayerType, any> = {
 
 export function HomeHeaderBackground({ children }: HomeHeaderBackgroundProps) {
   const { activePrayer } = useAppSelector((state) => state.home);
-  const imageSourse = activePrayer === 'sunrises' ? backgroundImages['sunrise'] : backgroundImages[activePrayer] ?? backgroundImages.isha;
+  const t = useTranslation();
+
+  const imageSourse =
+    activePrayer === "sunrise"
+      ? backgroundImages["sunrise"]
+      : backgroundImages[activePrayer] ?? backgroundImages.isha;
+
   const { top } = useSafeAreaInsets();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   const onPressLearn = () => {
     navigation?.navigate("PrayerInsideLearn");
   };
 
   return (
-    <ViewBox height={460}>
+    <ViewBox style={{ minHeight: 300, height: "50%", maxHeight: 460 }}>
       <ImageBackground
         source={imageSourse}
         style={styles.banner}
@@ -57,20 +64,23 @@ export function HomeHeaderBackground({ children }: HomeHeaderBackgroundProps) {
       >
         {children}
         <TouchableOpacity onPress={onPressLearn}>
-          <ViewBox 
-            flexDirection='row' 
-            alignItems='center' 
-            position='absolute' 
-            right={0} 
-            top={0} 
-            style={{marginTop:top + 10}} 
-            marginRight='37' 
-            padding='10' 
-            borderRadius='50' 
-            backgroundColor='lightGreen'
-            >
-            <IconFileText color="black"/>
-            <TextBox marginLeft='2' color='black' variant='md-bold'>{i18n.t('learn')}</TextBox>
+          <ViewBox
+            flexDirection="row"
+            alignItems="center"
+            position="absolute"
+            right={0}
+            top={0}
+            style={{ marginTop: top + 10 }}
+            marginRight="37"
+            height={44}
+            paddingHorizontal="20"
+            borderRadius="37"
+            backgroundColor="lightGreen"
+          >
+            <IconFileText color="black" />
+            <TextBox marginLeft="6" color="black" variant="md-bold">
+              {t("learn")}
+            </TextBox>
           </ViewBox>
         </TouchableOpacity>
       </ImageBackground>

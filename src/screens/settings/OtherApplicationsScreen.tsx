@@ -4,7 +4,7 @@ import { Linking, ScrollView, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconArrowLeft } from "tabler-icons-react-native";
 import FacebookLogo from "../../assets/svgs/FacebookLogo";
-import WebLogo from "../../assets/svgs/WebLogo";
+import LinkLogo from "../../assets/svgs/LinkLogo";
 import YoutubeLogo from "../../assets/svgs/YoutubeLogo";
 import useTranslation from "../../hooks/useTranslation";
 import { useAppSelector } from "../../redux/hooks";
@@ -112,7 +112,7 @@ const OtherApplicationsScreen = () => {
           <SettingsRow
             key={index}
             title={title}
-            icon={<WebLogo />}
+            icon={<LinkLogo />}
             onPress={() => onPressOpenLink(url)}
             hideBottomLine={index === length - 1}
             titleProps={{ variant: "lg_bold" }}

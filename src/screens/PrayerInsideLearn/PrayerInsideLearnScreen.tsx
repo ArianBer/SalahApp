@@ -9,12 +9,11 @@ import React, {
 import { FlatList, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconArrowLeft } from "tabler-icons-react-native";
+import FullScreenLoader from "../../components/FullScreenLoader";
+import { DuaType } from "../../data/duate";
 import useTranslation from "../../hooks/useTranslation";
 import { TextBox, ViewBox } from "../../styles/theme";
 import { PlayableItem } from "./PlayableItem";
-import { DuaType } from "../../data/duate";
-import FullScreenLoader from "../../components/FullScreenLoader";
-import i18n from "../../services/translation";
 
 type SoundDataType = Omit<DuaType, "sound"> & { sound: Audio.Sound };
 
@@ -42,13 +41,13 @@ export function PrayerInsideLearnScreen({ navigation }: { navigation: any }) {
         translation: t("first-dua"),
       },
       {
-        title: "",
+        title: t("protection-from-god-title"),
         reading: t("protection-from-god"),
         sound: require("../../assets/sounds/3-istiadheja.mp3"),
         translation: t("protection-from-god-translation"),
       },
       {
-        title: "",
+        title: t("bismilah-title"),
         reading: t("bismilah"),
         sound: require("../../assets/sounds/4-besmeleja.mp3"),
         translation: t("bismilah-translate"),
@@ -126,7 +125,7 @@ export function PrayerInsideLearnScreen({ navigation }: { navigation: any }) {
         sound: require("../../assets/sounds/16-dhikri-pas-selamit.mp3"),
       },
     ],
-    [i18n.locale]
+    [t]
   );
 
   const loadSoundsData = async () => {
@@ -183,7 +182,10 @@ export function PrayerInsideLearnScreen({ navigation }: { navigation: any }) {
     listRef.current?.scrollToIndex({ index, animated: true });
   };
 
-  const keyExtractor = useCallback((item: DuaType) => item.title, []);
+  const keyExtractor = useCallback(
+    (item: DuaType, index: number) => item.title + index,
+    []
+  );
 
   const renderItem = useCallback(
     ({ index, item }: { index: number; item: DuaType }) => {
@@ -219,7 +221,7 @@ export function PrayerInsideLearnScreen({ navigation }: { navigation: any }) {
         </TouchableOpacity>
         <ViewBox flex={1} justifyContent="center" alignItems="center">
           <TextBox variant="2xl" color="mainText">
-            {i18n.t('learn-the-surahs')}
+            {t("learn-the-surahs")}
           </TextBox>
         </ViewBox>
         <ViewBox style={{ marginHorizontal: 30, width: 28 }}></ViewBox>

@@ -22,8 +22,9 @@ import {
   selectCountry,
 } from "../../redux/reducers/countryReducer";
 import { TextBox, ViewBox } from "../../styles/theme";
+import { localLanguages } from "../../hooks/usePrayerTimes";
 
-const localLanguages = [
+const languages = [
   { name: "Kosova", iconSource: flags.xk },
   { name: "Shqiperi", iconSource: flags.al },
   { name: "Maqedoni", iconSource: flags.mk },
@@ -37,7 +38,13 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation<any>();
   const language = useAppSelector((state) => state.language);
+  const country = useAppSelector((state) => state.country);
+
   const isFromSettings = route.params?.isFromSettings;
+  const isOnlineLocation = !localLanguages.includes(
+    country.countrySelected.country
+  );
+
   const openModal = (country: any) => {
     setSelectedCountry(country);
     setModalVisible(true);
@@ -69,49 +76,53 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
   };
 
   const handleLocationRequest = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync();
 
-    if (status !== Location.PermissionStatus.GRANTED) {
-      return;
-    }
-
-    let { coords } = await Location.getCurrentPositionAsync({
-      accuracy: Location.LocationAccuracy.High,
-    });
-
-    if (coords) {
-      const { latitude, longitude } = coords;
-      let response = await Location.reverseGeocodeAsync({
-        latitude,
-        longitude,
-      });
-
-      const item = response ? response[0] : null;
-
-      if (!item) {
-        Alert.alert(t("locationNotFound"));
+      if (status !== Location.PermissionStatus.GRANTED) {
         return;
       }
 
-      const address = {
-        country: item.country ?? "",
-        city: item.city ?? "",
-        countryCode: item.isoCountryCode ?? "",
-        longitude: longitude?.toString(),
-        latitude: latitude?.toString(),
-      };
+      let { coords } = await Location.getCurrentPositionAsync({
+        accuracy: Location.LocationAccuracy.High,
+      });
 
-      dispatch(selectCountry.actions.changeCountry(address));
-      navigation?.navigate("LocationSelected", { isFromSettings });
+      if (coords) {
+        const { latitude, longitude } = coords;
+        let response = await Location.reverseGeocodeAsync({
+          latitude,
+          longitude,
+        });
+
+        const item = response ? response[0] : null;
+
+        if (!item) {
+          Alert.alert(t("locationNotFound"));
+          return;
+        }
+
+        const address = {
+          country: item.country ?? "",
+          city: item.city ?? "",
+          countryCode: item.isoCountryCode ?? "",
+          longitude: longitude?.toString(),
+          latitude: latitude?.toString(),
+        };
+
+        dispatch(selectCountry.actions.changeCountry(address));
+        navigation?.navigate("LocationSelected", { isFromSettings });
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
-  const renderLoactions = () => {
-    if (language.languageSelected.value !== "al") return;
+  const renderLocalLocations = () => {
+    if (language.languageSelected.value !== "al" || isOnlineLocation) return;
 
-    return localLanguages.map((item) => (
+    return languages.map((item, index) => (
       <LanguageButton
-        key={item.name}
+        key={index}
         language={item.name}
         languageIcon={
           <Image style={{ height: 24, width: 24 }} source={item.iconSource} />
@@ -160,23 +171,25 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
         {t("select-location")}
       </TextBox>
       <ViewBox width="100%" paddingHorizontal="37" mt="20">
-        {renderLoactions()}
-        <ViewBox mt="4">
-          <Pressable onPress={handleLocationRequest}>
-            <ViewBox
-              width="100%"
-              height={53}
-              justifyContent="center"
-              alignItems="center"
-              borderRadius="14"
-              backgroundColor={"lightGreen"}
-            >
-              <TextBox color="blackRussian" variant="lg_medium">
-                {t("find-location")}
-              </TextBox>
-            </ViewBox>
-          </Pressable>
-        </ViewBox>
+        {renderLocalLocations()}
+        {isOnlineLocation && (
+          <ViewBox mt="4">
+            <Pressable onPress={handleLocationRequest}>
+              <ViewBox
+                width="100%"
+                height={53}
+                justifyContent="center"
+                alignItems="center"
+                borderRadius="14"
+                backgroundColor={"lightGreen"}
+              >
+                <TextBox color="blackRussian" variant="lg_medium">
+                  {t("find-location")}
+                </TextBox>
+              </ViewBox>
+            </Pressable>
+          </ViewBox>
+        )}
       </ViewBox>
 
       <ViewBox style={styles.centeredView}>
@@ -198,8 +211,9 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
               </Pressable>
               {countriesData
                 .find((country) => country.country === selectedCountry)
-                ?.cities.map((city) => (
+                ?.cities.map((city, index) => (
                   <Pressable
+                    key={city.name + index}
                     style={styles.itemStyle}
                     onPress={() => handleCitySelected(city.name)}
                   >

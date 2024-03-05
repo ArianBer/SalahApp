@@ -2,14 +2,15 @@ import React from "react";
 import { ScrollView, Share, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconShare } from "tabler-icons-react-native";
-import MILogo from "../../assets/svgs/MILogo";
 import useTranslation from "../../hooks/useTranslation";
 import { useAppSelector } from "../../redux/hooks";
-import i18n from "../../services/translation";
 import { TextBox, ViewBox } from "../../styles/theme";
 import OtherApplicationsComponent from "../components/OtherApplicationsComponent";
 import { SettingsRow } from "../components/SettingsRow";
 import { SettingsRowsContainer } from "../components/SettingsRowsContainer";
+import WebLogo from "../../assets/svgs/WebLogo";
+import LocationIcon from "../../assets/svgs/LocationIcon";
+import SettingsContactUsSection from "../components/SettingsContactUsSection";
 
 function SettingsScreen({ navigation }: { navigation: any }) {
   const { top } = useSafeAreaInsets();
@@ -19,7 +20,7 @@ function SettingsScreen({ navigation }: { navigation: any }) {
   const onPressShare = () => {
     Share.share(
       {
-        message: `${i18n.t('share-app')}: https://www.google.com`,
+        message: `${t("share-app")}: APP_DOWNLOAD_LINK`,
         title: "Prayer Hub",
       },
       {}
@@ -54,33 +55,30 @@ function SettingsScreen({ navigation }: { navigation: any }) {
           <IconShare size={28} />
         </TouchableOpacity>
       </ViewBox>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 26 }}>
+      <ScrollView
+        contentContainerStyle={{ paddingHorizontal: 26, paddingBottom: 20 }}
+      >
         <SettingsRowsContainer title={t("preferences")} mt="25">
           <SettingsRow
             onPress={onPressLanguage}
-            icon={<MILogo />}
+            icon={<WebLogo />}
             title={t("language")}
             subTitle={t("choose-language")}
           />
           <SettingsRow
             onPress={onPressLocation}
-            icon={<MILogo />}
+            icon={<LocationIcon />}
             title={t("select-location")}
             subTitle={
               country.countrySelected.city +
               ", " +
               country.countrySelected.country
             }
-          />
-          {/* <SettingsRow
-            onPress={onPressNotifications}
-            icon={<MILogo />}
-            title={t("notifications")}
-            subTitle={t("edit")}
             hideBottomLine
-          /> */}
+          />
         </SettingsRowsContainer>
         <OtherApplicationsComponent />
+        <SettingsContactUsSection />
       </ScrollView>
     </ViewBox>
   );

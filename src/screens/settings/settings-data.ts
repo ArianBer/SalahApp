@@ -90,16 +90,18 @@ export const settingsData: SettingWithLanguageDataType = {
         "https://youtube.com/@PerkujtuesiDitor?si=siILmR_HiWydNTxq",
     },
     web: {
-      Hadithet:
-        "https://hadithet.com/?fbclid=IwAR3KczKGrqqrwAVsSb87MyX1RnVXSxVHPJEYC6PGMpLKGsbHlKL5Fb6Hqj0",
+      "Kerko Sure": "https://kuran-index.com/Home/Suret",
+      Hadithet: "https://hadithet.com",
     },
     applications: {
-      "Quran Words": {
+      "Enis Rama": {
         url: {
           android:
-            "https://play.google.com/store/apps/details?id=com.dawah.quranwords",
-          ios: "https://apps.apple.com/us/app/quranwords/id6446705741",
+            "https://play.google.com/store/apps/details?id=com.app.enisrama",
+          ios: "https://apps.apple.com/tr/app/enis-rama/id1236706762",
         },
+        image:
+          "https://play-lh.googleusercontent.com/gfd7_xCP9pFA80Z27kd4R2c80Sn1mXeyuna5g9aYz-_qLAlx3Xb84HvXD2yOq0N12BLk=w480-h960-rw",
       },
       "Hoxhe Bajram Karabeg": {
         url: {
@@ -108,6 +110,42 @@ export const settingsData: SettingWithLanguageDataType = {
         },
         image:
           "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/1024px-Telegram_logo.svg.png",
+      },
+      "Quran Start": {
+        image:
+          "https://is1-ssl.mzstatic.com/image/thumb/Purple124/v4/c4/4c/f7/c44cf720-1568-70e8-2991-d37f6c1c9e37/AppIcon-1x_U007emarketing-0-7-0-85-220.png/230x0w.webp",
+        url: {
+          ios: "https://apps.apple.com/us/app/quranstart/id1546283245",
+          android:
+            "https://play.google.com/store/apps/details?id=com.elifproject&hl=en_US",
+        },
+      },
+      "Muslimani Ideal": {
+        url: {
+          android:
+            "https://play.google.com/store/apps/details?id=com.muslimani.ideal",
+          ios: "https://apps.apple.com/ba/app/muslimani-ideal/id1611396758",
+        },
+        image:
+          "https://play-lh.googleusercontent.com/N7BO--wpr0wQJE8Z818awjCW_0YB5aYlSyooAqNnhzZ5EEhtm-PEayRxjnwVTiMWFQ=s96-rw",
+      },
+      "Quran Words": {
+        url: {
+          android:
+            "https://play.google.com/store/apps/details?id=com.dawah.quranwords",
+          ios: "https://apps.apple.com/us/app/quranwords/id6446705741",
+        },
+        image:
+          "https://play-lh.googleusercontent.com/WHekx2ood--w7wqMJkyKNb3_F0gMFpJKLx6SatkFr1eBScJejGeFjSIi7fwc9Rs2wA8=w480-h960-rw",
+      },
+      Quran: {
+        url: {
+          android:
+            "https://play.google.com/store/apps/details?id=com.quran.labs.androidquran",
+          ios: "https://apps.apple.com/us/app/quran-by-quran-com-%D9%82%D8%B1%D8%A2%D9%86/id1118663303",
+        },
+        image:
+          "https://play-lh.googleusercontent.com/zoyAL6BWpiHrgyFEujQcEXhBqZn4SfX0JiIFqOecs2JoZYy39Yam8xiz7Vq6kP7S2w=w480-h960-rw",
       },
     },
   },
@@ -133,6 +171,24 @@ export const settingsData: SettingWithLanguageDataType = {
       "One hadith": "https://onehadith.org/",
     },
     applications: {
+      Quran: {
+        url: {
+          android:
+            "https://play.google.com/store/apps/details?id=com.quran.labs.androidquran",
+          ios: "https://apps.apple.com/us/app/quran-by-quran-com-%D9%82%D8%B1%D8%A2%D9%86/id1118663303",
+        },
+        image:
+          "https://play-lh.googleusercontent.com/zoyAL6BWpiHrgyFEujQcEXhBqZn4SfX0JiIFqOecs2JoZYy39Yam8xiz7Vq6kP7S2w=w480-h960-rw",
+      },
+      "Quran Words": {
+        url: {
+          android:
+            "https://play.google.com/store/apps/details?id=com.dawah.quranwords",
+          ios: "https://apps.apple.com/us/app/quranwords/id6446705741",
+        },
+        image:
+          "https://play-lh.googleusercontent.com/WHekx2ood--w7wqMJkyKNb3_F0gMFpJKLx6SatkFr1eBScJejGeFjSIi7fwc9Rs2wA8=w480-h960-rw",
+      },
       "Quran Start": {
         image:
           "https://is1-ssl.mzstatic.com/image/thumb/Purple124/v4/c4/4c/f7/c44cf720-1568-70e8-2991-d37f6c1c9e37/AppIcon-1x_U007emarketing-0-7-0-85-220.png/230x0w.webp",
@@ -166,6 +222,24 @@ export const settingsData: SettingWithLanguageDataType = {
       "One hadith": "https://onehadith.org/",
     },
     applications: {
+      Quran: {
+        url: {
+          android:
+            "https://play.google.com/store/apps/details?id=com.quran.labs.androidquran",
+          ios: "https://apps.apple.com/us/app/quran-by-quran-com-%D9%82%D8%B1%D8%A2%D9%86/id1118663303",
+        },
+        image:
+          "https://play-lh.googleusercontent.com/zoyAL6BWpiHrgyFEujQcEXhBqZn4SfX0JiIFqOecs2JoZYy39Yam8xiz7Vq6kP7S2w=w480-h960-rw",
+      },
+      "Quran Words": {
+        url: {
+          android:
+            "https://play.google.com/store/apps/details?id=com.dawah.quranwords",
+          ios: "https://apps.apple.com/us/app/quranwords/id6446705741",
+        },
+        image:
+          "https://play-lh.googleusercontent.com/WHekx2ood--w7wqMJkyKNb3_F0gMFpJKLx6SatkFr1eBScJejGeFjSIi7fwc9Rs2wA8=w480-h960-rw",
+      },
       "Quran Start": {
         image:
           "https://is1-ssl.mzstatic.com/image/thumb/Purple124/v4/c4/4c/f7/c44cf720-1568-70e8-2991-d37f6c1c9e37/AppIcon-1x_U007emarketing-0-7-0-85-220.png/230x0w.webp",
@@ -199,6 +273,24 @@ export const settingsData: SettingWithLanguageDataType = {
       "One hadith": "https://onehadith.org/",
     },
     applications: {
+      Quran: {
+        url: {
+          android:
+            "https://play.google.com/store/apps/details?id=com.quran.labs.androidquran",
+          ios: "https://apps.apple.com/us/app/quran-by-quran-com-%D9%82%D8%B1%D8%A2%D9%86/id1118663303",
+        },
+        image:
+          "https://play-lh.googleusercontent.com/zoyAL6BWpiHrgyFEujQcEXhBqZn4SfX0JiIFqOecs2JoZYy39Yam8xiz7Vq6kP7S2w=w480-h960-rw",
+      },
+      "Quran Words": {
+        url: {
+          android:
+            "https://play.google.com/store/apps/details?id=com.dawah.quranwords",
+          ios: "https://apps.apple.com/us/app/quranwords/id6446705741",
+        },
+        image:
+          "https://play-lh.googleusercontent.com/WHekx2ood--w7wqMJkyKNb3_F0gMFpJKLx6SatkFr1eBScJejGeFjSIi7fwc9Rs2wA8=w480-h960-rw",
+      },
       "Quran Start": {
         image:
           "https://is1-ssl.mzstatic.com/image/thumb/Purple124/v4/c4/4c/f7/c44cf720-1568-70e8-2991-d37f6c1c9e37/AppIcon-1x_U007emarketing-0-7-0-85-220.png/230x0w.webp",
@@ -232,6 +324,24 @@ export const settingsData: SettingWithLanguageDataType = {
       "One hadith": "https://onehadith.org/",
     },
     applications: {
+      Quran: {
+        url: {
+          android:
+            "https://play.google.com/store/apps/details?id=com.quran.labs.androidquran",
+          ios: "https://apps.apple.com/us/app/quran-by-quran-com-%D9%82%D8%B1%D8%A2%D9%86/id1118663303",
+        },
+        image:
+          "https://play-lh.googleusercontent.com/zoyAL6BWpiHrgyFEujQcEXhBqZn4SfX0JiIFqOecs2JoZYy39Yam8xiz7Vq6kP7S2w=w480-h960-rw",
+      },
+      "Quran Words": {
+        url: {
+          android:
+            "https://play.google.com/store/apps/details?id=com.dawah.quranwords",
+          ios: "https://apps.apple.com/us/app/quranwords/id6446705741",
+        },
+        image:
+          "https://play-lh.googleusercontent.com/WHekx2ood--w7wqMJkyKNb3_F0gMFpJKLx6SatkFr1eBScJejGeFjSIi7fwc9Rs2wA8=w480-h960-rw",
+      },
       "Quran Start": {
         image:
           "https://is1-ssl.mzstatic.com/image/thumb/Purple124/v4/c4/4c/f7/c44cf720-1568-70e8-2991-d37f6c1c9e37/AppIcon-1x_U007emarketing-0-7-0-85-220.png/230x0w.webp",

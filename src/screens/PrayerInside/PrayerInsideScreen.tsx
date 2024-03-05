@@ -7,7 +7,6 @@ import useTranslation from "../../hooks/useTranslation";
 import { TextBox, ViewBox } from "../../styles/theme";
 import PrayersVideo from "./components/PrayersVideo";
 import { PrayerKey } from "./videos";
-import i18n from "../../services/translation";
 
 export function PrayerInsideScreen({
   route,
@@ -16,32 +15,34 @@ export function PrayerInsideScreen({
   route: any;
   navigation: any;
 }) {
+  const t = useTranslation();
+
   const { top } = useSafeAreaInsets();
   const prayer = (route?.params?.prayer ?? "") as PrayerKey | "";
   const prayerText = {
     [Prayers.ablution]: {
       description: "",
-      title: i18n.t('ablution'),
+      title: t("ablution"),
     },
     [Prayers.fajr]: {
-      title: i18n.t('fajr-prayer'),
-      description: i18n.t("2-rak'ats"),
+      title: t("fajr-prayer"),
+      description: t("2-rak'ats"),
     },
     [Prayers.dhuhr]: {
-      title: i18n.t('dhuhr-prayer'),
-      description: i18n.t("4-rak'ats"),
+      title: t("dhuhr-prayer"),
+      description: t("4-rak'ats"),
     },
     [Prayers.asr]: {
-      title: i18n.t('asr-prayer'),
-      description: i18n.t("4-rak'ats"),
+      title: t("asr-prayer"),
+      description: t("4-rak'ats"),
     },
     [Prayers.maghrib]: {
-      title: i18n.t('maghrib-prayer'),
-      description: i18n.t("3-rak'ats"),
+      title: t("maghrib-prayer"),
+      description: t("3-rak'ats"),
     },
     [Prayers.isha]: {
-      title: i18n.t('isha-prayer'),
-      description: i18n.t("4-rak'ats"),
+      title: t("isha-prayer"),
+      description: t("4-rak'ats"),
     },
   };
 
@@ -87,7 +88,7 @@ export function PrayerInsideScreen({
             >
               <IconFile />
               <TextBox ml="xs" variant="xlBold">
-                {i18n.t('learn')}
+                {t("learn")}
               </TextBox>
             </ViewBox>
           </TouchableOpacity>

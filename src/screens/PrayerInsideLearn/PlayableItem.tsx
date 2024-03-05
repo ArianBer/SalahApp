@@ -6,6 +6,7 @@ import { IconPlayerPause, IconPlayerPlay } from "tabler-icons-react-native";
 import useTranslation from "../../hooks/useTranslation";
 import i18n from "../../services/translation";
 import { AnimatedBox, TextBox, ViewBox } from "../../styles/theme";
+import { useIsFocused } from "@react-navigation/native";
 
 interface Props {
   title: string;
@@ -34,6 +35,8 @@ export function PlayableItem({
   const [isPlaying, setIsPlaying] = useState(false);
   const [soundDuration, setSoundDuration] = useState<number | null>(null);
   const [playbackPosition, setPlaybackPosition] = useState<number | null>(null);
+  const isFocused = useIsFocused();
+
   const t = useTranslation();
 
   useEffect(() => {
@@ -56,10 +59,10 @@ export function PlayableItem({
   };
 
   useEffect(() => {
-    if (isAnotherSoundPlaying) {
+    if (isAnotherSoundPlaying || !isFocused) {
       pauseSound();
     }
-  }, [isAnotherSoundPlaying]);
+  }, [isAnotherSoundPlaying, isFocused]);
 
   const playSound = async () => {
     if (sound) {
@@ -146,7 +149,7 @@ export function PlayableItem({
       </TextBox>
       <TextBox mt="24" variant="md" color="blackRussian">
         <TextBox color="darkGreen" variant="md-bold">
-          {i18n.t("translate")}
+          {t("translate")}
         </TextBox>
         {translation}
       </TextBox>
