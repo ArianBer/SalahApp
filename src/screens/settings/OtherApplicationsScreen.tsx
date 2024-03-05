@@ -36,7 +36,7 @@ const OtherApplicationsScreen = () => {
 
   const renderApplications = () => {
     const applicationsArray = Object.entries(applications);
-    const length = applicationsArray.length;
+    const length = applicationsArray?.length;
 
     if (length < 1) {
       return null;

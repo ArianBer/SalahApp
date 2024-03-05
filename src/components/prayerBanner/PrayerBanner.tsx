@@ -73,7 +73,7 @@ function PrayerBox({ isAbsolute, icon, customIcon }: PrayerBannerProps) {
           fontWeight="400"
           lineHeight={15}
         >
-          {t("until") + " " + t(activePrayer.toLowerCase())}
+          {t("until") + " " + t(activePrayer?.toLowerCase())}
         </TextBox>
       </ViewBox>
       <ViewBox>

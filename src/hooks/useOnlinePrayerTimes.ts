@@ -10,8 +10,10 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
   const [now, setNow] = useState(new Date());
   const currentMonth = now.getMonth() + 1;
   const [currentDay, setCurrentDay] = useState(now.getDate());
-  const [prayerTimes, setPrayerTime] = useState({});
+  const [prayerTimes, setPrayerTime] = useState([]);
   const [currentPrayer, setCurrentPrayer] = useState<CurrentPrayerType>("dhuhr");
+  const [increased, setIncreased] = useState(false);
+
   const keysToInclude = [
     "Imsak",
     "Sunrise",
@@ -24,20 +26,33 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
   const dispatch = useAppDispatch();
 
   const filterPrayerTimes = (
-    prayerTimes: Record<string, string>
+    prayerTimes: Record<string, string>,
+    increased: Boolean
   ): Record<string, Date> => {
     if (!prayerTimes) {
       return {};
     }
-    return Object.keys(prayerTimes)
+  
+    const prayerTimesObject = Object.keys(prayerTimes)
       .filter((key) => keysToInclude.includes(key))
       .reduce((obj: Record<string, Date>, key: string) => {
         const [hours, minutes] = prayerTimes[key].split(":");
-        obj[key] = new Date();
-        obj[key].setHours(Number(hours), Number(minutes), 0, 0);
+        const prayerTime = new Date();
+        prayerTime.setHours(Number(hours), Number(minutes), 0, 0);
+        obj[key] = prayerTime;
+  
         return obj;
       }, {});
+  
+    if (increased) {
+      Object.keys(prayerTimesObject).forEach((key) => {
+        prayerTimesObject[key].setDate(prayerTimesObject[key].getDate() + 1);
+      });
+    }
+  
+    return prayerTimesObject;
   };
+  
 
   const schedulePrayerNotifications = (
     prayerTimesForToday: Record<string, Date>
@@ -58,7 +73,7 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
   const remainingTimeUntilNextPrayer = (
     prayerTimesForToday: Record<string, string>
   ) => {
-    const filteredPrayerTimes = filterPrayerTimes(prayerTimesForToday);
+    const filteredPrayerTimes = filterPrayerTimes(prayerTimesForToday, increased);
 
     const now1 = new Date();
     const remainingTimes = Object.entries(filteredPrayerTimes)
@@ -76,8 +91,8 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
       const nextPrayer = remainingTimes[0][0];
       let index = keysToInclude.indexOf(remainingTimes[0][0]);
 
-      setCurrentPrayer(keysToInclude[index - 1])
-      setActivePrayer(nextPrayer);
+      setCurrentPrayer(keysToInclude[index - 1]);
+      setActivePrayer(nextPrayer.toLowerCase());
       const timeRemaining =
         new Date(remainingTimes[0][1]).getTime() - now1.getTime();
       const hoursRemaining = Math.floor(timeRemaining / 3600000);
@@ -113,23 +128,6 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
   }, [activePrayers]);
 
   useEffect(() => {
-    const filteredPrayerTimes = filterPrayerTimes(prayerTimes);
-
-    if(now.getTime() > filteredPrayerTimes['Isha']?.getTime()){
-      setCurrentDay(prev => prev +1)
-    }
-  }, [activePrayers, now, currentPrayer]);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setNow(new Date());
-      remainingTimeUntilNextPrayer(prayerTimes);
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, [prayerTimes]);
-
-  useEffect(() => {
     const fetchPrayerTimes = async () => {
       try {
         const response = await fetch(
@@ -147,6 +145,29 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
 
     fetchPrayerTimes();
   }, [countrySelected, currentMonth, currentDay]);
+  
+
+  useEffect(() => {
+    const filteredPrayerTimes = filterPrayerTimes(prayerTimes);
+  
+    const isIshaPassed = now.getTime() > filteredPrayerTimes['Isha']?.getTime();
+  
+    if (isIshaPassed && !increased) {
+      setCurrentDay(prev => prev + 1);
+      setIncreased(true);
+    } else if (!isIshaPassed) {
+      setIncreased(false);
+    }
+  }, [prayerTimes, now, increased]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setNow(new Date());
+      remainingTimeUntilNextPrayer(prayerTimes);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [prayerTimes, currentDay]);
 
   return {
     activePrayers,

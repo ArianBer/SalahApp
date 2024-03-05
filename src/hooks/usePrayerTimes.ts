@@ -1,10 +1,10 @@
 /* eslint-disable no-shadow */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { CurrentPrayerType, homeSlice } from "../redux/reducers/homeReducer";
 import { sendLocalNotification } from "../services/notifications/localNotification";
 import { registerForPushNotificationsAsync } from "../services/registerPushNotifications";
-import { useOnlinePrayerTimes } from "./useOnlinePrayerTimes";
+import {useOnlinePrayerTimes} from "./useOnlinePrayerTimes";
 
 type PrayerTime = {
   country: string;

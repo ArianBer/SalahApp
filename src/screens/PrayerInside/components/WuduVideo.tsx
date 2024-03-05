@@ -38,7 +38,6 @@ const WuduVideo = () => {
       setIsVideoPlaying(!isVideoPlaying);
     }
   };
-  console.log("rendered");
   return (
     <ViewBox flex={1}>
       {/* {isFocused && ( */}

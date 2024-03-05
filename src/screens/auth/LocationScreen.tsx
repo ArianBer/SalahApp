@@ -38,23 +38,22 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
   const navigation = useNavigation<any>();
   const language = useAppSelector((state) => state.language);
   const isFromSettings = route.params?.isFromSettings;
-  console.log({ isFromSettings });
   const openModal = (country: any) => {
     setSelectedCountry(country);
     setModalVisible(true);
   };
 
-  const citySelected = (city: any) => {
+  const handleCitySelected = (city: any) => {
     if (!selectCountry) return;
 
-    const countrySelcted = countriesData.find(
+    const countrySelected = countriesData.find(
       (country) => country.country === selectedCountry
     );
 
     const address = {
       country: selectedCountry ?? "",
       city: city ?? "",
-      countryCode: countrySelcted?.countrycode ?? "",
+      countryCode: countrySelected?.countrycode ?? "",
       longitude: "",
       latitude: "",
     };
@@ -62,14 +61,14 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
     dispatch(changeCountry(address));
     setModalVisible(false);
 
-    if(!isFromSettings){
+    if (!isFromSettings) {
       navigation?.navigate("LocationSelected", { isFromSettings });
-    }else{
-      navigation.navigate("Setting")
+    } else {
+      navigation.navigate("Setting");
     }
   };
 
-  const request = async () => {
+  const handleLocationRequest = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
 
     if (status !== Location.PermissionStatus.GRANTED) {
@@ -90,7 +89,7 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
       const item = response ? response[0] : null;
 
       if (!item) {
-        Alert.alert("Couldn't find your location!");
+        Alert.alert(t("locationNotFound"));
         return;
       }
 
@@ -163,7 +162,7 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
       <ViewBox width="100%" paddingHorizontal="37" mt="20">
         {renderLoactions()}
         <ViewBox mt="4">
-          <Pressable onPress={request}>
+          <Pressable onPress={handleLocationRequest}>
             <ViewBox
               width="100%"
               height={53}
@@ -202,7 +201,7 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
                 ?.cities.map((city) => (
                   <Pressable
                     style={styles.itemStyle}
-                    onPress={() => citySelected(city.name)}
+                    onPress={() => handleCitySelected(city.name)}
                   >
                     <TextBox style={styles.textItem} key={city.name}>
                       {city.name}

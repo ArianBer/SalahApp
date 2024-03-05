@@ -13,16 +13,6 @@
     },
     "plugins": [
       [
-        "expo-build-properties",
-        {
-          "android": {
-            "compileSdkVersion": 33,
-            "targetSdkVersion": 33,
-            "buildToolsVersion": "33.0.0"
-          }
-        }
-      ],
-      [
         "expo-notifications",
         {
           "icon": "./assets/logo.png"
@@ -32,6 +22,16 @@
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "Allow Prayer Hub to use your location."
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 33,
+            "targetSdkVersion": 33,
+            "buildToolsVersion": "33.0.0"
+          }
         }
       ],
       "expo-font"
@@ -58,7 +58,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "fdf1365d-5919-4390-a53d-8a906014cc1b"
+        "projectId": "fa8add9b-672f-443b-b005-d3ab4e6956c7"
       }
     }
   }
