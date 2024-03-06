@@ -2,7 +2,7 @@
   "expo": {
     "name": "Prayer Hub",
     "slug": "salah",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
@@ -59,7 +59,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "fa8add9b-672f-443b-b005-d3ab4e6956c7"
+        "projectId": "fdf1365d-5919-4390-a53d-8a906014cc1b"
       }
     }
   }

@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { CurrentPrayerType, homeSlice } from "../redux/reducers/homeReducer";
@@ -18,31 +19,25 @@ type PrayerTime = {
   created_at: string | null;
   updated_at: string | null;
 };
-
 export const localLanguages = ["Kosova", "Shqiperi", "Maqedoni"];
 const prayers = ["imsak", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
-const dateNow = new Date();
-const currentMonth = dateNow.getMonth() + 1;
 
 export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
-  const dispatch = useAppDispatch();
-
   const [activePrayer, setActivePrayer] = useState<CurrentPrayerType>("dhuhr");
   const [currentPrayer, setCurrentPrayer] =
     useState<CurrentPrayerType>("dhuhr");
   const [hoursRemaining, setHoursRemaining] = useState("");
   const [secondsRemaining, setSecondsRemaining] = useState("");
-  const [currentDay, setCurrentDay] = useState(dateNow.getDate());
+  const [now, setNow] = useState(new Date());
+  const currentMonth = now.getMonth() + 1;
+  const [currentDay, setCurrentDay] = useState(now.getDate());
+  const dispatch = useAppDispatch();
   const country = useAppSelector((state) => state.country);
-
   const notificationScheduled: Record<string, boolean> = {};
-  const isOnlineLocation = !localLanguages.includes(
-    country.countrySelected.country
-  );
-  const onlineResponse = useOnlinePrayerTimes(country.countrySelected);
 
-  if (isOnlineLocation) {
-    const { activePrayers, secondsRemaining, hoursRemaining } = onlineResponse;
+  if (!localLanguages.includes(country.countrySelected.country)) {
+    const { activePrayers, secondsRemaining, hoursRemaining } =
+      useOnlinePrayerTimes(country.countrySelected);
 
     return {
       getPrayerTimesForToday: () => ({}),
@@ -61,7 +56,7 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
     let nottificationSent = false;
 
     Object.entries(prayerTimesForToday).forEach(([prayerName, prayerTime]) => {
-      const timeRemaining = prayerTime.getTime() - dateNow.getTime();
+      const timeRemaining = prayerTime.getTime() - now.getTime();
 
       if (
         timeRemaining > 0 &&
@@ -79,11 +74,9 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
     Object.keys(prayerTime)
       .filter((key) => prayers.includes(key))
       .reduce((obj: Record<string, Date>, key: string) => {
-        const [hours, minutes, seconds] =
-          prayerTime[key as CurrentPrayerType]?.split(":");
-
+        const [hours, minutes, seconds] = prayerTime[key].split(":");
         obj[key] = new Date(
-          dateNow.getFullYear(),
+          now.getFullYear(),
           currentMonth - 1,
           currentDay,
           Number(hours),
@@ -104,9 +97,9 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
     if (remainingTimes?.length) {
       let index = prayers.indexOf(remainingTimes[0][0]);
 
-      setCurrentPrayer(prayers[index - 1] as CurrentPrayerType);
-      setActivePrayer(remainingTimes[0][0] as CurrentPrayerType);
-      const timeRemaining = remainingTimes[0][1]?.getTime() - now1.getTime();
+      setCurrentPrayer(prayers[index - 1]);
+      setActivePrayer(remainingTimes[0][0]);
+      const timeRemaining = remainingTimes[0][1].getTime() - now1.getTime();
       const hoursRemaining = Math.floor(timeRemaining / 3600000);
       const minutesRemaining = Math.floor((timeRemaining % 3600000) / 60000);
       const secondsRemaining = Math.floor((timeRemaining % 60000) / 1000);
@@ -161,7 +154,7 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
 
     schedulePrayerNotifications(prayerTimesForToday);
 
-    const setActivePrayer = (prayer: CurrentPrayerType) => {
+    const setActivePrayer = (prayer) => {
       dispatch(homeSlice.actions.setActivePrayer(prayer));
     };
 
@@ -172,7 +165,7 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
     } else if (activePrayer !== "dhuhr") {
       setActivePrayer(currentPrayer);
     } else {
-      setActivePrayer("sunrise");
+      setActivePrayer("sunrises");
     }
   }, [activePrayer]);
 
@@ -182,10 +175,10 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
       currentDay.toString()
     );
 
-    if (dateNow.getTime() > prayerTimesForToday["isha"].getTime()) {
+    if (now.getTime() > prayerTimesForToday["isha"].getTime()) {
       setCurrentDay((prev) => prev + 1);
     }
-  }, [activePrayer, currentPrayer]);
+  }, [activePrayer, now, currentPrayer]);
 
   useEffect(() => {
     registerForPushNotificationsAsync();

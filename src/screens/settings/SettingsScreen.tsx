@@ -11,6 +11,7 @@ import { SettingsRowsContainer } from "../components/SettingsRowsContainer";
 import WebLogo from "../../assets/svgs/WebLogo";
 import LocationIcon from "../../assets/svgs/LocationIcon";
 import SettingsContactUsSection from "../components/SettingsContactUsSection";
+import { APP_DOWNLOAD_LINK } from "../../constants";
 
 function SettingsScreen({ navigation }: { navigation: any }) {
   const { top } = useSafeAreaInsets();
@@ -20,7 +21,7 @@ function SettingsScreen({ navigation }: { navigation: any }) {
   const onPressShare = () => {
     Share.share(
       {
-        message: `${t("share-app")}: APP_DOWNLOAD_LINK`,
+        message: `${t("share-app")}: ${APP_DOWNLOAD_LINK}`,
         title: "Prayer Hub",
       },
       {}
