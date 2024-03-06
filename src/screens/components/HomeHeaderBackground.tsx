@@ -41,8 +41,10 @@ export function HomeHeaderBackground({ children }: HomeHeaderBackgroundProps) {
   const { activePrayer } = useAppSelector((state) => state.home);
   const t = useTranslation();
 
+  console.log(activePrayer)
+
   const imageSourse =
-    activePrayer === "sunrise"
+    (activePrayer === "sunrise" || activePrayer === "sunrises" )
       ? backgroundImages["sunrise"]
       : backgroundImages[activePrayer] ?? backgroundImages.isha;
 
