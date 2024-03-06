@@ -70,21 +70,26 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
     });
   };
 
-  const extractPrayerTimes = (prayerTime: PrayerTime): Record<string, Date> =>
-    Object.keys(prayerTime)
+  const extractPrayerTimes = (prayerTime: PrayerTime, now: Date): Record<string, Date> => {
+    const extractedTimes = Object.keys(prayerTime)
       .filter((key) => prayers.includes(key))
       .reduce((obj: Record<string, Date>, key: string) => {
         const [hours, minutes, seconds] = prayerTime[key].split(":");
         obj[key] = new Date(
-          now.getFullYear(),
-          currentMonth - 1,
-          currentDay,
-          Number(hours),
-          Number(minutes),
-          Number(seconds)
+          Date.UTC(
+            now.getUTCFullYear(),
+            now.getUTCMonth(),
+            now.getUTCDate(),
+            Number(hours),
+            Number(minutes),
+            Number(seconds)
+          )
         );
         return obj;
       }, {});
+  
+    return extractedTimes;
+  };
 
   const remainingTimeUntilNextPrayer = (
     prayerTimesForToday: Record<string, Date>
@@ -123,7 +128,7 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
         prayerTime.country === country.countrySelected.countryCode
     );
     if (prayerTimesToday) {
-      return extractPrayerTimes(prayerTimesToday);
+      return extractPrayerTimes(prayerTimesToday, now);
     }
     return {};
   };
