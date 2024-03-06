@@ -63,17 +63,19 @@ export const SettingsRow = ({
         flexDirection="row"
         alignItems="center"
       >
-        <ViewBox
-          height={40}
-          borderRadius="20"
-          width={40}
-          justifyContent="center"
-          alignItems="center"
-          mr="20"
-          bg="twilightBlue"
-        >
-          {renderIcon()}
-        </ViewBox>
+        {!hideLogo && (
+          <ViewBox
+            height={40}
+            borderRadius="20"
+            width={40}
+            justifyContent="center"
+            alignItems="center"
+            mr="20"
+            bg="twilightBlue"
+          >
+            {renderIcon()}
+          </ViewBox>
+        )}
         <ViewBox flex={1}>
           <TextBox variant="lg_bold" color="black" {...titleProps}>
             {title}

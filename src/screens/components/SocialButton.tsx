@@ -11,8 +11,8 @@ const SocialButton = ({ icon, onPress }: SocialButtonProps) => {
   return (
     <Pressable onPress={onPress}>
       <ViewBox
-        height={78}
-        width={78}
+        height={65}
+        width={65}
         borderRadius="14"
         justifyContent="center"
         alignItems="center"

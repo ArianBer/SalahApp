@@ -90,8 +90,8 @@ export const settingsData: SettingWithLanguageDataType = {
         "https://youtube.com/@PerkujtuesiDitor?si=siILmR_HiWydNTxq",
     },
     web: {
-      "Kerko Sure": "https://kuran-index.com/Home/Suret",
-      Hadithet: "https://hadithet.com",
+      Kuran: "https://kuran-index.com/Home/Suret",
+      "Hadithet.com": "https://hadithet.com",
     },
     applications: {
       "Enis Rama": {

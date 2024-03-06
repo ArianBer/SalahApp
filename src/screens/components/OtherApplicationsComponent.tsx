@@ -1,10 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Linking } from "react-native";
-import YoutubeLogo from "../../assets/svgs/YoutubeLogo";
+import LinkLogo from "../../assets/svgs/LinkLogo";
 import useTranslation from "../../hooks/useTranslation";
 import { useAppSelector } from "../../redux/hooks";
-import { isIos } from "../../utilts/isIos";
+import { LanguageType } from "../../services/translation/languges";
 import { settingsData } from "../settings/settings-data";
 import { SettingsRow } from "./SettingsRow";
 import { SettingsRowsContainer } from "./SettingsRowsContainer";
@@ -13,11 +13,9 @@ const OtherApplicationsComponent = () => {
   const navigation = useNavigation<any>();
   const language = useAppSelector((state) => state.language);
   const t = useTranslation();
-  const applications = Object.entries(
-    settingsData[language?.languageSelected.value]?.applications
-  );
-  const youtubeLinks = Object.entries(
-    settingsData[language?.languageSelected.value]?.youtube
+
+  const webLinks = Object.entries(
+    settingsData[language?.languageSelected.value as LanguageType]?.web
   );
 
   const onPressLink = (url: string) => Linking.openURL(url);
@@ -26,42 +24,35 @@ const OtherApplicationsComponent = () => {
     navigation.navigate("OtherApplications");
   };
 
-  const renderApplication = () => {
-    const [title, data] = Object.values(applications)[0];
-    const {
-      url: { ios, android },
-    } = data;
+  const renderLinks = () => {
+    const [title1, url1] = Object.values(webLinks)[0];
+    const [title2, url2] = Object.values(webLinks)[1];
 
     return (
-      <SettingsRow
-        iconUrl={data?.image}
-        title={title}
-        titleProps={{ variant: "lg_bold" }}
-        onPress={() => onPressLink(isIos ? ios : android)}
-      />
-    );
-  };
-
-  const renderYoutube = () => {
-    const [title, url] = Object.values(youtubeLinks)[0];
-
-    return (
-      <SettingsRow
-        icon={<YoutubeLogo />}
-        title={title}
-        titleProps={{ variant: "lg_bold" }}
-        onPress={() => onPressLink(url)}
-      />
+      <>
+        <SettingsRow
+          icon={<LinkLogo />}
+          title={title1}
+          titleProps={{ variant: "lg_bold" }}
+          onPress={() => onPressLink(url1)}
+        />
+        <SettingsRow
+          icon={<LinkLogo />}
+          title={title2}
+          titleProps={{ variant: "lg_bold" }}
+          onPress={() => onPressLink(url2)}
+        />
+      </>
     );
   };
 
   return (
     <SettingsRowsContainer mt="25" title={t("other-applications")}>
-      {renderApplication()}
-      {renderYoutube()}
+      {renderLinks()}
       <SettingsRow
         title={t("others") + ".."}
         hideBottomLine
+        hideLogo
         onPress={onPressMoreApps}
       />
     </SettingsRowsContainer>

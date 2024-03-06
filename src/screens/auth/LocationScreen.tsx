@@ -118,11 +118,7 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
   };
 
   const renderLocalLocations = () => {
-    if (
-      language.languageSelected.value !== "al" ||
-      (isFromSettings && isOnlineLocation)
-    )
-      return;
+    if (isFromSettings && isOnlineLocation) return;
 
     return languages.map((item, index) => (
       <LanguageButton
