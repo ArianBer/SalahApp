@@ -37,7 +37,6 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation<any>();
-  const language = useAppSelector((state) => state.language);
   const country = useAppSelector((state) => state.country);
 
   const isFromSettings = route.params?.isFromSettings;

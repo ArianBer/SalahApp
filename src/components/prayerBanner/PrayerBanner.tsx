@@ -3,7 +3,6 @@ import prayerData from "../../data/times.json";
 import { usePrayerTimes } from "../../hooks/usePrayerTimes";
 import { retrunIconPrayerTimes } from "../../services/returnIconsFromPrayerTime";
 import { TextBox, ViewBox } from "../../styles/theme";
-import i18n from "../../services/translation";
 import useTranslation from "../../hooks/useTranslation";
 
 type PrayerBannerProps = {

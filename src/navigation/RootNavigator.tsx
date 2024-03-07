@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import React, { useEffect } from "react";
+import React from "react";
 import BottomNavigator from "./bottomNavigator/BottomNavigator";
 import AuthNavigator from "./AuthNavigator";
 import { useAppSelector } from "../redux/hooks";

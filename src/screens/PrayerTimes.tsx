@@ -2,29 +2,52 @@ import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native";
 import PrayerBox from "../components/prayerBanner/PrayerBanner";
 import { TextBox, ViewBox } from "../styles/theme";
-import { usePrayerTimes } from "../hooks/usePrayerTimes";
+import { localLanguages, usePrayerTimes } from "../hooks/usePrayerTimes";
 import prayerData from "../data/times.json";
 import PrayerTimeBox from "../components/prayerTimeBox/PrayerTimeBox";
 import { DaysList } from "../components/daysList/DaysList";
-import i18n from ".././services/translation";
 import { useAppSelector } from "../redux/hooks";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useTranslation from "../hooks/useTranslation";
 
-function PrayerTimeBoxes({ prayerTimes }: any) {
-  return (
-    <>
-      {Object.entries(prayerTimes).map(([prayerName, prayerTime]) => (
-        <PrayerTimeBox
-          key={prayerName}
-          prayerName={prayerName.toLowerCase()}
-          prayerTime={prayerTime}
-          iconPrayer={prayerName.toLowerCase()}
-        />
-      ))}
-    </>
+function PrayerTimeBoxes({ prayerTimes, isOnline }: any) {
+  if(!prayerTimes){
+    return
+  }
+
+  const prayers = ["imsak", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
+  
+  const renderPrayerTimeBox = (prayerName: string, prayerTime: string | Date) => (
+    <PrayerTimeBox
+      key={prayerName}
+      prayerName={prayerName.toLowerCase()}
+      prayerTime={prayerTime}
+      iconPrayer={prayerName.toLowerCase()}
+    />
   );
+
+  if (isOnline) {
+    return Object.entries(prayerTimes).map(([prayerName, date]) => {
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const dateEx = hours + ':' + minutes;
+      
+      return renderPrayerTimeBox(prayerName, dateEx);
+    })
+  } else {
+    const filteredData = Object.keys(prayerTimes)
+      .filter(key => prayers.includes(key))
+      .reduce((obj, key) => {
+        obj[key] = prayerTimes[key].split(":").slice(0, 2).join(":");
+        return obj;
+      }, {});
+
+    return Object.entries(filteredData).map(([prayerName, prayerTime]) =>
+      renderPrayerTimeBox(prayerName, prayerTime)
+    );
+  }
 }
+
 
 function PrayerTimes() {
   const today = new Date();
@@ -33,7 +56,6 @@ function PrayerTimes() {
   const month = String(date.getMonth() + 1);
   const day = String(date.getDate());
   const country = useAppSelector((state) => state.country);
-  const localLanguages = ["Kosova", "Shqiperi", "Maqedoni"];
   const [prayerTimes, setPrayerTime] = useState({});
   const { top } = useSafeAreaInsets();
   const t = useTranslation();
@@ -98,7 +120,7 @@ function PrayerTimes() {
                 ? prayerTimes
                 : filterPrayerTimesPerDayMonth(day, month)
             }
-            ishaIconColor="#56791D"
+            isOnline={!localLanguages.includes(country.countrySelected.country)}
           />
         </ViewBox>
       </ScrollView>

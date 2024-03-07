@@ -76,18 +76,16 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
       .reduce((obj: Record<string, Date>, key: string) => {
         const [hours, minutes, seconds] = prayerTime[key].split(":");
         obj[key] = new Date(
-          Date.UTC(
-            now.getUTCFullYear(),
-            now.getUTCMonth(),
-            now.getUTCDate(),
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate(),
             Number(hours),
             Number(minutes),
             Number(seconds)
-          )
         );
         return obj;
       }, {});
-  
+
     return extractedTimes;
   };
 
@@ -144,11 +142,14 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   };
 
   const filterPrayerTimesPerDayMonth = (day: any, month: any) => {
-    const prayerTimesForToday = getPrayerTimesForToday(
-      month.toString(),
-      day.toString()
+    const prayerTimesToday = prayerTimes.find(
+      (prayerTime) =>
+        prayerTime.month === month &&
+        prayerTime.day === day &&
+        prayerTime.country === country.countrySelected.countryCode
     );
-    return prayerTimesForToday;
+
+    return prayerTimesToday;
   };
 
   useEffect(() => {
@@ -189,6 +190,7 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
     registerForPushNotificationsAsync();
 
     const timer = setInterval(() => {
+      setNow(new Date())
       filterPrayerTimes();
     }, 1000);
 

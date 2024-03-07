@@ -3,12 +3,11 @@ import React from "react";
 import { IconBell } from "tabler-icons-react-native";
 import { retrunIconPrayerTimes } from "../../services/returnIconsFromPrayerTime";
 import { ViewBox, TextBox } from "../../styles/theme";
-import i18n from "../../services/translation";
 import useTranslation from "../../hooks/useTranslation";
 
 interface Props {
   prayerName: string;
-  prayerTime: any;
+  prayerTime: string;
   iconPrayer: string;
 }
 
@@ -16,10 +15,7 @@ const PrayerTimeBox: React.FC<Props> = ({
   prayerName,
   prayerTime,
   iconPrayer,
-}) => {
-  const dateObj = new Date(prayerTime);
-  const hours = dateObj.getUTCHours();
-  const minutes = dateObj.getUTCMinutes();
+}:Props) => {
   const t = useTranslation();
 
   return (
@@ -40,9 +36,7 @@ const PrayerTimeBox: React.FC<Props> = ({
         </ViewBox>
         <ViewBox flexDirection="row" alignItems="center">
           <TextBox fontSize={18} marginRight="md">
-            {`${hours.toString().padStart(2, "0")}:${minutes
-              .toString()
-              .padStart(2, "0")}`}
+            {prayerTime}
           </TextBox>
           <IconBell />
         </ViewBox>
