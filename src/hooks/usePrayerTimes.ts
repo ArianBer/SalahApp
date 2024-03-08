@@ -34,6 +34,7 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   const dispatch = useAppDispatch();
   const country = useAppSelector((state) => state.country);
   const notificationScheduled: Record<string, boolean> = {};
+  const [increased, setIncreased] = useState(false);
 
   if (!localLanguages.includes(country.countrySelected.country)) {
     const { activePrayers, secondsRemaining, hoursRemaining } =
@@ -78,11 +79,12 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
         obj[key] = new Date(
             now.getFullYear(),
             now.getMonth(),
-            now.getDate(),
+            increased ? now.getDate() + 1 : now.getDate(),
             Number(hours),
             Number(minutes),
             Number(seconds)
         );
+
         return obj;
       }, {});
 
@@ -125,6 +127,7 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
         prayerTime.day === day &&
         prayerTime.country === country.countrySelected.countryCode
     );
+
     if (prayerTimesToday) {
       return extractPrayerTimes(prayerTimesToday, now);
     }
@@ -136,6 +139,7 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
       currentMonth.toString(),
       currentDay.toString()
     );
+
     if (prayerTimesForToday) {
       remainingTimeUntilNextPrayer(prayerTimesForToday);
     }
@@ -151,19 +155,19 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
 
     return prayerTimesToday;
   };
-
+  
   useEffect(() => {
     const prayerTimesForToday = getPrayerTimesForToday(
       currentMonth.toString(),
       currentDay.toString()
     );
-
+  
     schedulePrayerNotifications(prayerTimesForToday);
-
+  
     const setActivePrayer = (prayer) => {
       dispatch(homeSlice.actions.setActivePrayer(prayer));
     };
-
+  
     if (activePrayer === "sunrise") {
       setActivePrayer("sunrise");
     } else if (activePrayer !== "dhuhr" && activePrayer === "imsak") {
@@ -173,29 +177,30 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
     } else {
       setActivePrayer("sunrises");
     }
-  }, [activePrayer]);
-
+  }, [activePrayer, currentDay]);
+  
   useEffect(() => {
     const prayerTimesForToday = getPrayerTimesForToday(
       currentMonth.toString(),
       currentDay.toString()
     );
-
-    if (now.getTime() > prayerTimesForToday["isha"].getTime()) {
-      setCurrentDay((prev) => prev + 1);
+  
+    if (now.getTime() > prayerTimesForToday["isha"]?.getTime() && !increased) {
+      setCurrentDay(prev => prev + 1)
+      setIncreased(true);
     }
-  }, [activePrayer, now, currentPrayer]);
+  }, [now]);
 
   useEffect(() => {
     registerForPushNotificationsAsync();
-
+  
     const timer = setInterval(() => {
-      setNow(new Date())
+      setNow(new Date());
       filterPrayerTimes();
     }, 1000);
-
+  
     return () => clearInterval(timer);
-  }, [currentDay, country.countrySelected]);
+  }, [currentDay, country.countrySelected, activePrayer]);
 
   return {
     getPrayerTimesForToday,
