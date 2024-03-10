@@ -31,7 +31,7 @@ export const al = {
   "bismilah-translate":
     "Me emrin e Allahut, të Gjithëmëshirshmit, Mëshirëbërësit të madh!",
   preferences: "Preferencat",
-  imsak: "Imsak",
+  imsak: "Imsaku",
   location: "Lokacioni",
   "calibrate-the-compass": "Kalibro kompasin",
   "allow-location-access": "Lejo qasjen në lokacion",

@@ -158,7 +158,7 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
     } else if (!isIshaPassed) {
       setIncreased(false);
     }
-  }, [prayerTimes, now, increased]);
+  }, [now]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {

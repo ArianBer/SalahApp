@@ -30,7 +30,7 @@ const PrayerTimeBox: React.FC<Props> = ({
       >
         <ViewBox flexDirection="row" alignItems="center">
           {retrunIconPrayerTimes(iconPrayer, 30, "#56791D")}
-          <TextBox fontWeight="700" fontSize={18} marginLeft="lg">
+          <TextBox variant='md-bold' fontWeight="700" fontSize={18} marginLeft="lg">
             {t(prayerName)}
           </TextBox>
         </ViewBox>

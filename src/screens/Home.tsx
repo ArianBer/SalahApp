@@ -8,6 +8,7 @@ import { ViewBox } from "../styles/theme";
 import { HomeHeaderBackground } from "./components/HomeHeaderBackground";
 import { useAppSelector } from "../redux/hooks";
 import { Prayers } from "../constants";
+import { registerForPushNotificationsAsync } from "../services/registerPushNotifications";
 
 const prayersArray = Object.values(Prayers).map((x) => ({
   title: x,
@@ -22,6 +23,8 @@ function Home({ navigation }: { navigation: any }) {
   };
 
   useEffect(() => {
+    registerForPushNotificationsAsync();
+
     if (!language) return;
 
     i18n.locale = language.languageSelected.value;
@@ -44,7 +47,7 @@ function Home({ navigation }: { navigation: any }) {
           flexDirection="row"
           flexWrap="wrap"
           justifyContent="space-between"
-          marginTop="24"
+          marginTop='37'
           paddingHorizontal="24"
           maxWidth={430}
           style={{ marginLeft: "auto", marginRight: "auto" }}

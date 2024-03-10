@@ -30,7 +30,7 @@ function PrayerBox({ isAbsolute, icon, customIcon }: PrayerBannerProps) {
       dhuhr: 'Drekë',
       asr: 'Ikindi',
       maghrib: 'Aksham',
-      fajr: 'Jaci',
+      isha: 'Jaci',
     }
 
     if(prayers[prayer]){
@@ -71,6 +71,7 @@ function PrayerBox({ isAbsolute, icon, customIcon }: PrayerBannerProps) {
             fontSize={48}
             fontWeight="bold"
             color="mainText"
+            variant='2xlBold'
             lineHeight={58}
           >
             {hoursRemaining}
@@ -80,6 +81,7 @@ function PrayerBox({ isAbsolute, icon, customIcon }: PrayerBannerProps) {
             color="darkGreen"
             fontWeight="900"
             paddingLeft="sm"
+            variant='2xlBold'
           >
             {secondsRemaining}
           </TextBox>

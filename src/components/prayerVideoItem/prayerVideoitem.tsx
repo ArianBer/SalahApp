@@ -70,6 +70,7 @@ function PrayerVideoItem({
           marginTop="16"
           fontWeight="bold"
           color={isActive ? "white" : "mainText"}
+          variant='2xlBold'
         >
           {t(title)}
         </TextBox>

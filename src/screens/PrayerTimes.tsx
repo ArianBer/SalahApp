@@ -15,7 +15,7 @@ function PrayerTimeBoxes({ prayerTimes, isOnline }: any) {
     return
   }
 
-  const prayers = ["imsak", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
+  const prayers = ["imsak", "fajr",  "sunrise", "dhuhr", "asr", "maghrib", "isha"];
   
   const renderPrayerTimeBox = (prayerName: string, prayerTime: string | Date) => (
     <PrayerTimeBox
@@ -27,15 +27,37 @@ function PrayerTimeBoxes({ prayerTimes, isOnline }: any) {
   );
 
   if (isOnline) {
-    return Object.entries(prayerTimes).map(([prayerName, date]) => {
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
+    const imsakTime = new Date(prayerTimes.Imsak);
+    const fajrTime = new Date(imsakTime.getTime() + 30 * 60000);
+    prayerTimes.Fajr = fajrTime;
+
+    const order = ["Imsak", "Fajr", "Sunrise", "Dhuhr", "Maghrib", "Asr", "Isha"];
+
+    const orderedPrayerTimes = {};
+    order.forEach(key => {
+      orderedPrayerTimes[key] = prayerTimes[key];
+    });
+
+    return Object.entries(orderedPrayerTimes).map(([prayerName, date]) => {
+      const hours = String(date?.getHours()).padStart(2, '0');
+      const minutes = String(date?.getMinutes()).padStart(2, '0');
       const dateEx = hours + ':' + minutes;
       
       return renderPrayerTimeBox(prayerName, dateEx);
     })
   } else {
-    const filteredData = Object.keys(prayerTimes)
+    const imsakTime = new Date(`1970-01-01T${prayerTimes.imsak}Z`);
+    const fajrTime = new Date(imsakTime.getTime() + 30 * 60000);
+    const formattedFajrTime = fajrTime.toISOString().substr(11, 8);
+
+    prayerTimes.fajr = formattedFajrTime;
+
+    const orderedPrayerTimes = {};
+    prayers.forEach(key => {
+      orderedPrayerTimes[key] = prayerTimes[key];
+    });
+
+    const filteredData = Object.keys(orderedPrayerTimes)
       .filter(key => prayers.includes(key))
       .reduce((obj, key) => {
         obj[key] = prayerTimes[key].split(":").slice(0, 2).join(":");

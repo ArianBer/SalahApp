@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { CurrentPrayerType, homeSlice } from "../redux/reducers/homeReducer";
 import { sendLocalNotification } from "../services/notifications/localNotification";
-import { registerForPushNotificationsAsync } from "../services/registerPushNotifications";
 import { useOnlinePrayerTimes } from "./useOnlinePrayerTimes";
 
 type PrayerTime = {
@@ -15,12 +14,13 @@ type PrayerTime = {
   dhuhr: string;
   asr: string;
   maghrib: string;
+  fajr: string;
   isha: string;
   created_at: string | null;
   updated_at: string | null;
 };
 export const localLanguages = ["Kosova", "Shqiperi", "Maqedoni"];
-const prayers = ["imsak", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
+const prayers = ["imsak", "fajr",  "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 
 export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   const [activePrayer, setActivePrayer] = useState<CurrentPrayerType>("dhuhr");
@@ -192,8 +192,6 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   }, [now]);
 
   useEffect(() => {
-    registerForPushNotificationsAsync();
-  
     const timer = setInterval(() => {
       setNow(new Date());
       filterPrayerTimes();
