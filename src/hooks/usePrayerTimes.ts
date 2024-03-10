@@ -19,8 +19,8 @@ type PrayerTime = {
   created_at: string | null;
   updated_at: string | null;
 };
-export const localLanguages = ["Kosova", "Shqiperi", "Maqedoni"];
-const prayers = ["imsak", "fajr",  "sunrise", "dhuhr", "asr", "maghrib", "isha"];
+export const localLanguages = ["Kosovë", "Shqiperi", "Maqedoni"];
+const prayers = ["imsak", "fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 
 export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
   const [activePrayer, setActivePrayer] = useState<CurrentPrayerType>("dhuhr");
@@ -71,18 +71,21 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
     });
   };
 
-  const extractPrayerTimes = (prayerTime: PrayerTime, now: Date): Record<string, Date> => {
+  const extractPrayerTimes = (
+    prayerTime: PrayerTime,
+    now: Date
+  ): Record<string, Date> => {
     const extractedTimes = Object.keys(prayerTime)
       .filter((key) => prayers.includes(key))
       .reduce((obj: Record<string, Date>, key: string) => {
         const [hours, minutes, seconds] = prayerTime[key].split(":");
         obj[key] = new Date(
-            now.getFullYear(),
-            now.getMonth(),
-            increased ? now.getDate() + 1 : now.getDate(),
-            Number(hours),
-            Number(minutes),
-            Number(seconds)
+          now.getFullYear(),
+          now.getMonth(),
+          increased ? now.getDate() + 1 : now.getDate(),
+          Number(hours),
+          Number(minutes),
+          Number(seconds)
         );
 
         return obj;
@@ -155,19 +158,19 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
 
     return prayerTimesToday;
   };
-  
+
   useEffect(() => {
     const prayerTimesForToday = getPrayerTimesForToday(
       currentMonth.toString(),
       currentDay.toString()
     );
-  
+
     schedulePrayerNotifications(prayerTimesForToday);
-  
+
     const setActivePrayer = (prayer) => {
       dispatch(homeSlice.actions.setActivePrayer(prayer));
     };
-  
+
     if (activePrayer === "sunrise") {
       setActivePrayer("sunrise");
     } else if (activePrayer !== "dhuhr" && activePrayer === "imsak") {
@@ -178,15 +181,15 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
       setActivePrayer("sunrises");
     }
   }, [activePrayer, currentDay]);
-  
+
   useEffect(() => {
     const prayerTimesForToday = getPrayerTimesForToday(
       currentMonth.toString(),
       currentDay.toString()
     );
-  
+
     if (now.getTime() > prayerTimesForToday["isha"]?.getTime() && !increased) {
-      setCurrentDay(prev => prev + 1)
+      setCurrentDay((prev) => prev + 1);
       setIncreased(true);
     }
   }, [now]);
@@ -196,7 +199,7 @@ export const usePrayerTimes = (prayerTimes: PrayerTime[]) => {
       setNow(new Date());
       filterPrayerTimes();
     }, 1000);
-  
+
     return () => clearInterval(timer);
   }, [currentDay, country.countrySelected, activePrayer]);
 

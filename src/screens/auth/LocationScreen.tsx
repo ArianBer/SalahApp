@@ -25,7 +25,7 @@ import { TextBox, ViewBox } from "../../styles/theme";
 import { localLanguages } from "../../hooks/usePrayerTimes";
 
 const languages = [
-  { name: "Kosova", iconSource: flags.xk },
+  { name: "Kosovë", iconSource: flags.xk },
   { name: "Shqiperi", iconSource: flags.al },
   { name: "Maqedoni", iconSource: flags.mk },
 ];
@@ -49,7 +49,30 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
     setModalVisible(true);
   };
 
-  const handleCitySelected = (city: any) => {
+  const handleKosovoLocationPress = () => {
+    const selectedCountry = "Kosovë";
+    const countrySelected = countriesData.find(
+      (country) => country.country === selectedCountry
+    );
+
+    const address = {
+      country: selectedCountry ?? "",
+      city: "",
+      countryCode: countrySelected?.countrycode ?? "",
+      longitude: "",
+      latitude: "",
+    };
+
+    dispatch(changeCountry(address));
+
+    if (!isFromSettings) {
+      navigation?.navigate("LocationSelected", { isFromSettings });
+    } else {
+      navigation.navigate("Setting");
+    }
+  };
+
+  const handleLocalLocationCitySelected = (city: any) => {
     if (!selectCountry) return;
 
     const countrySelected = countriesData.find(
@@ -74,7 +97,7 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
     }
   };
 
-  const handleLocationRequest = async () => {
+  const handleOnlineLocationRequest = async () => {
     try {
       let { status } = await Location.requestForegroundPermissionsAsync();
 
@@ -126,7 +149,13 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
         languageIcon={
           <Image style={{ height: 24, width: 24 }} source={item.iconSource} />
         }
-        onPress={() => openModal(item.name)}
+        onPress={() => {
+          if (item.name === "Kosovë") {
+            handleKosovoLocationPress();
+            return;
+          }
+          openModal(item.name);
+        }}
         mt="4"
       />
     ));
@@ -173,7 +202,7 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
         {renderLocalLocations()}
         {isOnlineLocation && (
           <ViewBox mt="4">
-            <Pressable onPress={handleLocationRequest}>
+            <Pressable onPress={handleOnlineLocationRequest}>
               <ViewBox
                 width="100%"
                 height={53}
@@ -214,7 +243,7 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
                   <Pressable
                     key={city.name + index}
                     style={styles.itemStyle}
-                    onPress={() => handleCitySelected(city.name)}
+                    onPress={() => handleLocalLocationCitySelected(city.name)}
                   >
                     <TextBox style={styles.textItem} key={city.name}>
                       {city.name}

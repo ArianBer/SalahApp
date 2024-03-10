@@ -156,7 +156,7 @@ export function PrayerInsideLearnScreen({ navigation }: { navigation: any }) {
         return await Promise.race([
           loadSoundsData(),
           new Promise((_, reject) =>
-            setTimeout(() => reject(new Error("Timeout")), 5000)
+            setTimeout(() => reject(new Error("Timeout")), 6000)
           ),
         ]);
       } catch (error) {

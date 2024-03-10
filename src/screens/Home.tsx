@@ -32,10 +32,7 @@ function Home({ navigation }: { navigation: any }) {
 
   return (
     <ViewBox flex={1} backgroundColor="mainBackground">
-      <ScrollView
-        contentContainerStyle={{ flex: 1 }}
-        scrollToOverflowEnabled={false}
-      >
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <HomeHeaderBackground>
           <PrayerBox
             isAbsolute

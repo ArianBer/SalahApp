@@ -15,7 +15,9 @@ import { APP_DOWNLOAD_LINK } from "../../constants";
 
 function SettingsScreen({ navigation }: { navigation: any }) {
   const { top } = useSafeAreaInsets();
-  const country = useAppSelector((state) => state.country);
+  const { city, country } = useAppSelector(
+    (state) => state.country.countrySelected
+  );
   const t = useTranslation();
 
   const onPressShare = () => {
@@ -70,11 +72,7 @@ function SettingsScreen({ navigation }: { navigation: any }) {
             onPress={onPressLocation}
             icon={<LocationIcon />}
             title={t("select-location")}
-            subTitle={
-              country.countrySelected.city +
-              ", " +
-              country.countrySelected.country
-            }
+            subTitle={(city ? city + ", " : "") + country}
             hideBottomLine
           />
         </SettingsRowsContainer>

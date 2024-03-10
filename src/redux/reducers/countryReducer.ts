@@ -15,7 +15,7 @@ interface InitialState {
 
 const initialState: InitialState = {
   countrySelected: {
-    country: "Kosovo",
+    country: "Kosovë",
     countryCode: "xk",
     city: "Prishtina",
     longitude: "000",
@@ -27,13 +27,16 @@ export const selectCountry = createSlice({
   name: "country",
   initialState,
   reducers: {
-    changeCountry: (state, action: PayloadAction<{
-      country: string;
-      countryCode: string;
-      city: string;
-      longitude: string;
-      latitude: string;
-    }>) => {
+    changeCountry: (
+      state,
+      action: PayloadAction<{
+        country: string;
+        countryCode: string;
+        city: string;
+        longitude: string;
+        latitude: string;
+      }>
+    ) => {
       state.countrySelected = action.payload;
     },
   },
@@ -42,4 +45,3 @@ export const selectCountry = createSlice({
 export const { changeCountry } = selectCountry.actions;
 
 export default persist("country", selectCountry.reducer, ["countrySelected"]);
-

@@ -2,11 +2,10 @@ import { useTheme } from "@shopify/restyle";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { IconPlayerPlay } from "tabler-icons-react-native";
+import { Prayers } from "../../constants";
+import useTranslation from "../../hooks/useTranslation";
 import { CurrentPrayerType } from "../../redux/reducers/homeReducer";
 import { TextBox, ThemeType, ViewBox } from "../../styles/theme";
-import { Prayers } from "../../constants";
-import i18n from "../../services/translation";
-import useTranslation from "../../hooks/useTranslation";
 
 type PrayerVideoItemProps = {
   title: string;
@@ -36,15 +35,16 @@ function PrayerVideoItem({
     <TouchableOpacity onPress={onPress} style={{ width: "32%" }}>
       <ViewBox
         flexDirection="column"
-        height={130}
+        height={120}
         borderWidth={1}
         borderColor="dargGreenWithOpacity"
         marginBottom="sm"
         borderRadius="10"
         backgroundColor={isActive ? "darkGreen" : "white"}
-        paddingTop="xxxxl"
-        paddingBottom="xl"
-        paddingLeft="lg"
+        justifyContent="center"
+        alignItems="flex-start"
+        columnGap="12"
+        paddingLeft="14"
       >
         <ViewBox
           width={30}
@@ -70,7 +70,7 @@ function PrayerVideoItem({
           marginTop="16"
           fontWeight="bold"
           color={isActive ? "white" : "mainText"}
-          variant='2xlBold'
+          variant="2xlBold"
         >
           {t(title)}
         </TextBox>

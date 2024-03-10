@@ -44,7 +44,10 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
         {t("location-set")}
       </TextBox>
       <TextBox variant="2xlBold" mt="2" color="blackRussian">
-        {country.countrySelected.city}, {country.countrySelected.country}
+        {country.countrySelected.city
+          ? country.countrySelected.city + ", "
+          : ""}{" "}
+        {country.countrySelected.country}
       </TextBox>
 
       <Button

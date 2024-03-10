@@ -10,7 +10,8 @@ import InstagramLargeIcon from "../../assets/svgs/InstagramLargeIcon";
 const youtubeLink = "https://youtube.com/@PrayerHub_App?si=Gi9EhA7U-9B7hUB9";
 const facebookLink =
   "https://www.facebook.com/profile.php?id=61556346492422&mibextid=ZbWKwL";
-const instagramLink = "https://youtube.com/@PrayerHub_App?si=Gi9EhA7U-9B7hUB9";
+const instagramLink =
+  "https://www.instagram.com/prayerhub_app?igsh=MXQ1ejI4YTV0NjRxOQ==";
 
 const SettingsContactUsSection = () => {
   const t = useTranslation();
