@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import prayerData from "../../data/times.json";
 import { usePrayerTimes } from "../../hooks/usePrayerTimes";
 import { retrunIconPrayerTimes } from "../../services/returnIconsFromPrayerTime";
 import { TextBox, ViewBox } from "../../styles/theme";
@@ -18,7 +17,7 @@ function PrayerBox({ isAbsolute, icon, customIcon }: PrayerBannerProps) {
     activePrayer,
     hoursRemaining,
     secondsRemaining,
-  } = usePrayerTimes(prayerData);
+  } = usePrayerTimes();
   const t = useTranslation();
   const language = useAppSelector((state) => state.language);
 
@@ -31,6 +30,7 @@ function PrayerBox({ isAbsolute, icon, customIcon }: PrayerBannerProps) {
       asr: 'Ikindi',
       maghrib: 'Aksham',
       isha: 'Jaci',
+      fajr: 'Sabah'
     }
 
     if(prayers[prayer]){

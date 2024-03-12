@@ -3,7 +3,6 @@ import { ScrollView } from "react-native";
 import PrayerBox from "../components/prayerBanner/PrayerBanner";
 import { TextBox, ViewBox } from "../styles/theme";
 import { localLanguages, usePrayerTimes } from "../hooks/usePrayerTimes";
-import prayerData from "../data/times.json";
 import PrayerTimeBox from "../components/prayerTimeBox/PrayerTimeBox";
 import { DaysList } from "../components/daysList/DaysList";
 import { useAppSelector } from "../redux/hooks";
@@ -82,7 +81,7 @@ function PrayerTimes() {
   const { top } = useSafeAreaInsets();
   const t = useTranslation();
 
-  const { filterPrayerTimesPerDayMonth } = usePrayerTimes(prayerData);
+  const { filterPrayerTimesPerDayMonth } = usePrayerTimes();
   const keysToInclude = ["Imsak", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
 
   const filterPrayerTimes = (

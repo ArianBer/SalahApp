@@ -57,13 +57,10 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
   const schedulePrayerNotifications = (
     prayerTimesForToday: Record<string, Date>
   ) => {
-    let nottificationSent = false;
-
-    Object.entries(prayerTimesForToday).forEach(([prayerName, prayerTime]) => {
+    Object.entries(prayerTimesForToday).forEach(([prayerName, prayerTime], index) => {
       const timeRemaining = prayerTime.getTime() - now.getTime();
 
-      if (timeRemaining > 0 && !notificationScheduled[prayerName] && !nottificationSent) {
-        nottificationSent = true;
+      if (timeRemaining > 0 && !notificationScheduled[prayerName] && index === 0) {
         sendLocalNotification(prayerName, timeRemaining / 1000);
         notificationScheduled[prayerName] = true;
       }
