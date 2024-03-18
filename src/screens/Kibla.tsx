@@ -192,13 +192,7 @@ function Kibla() {
     const rotateAngle = 90 - magnetometer + direction;
     return (
       <>
-        <MeccaSvg
-          svgColor={
-            _degree(magnetometer) >= 135 && _degree(magnetometer) <= 139
-              ? "green"
-              : ""
-          }
-        />
+        <MeccaSvg />
         <CompassSvg
           svgStyle={{ transform: [{ rotate: `${rotateAngle}deg` }] }}
         />

@@ -4,6 +4,7 @@ import { CurrentPrayerType, homeSlice } from "../redux/reducers/homeReducer";
 import { sendLocalNotification } from "../services/notifications/localNotification";
 import { useOnlinePrayerTimes } from "./useOnlinePrayerTimes";
 import prayerTime from "../data/times.json";
+import useTranslation from "./useTranslation";
 
 export const localLanguages = ["Kosova", "Shqiperi", "Maqedoni"];
 const prayers = ["imsak", "fajr",  "sunrise", "dhuhr", "asr", "maghrib", "isha"];
@@ -21,6 +22,7 @@ export const usePrayerTimes = () => {
   const notificationScheduled: Record<string, boolean> = {};
   const [increased, setIncreased] = useState(false);
   const [prayerTimesToday, setPrayerTimesToday] = useState(null);
+  const t = useTranslation();
 
   if (!localLanguages.includes(country.countrySelected.country)) {
     const { activePrayers, secondsRemaining, hoursRemaining } =
@@ -46,9 +48,11 @@ export const usePrayerTimes = () => {
       if (
         timeRemaining > 0 &&
         !notificationScheduled[prayerName] &&
-        index === 0
+        index === 0 &&
+        prayerName !== 'imsak'
+        && prayerName !== 'sunrise'
       ) {
-        sendLocalNotification(prayerName, timeRemaining / 1000);
+        sendLocalNotification(t(prayerName), timeRemaining / 1000);
         notificationScheduled[prayerName] = true;
       }
     });
@@ -178,8 +182,9 @@ export const usePrayerTimes = () => {
     prayerTimesToday['fajr'] = String(`${hours}:${minutes}:00`)
 
     function addDefaultDate(prayerTimes) {
-      const increaseHour = now.getMonth() + 1 >= 3 && currentDay >= 25;
-      
+      const targetDate = new Date('2024-03-25');
+      const increaseHour = now.getTime() >= targetDate.getTime();
+
       const updatedPrayerTimes = Object.entries(prayerTimes).map(([prayerName, prayerTime]) => {
         const currentTime = new Date(`${now.getFullYear()}-${now.getMonth() + 1}-${currentDay} ${prayerTime}`);
         const formattedTime = `${currentTime.getFullYear()}-${(currentTime.getMonth() + 1).toString().padStart(2, '0')}-${currentTime.getDate().toString().padStart(2, '0')} ${(increaseHour ? currentTime.getHours() + 1 : currentTime.getHours()).toString().padStart(2, '0')}:${currentTime.getMinutes().toString().padStart(2, '0')}:${currentTime.getSeconds().toString().padStart(2, '0')}`;

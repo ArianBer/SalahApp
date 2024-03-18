@@ -45,6 +45,24 @@ function PrayerTimeBoxes({ prayerTimes, isOnline }: any) {
       return renderPrayerTimeBox(prayerName, dateEx);
     })
   } else {
+    const now = new Date();
+    const targetDate = new Date('2024-03-25');
+    const increaseHour = now.getTime() >= targetDate.getTime();
+
+    const addOneHour = (timeString: any) => {
+      if(increaseHour) {
+        const [hours, minutes] = timeString.split(":").map(Number);
+        const totalSeconds = hours * 3600 + minutes * 60;
+        const newTotalSeconds = totalSeconds + 3600;
+        const newHours = Math.floor(newTotalSeconds / 3600) % 24;
+        const newMinutes = Math.floor((newTotalSeconds % 3600) / 60);
+
+        return `${String(newHours).padStart(2, '0')}:${String(newMinutes).padStart(2, '0')}`;
+      }
+
+      return timeString;
+    };
+
     const imsakTime = new Date(`1970-01-01T${prayerTimes.imsak}Z`);
     const fajrTime = new Date(imsakTime.getTime() + 30 * 60000);
     const formattedFajrTime = fajrTime.toISOString().substr(11, 8);
@@ -56,6 +74,7 @@ function PrayerTimeBoxes({ prayerTimes, isOnline }: any) {
       orderedPrayerTimes[key] = prayerTimes[key];
     });
 
+
     const filteredData = Object.keys(orderedPrayerTimes)
       .filter(key => prayers.includes(key))
       .reduce((obj, key) => {
@@ -63,8 +82,10 @@ function PrayerTimeBoxes({ prayerTimes, isOnline }: any) {
         return obj;
       }, {});
 
-    return Object.entries(filteredData).map(([prayerName, prayerTime]) =>
-      renderPrayerTimeBox(prayerName, prayerTime)
+    return Object.entries(filteredData).map(([prayerName, prayerTime]) => {
+      const hour = addOneHour(prayerTime);
+      return renderPrayerTimeBox(prayerName, hour)
+      }
     );
   }
 }

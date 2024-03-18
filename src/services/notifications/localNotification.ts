@@ -6,8 +6,8 @@ export const sendLocalNotification = async (
   ) => {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: "Prayer hub",
-        body: `It's time for ${prayerName} prayer!`,
+        title: "",
+        body: prayerName,
       },
       trigger: {
         seconds: triggerTime,
