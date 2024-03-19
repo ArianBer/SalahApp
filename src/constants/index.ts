@@ -13,5 +13,4 @@ const ANDROID_LINK =
   "https://play.google.com/store/apps/details?id=com.donaldisufi1.Salahapp";
 const IOS_LINK = "https://apps.apple.com/us/app/prayer-hub/id6478895197";
 
-export const APP_DOWNLOAD_LINK =
-  Platform.OS === "android" ? ANDROID_LINK : IOS_LINK;
+export const APP_DOWNLOAD_LINK = "https://prayerhub.app";

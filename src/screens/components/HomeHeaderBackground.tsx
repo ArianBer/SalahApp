@@ -42,7 +42,7 @@ export function HomeHeaderBackground({ children }: HomeHeaderBackgroundProps) {
   const t = useTranslation();
 
   const imageSourse =
-    (activePrayer === "sunrise" || activePrayer === "sunrises" )
+    activePrayer === "sunrise" || activePrayer === "sunrises"
       ? backgroundImages["sunrise"]
       : backgroundImages[activePrayer] ?? backgroundImages.isha;
 
@@ -54,7 +54,7 @@ export function HomeHeaderBackground({ children }: HomeHeaderBackgroundProps) {
   };
 
   return (
-    <ViewBox style={{ minHeight: 300, height: "50%", maxHeight: 460 }}>
+    <ViewBox style={{ height: "50%", minHeight: 300 }}>
       <ImageBackground
         source={imageSourse}
         style={styles.banner}

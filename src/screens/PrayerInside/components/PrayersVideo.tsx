@@ -1,3 +1,4 @@
+import { useIsFocused } from "@react-navigation/native";
 import {
   AVPlaybackStatus,
   AVPlaybackStatusSuccess,
@@ -10,7 +11,6 @@ import { useAppSelector } from "../../../redux/hooks";
 import { ViewBox } from "../../../styles/theme";
 import { PrayerKey, prayerVideos } from "../videos";
 import PlayButton from "./PlayButton";
-import { useIsFocused } from "@react-navigation/native";
 
 interface PrayersVideoProps {
   prayer: PrayerKey;

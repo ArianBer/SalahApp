@@ -71,9 +71,9 @@ export function PrayerInsideScreen({
           <TextBox variant="xlBold" color="mainText">
             {prayerText[prayer]?.title}
           </TextBox>
-          <TextBox variant="xl" color="mainText">
+          {/* <TextBox variant="xl" color="mainText">
             {prayerText[prayer]?.description}
-          </TextBox>
+          </TextBox> */}
         </ViewBox>
 
         {prayer !== Prayers.ablution && (

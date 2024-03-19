@@ -15,6 +15,7 @@ import { IconArrowLeft, IconSquareRoundedX } from "tabler-icons-react-native";
 import LanguageButton, { flags } from "../../components/LanguageButton";
 import LocationImage from "../../components/onboarding/LocationImage";
 import countriesData from "../../data/countriesData";
+import { localLanguages } from "../../hooks/usePrayerTimes";
 import useTranslation from "../../hooks/useTranslation";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
@@ -22,7 +23,6 @@ import {
   selectCountry,
 } from "../../redux/reducers/countryReducer";
 import { TextBox, ViewBox } from "../../styles/theme";
-import { localLanguages } from "../../hooks/usePrayerTimes";
 
 const languages = [
   { name: "Kosovë", iconSource: flags.xk },
@@ -40,9 +40,12 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
   const country = useAppSelector((state) => state.country);
 
   const isFromSettings = route.params?.isFromSettings;
-  const isOnlineLocation = !localLanguages.includes(
-    country.countrySelected.country
-  );
+  const isLocalLocation =
+    country.countrySelected.country?.length &&
+    localLanguages.includes(country.countrySelected.country);
+
+  const showOnlineLocation = isFromSettings ? !isLocalLocation : true;
+  const showLocalLocation = isFromSettings ? isLocalLocation : true;
 
   const openModal = (country: any) => {
     setSelectedCountry(country);
@@ -140,7 +143,7 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
   };
 
   const renderLocalLocations = () => {
-    if (isFromSettings && isOnlineLocation) return;
+    if (!showLocalLocation) return;
 
     return languages.map((item, index) => (
       <LanguageButton
@@ -200,7 +203,7 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
       </TextBox>
       <ViewBox width="100%" paddingHorizontal="37" mt="20">
         {renderLocalLocations()}
-        {isOnlineLocation && (
+        {showOnlineLocation && (
           <ViewBox mt="4">
             <Pressable onPress={handleOnlineLocationRequest}>
               <ViewBox
