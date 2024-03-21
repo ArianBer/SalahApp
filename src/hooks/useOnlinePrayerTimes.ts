@@ -5,8 +5,8 @@ import { sendLocalNotification } from "../services/notifications/localNotificati
 
 export const useOnlinePrayerTimes = (countrySelected: any) => {
   const [activePrayers, setActivePrayer] = useState<any>("dhuhr");
-  const [hoursRemaining, setHoursRemaining] = useState("");
-  const [secondsRemaining, setSecondsRemaining] = useState("");
+  const [hoursRemaining, setHoursRemaining] = useState("00");
+  const [secondsRemaining, setSecondsRemaining] = useState("00");
   const [now, setNow] = useState(new Date());
   const currentMonth = now.getMonth() + 1;
   const [currentDay, setCurrentDay] = useState(now.getDate());
