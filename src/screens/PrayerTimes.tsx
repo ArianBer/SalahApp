@@ -154,18 +154,18 @@ function PrayerTimes() {
       <ViewBox height="auto">
         <DaysList onDateSelection={(date: any) => setSelectedDate(date)} />
       </ViewBox>
-      <ScrollView>
-        <ViewBox marginTop="xxl">
-          <PrayerTimeBoxes
-            prayerTimes={
-              !localLanguages.includes(country.countrySelected.country)
-                ? prayerTimes
-                : filterPrayerTimesPerDayMonth(day, month)
-            }
-            isOnline={!localLanguages.includes(country.countrySelected.country)}
-          />
-        </ViewBox>
-      </ScrollView>
+      <ViewBox marginTop="xxl">
+        <ScrollView>
+            <PrayerTimeBoxes
+              prayerTimes={
+                !localLanguages.includes(country.countrySelected.country)
+                  ? prayerTimes
+                  : filterPrayerTimesPerDayMonth(day, month)
+              }
+              isOnline={!localLanguages.includes(country.countrySelected.country)}
+            />
+        </ScrollView>
+      </ViewBox>
     </ViewBox>
   );
 }

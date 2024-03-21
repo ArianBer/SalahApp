@@ -3,7 +3,7 @@ export const tr = {
   home: "Anasayfa",
   fajr: "Sabah",
   dhuhr: "Ögle",
-  asr: "Ikindi",
+  asr: "İkindi",
   maghrib: "Akşam",
   isha: "Yatsı",
   sunrise: "Güneş",
@@ -24,7 +24,7 @@ export const tr = {
     "Kovulmuş şeytanın şerrinden Allah'a sığınırım",
   preferences: "Tercihler",
   location: "Konum",
-  imsak: "Imsak",
+  imsak: "İmsak",
   translate: "Çevirmek: ",
   language: "Dil",
   "choose-language": "Dil seç",
@@ -49,7 +49,7 @@ export const tr = {
   "select-location": "Konumu seçin",
   "fajr-prayer": "Sabah duası",
   "dhuhr-prayer": "Öğle duası",
-  "asr-prayer": "Ikindi duası",
+  "asr-prayer": "İkindi duası",
   "maghrib-prayer": "Akşam duası",
   "isha-prayer": "Yatsı duası",
   rekate: "rekat",
@@ -69,9 +69,9 @@ export const tr = {
   "guidance-links": "Kılavuz bağlantıları:",
   "prayer-times": "Namaz vaktileri",
   "prayer-times-desc":
-    "Peygamber Efendimize (s.a.v.) soruldu: Allah katında en sevimli amel hangisidir? Vaktinde kılınan namaz dedi.",
+    "Peygamber Efendimize ﷺ soruldu: Allah katında en sevimli amel hangisidir? Vaktinde kılınan namaz dedi.",
   "ablution-desc":
-    "Uygulamada, namazdan önce Peygamber Efendimiz'in s.a.s arınmasi için şeklini bulacaksınız.",
+    "Uygulamada, namazdan önce Peygamber Efendimiz'in ﷺ arınmasi için şeklini bulacaksınız.",
   "qibla-desc":
     "Namaza başlamadan önce, Allah'ın bize yaptığı gibi yüzümüzü Kabe'ye çevirmeliyiz: '...Sizler nerede olursanız olun, yüzünüzü ona (Kabe'ye) doğru çevirin...'",
   "the-prayer": "Namaz",
