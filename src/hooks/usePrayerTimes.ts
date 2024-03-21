@@ -54,6 +54,7 @@ export const usePrayerTimes = () => {
         sendLocalNotification(t(prayerName), timeRemaining / 1000);
         notificationScheduled[prayerName] = true;
       }
+      }
     );
   };
 
