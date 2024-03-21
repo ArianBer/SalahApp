@@ -46,16 +46,13 @@ export const usePrayerTimes = () => {
       ([prayerName, prayerTime], index) => {
         const timeRemaining = new Date(prayerTime).getTime() - now.getTime();
 
-        if (
-          timeRemaining > 0 &&
-          !notificationScheduled[prayerName] &&
-          index === 0 &&
-          prayerName !== "imsak" &&
-          prayerName !== "sunrise"
-        ) {
-          sendLocalNotification(t(prayerName), timeRemaining / 1000);
-          notificationScheduled[prayerName] = true;
-        }
+      if (
+        timeRemaining > 0 &&
+        !notificationScheduled[prayerName] &&
+        index === 0
+      ) {
+        sendLocalNotification(t(prayerName), timeRemaining / 1000);
+        notificationScheduled[prayerName] = true;
       }
     );
   };

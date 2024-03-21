@@ -43,7 +43,7 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
   
         return obj;
       }, {});
-  
+
     if (increased) {
       Object.keys(prayerTimesObject).forEach((key) => {
         prayerTimesObject[key].setDate(prayerTimesObject[key].getDate() + 1);

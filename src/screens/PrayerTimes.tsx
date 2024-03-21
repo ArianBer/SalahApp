@@ -30,7 +30,7 @@ function PrayerTimeBoxes({ prayerTimes, isOnline }: any) {
     const fajrTime = new Date(imsakTime.getTime() + 30 * 60000);
     prayerTimes.Fajr = fajrTime;
 
-    const order = ["Imsak", "Fajr", "Sunrise", "Dhuhr", "Maghrib", "Asr", "Isha"];
+    const order = ["Imsak", "Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
 
     const orderedPrayerTimes = {};
     order.forEach(key => {
