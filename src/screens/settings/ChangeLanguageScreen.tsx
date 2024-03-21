@@ -63,7 +63,7 @@ const ChangeLanguageScreen = () => {
         </TouchableOpacity>
         <ViewBox flex={1} justifyContent="center" alignItems="center">
           <TextBox variant="2xl" color="mainText">
-            {t("edit-language")}
+            {t("choose-language")}
           </TextBox>
         </ViewBox>
         <ViewBox style={{ marginHorizontal: 30, width: 28 }}></ViewBox>
