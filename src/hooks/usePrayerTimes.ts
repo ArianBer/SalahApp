@@ -190,7 +190,7 @@ export const usePrayerTimes = () => {
     prayerTimesToday["fajr"] = String(`${hours}:${minutes}:00`);
 
     function addDefaultDate(prayerTimes) {
-      const targetDate = new Date("2024-03-25");
+      const targetDate = new Date("2024-03-31");
       const increaseHour = now.getTime() >= targetDate.getTime();
 
       const updatedPrayerTimes = Object.entries(prayerTimes).map(

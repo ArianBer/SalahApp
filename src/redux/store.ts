@@ -5,6 +5,7 @@ import homeReducer from "./reducers/homeReducer";
 import authReducer from "./reducers/authReducer";
 import languageReducer from "./reducers/languageReducer";
 import persistStore from "redux-persist/es/persistStore";
+import onlinePrayers from "./reducers/onlinePrayers";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     country: countryReducer,
     auth: authReducer,
     language: languageReducer,
+    onlinePrayers: onlinePrayers,
   },
 });
 

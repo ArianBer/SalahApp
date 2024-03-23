@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAppDispatch } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { CurrentPrayerType, homeSlice } from "../redux/reducers/homeReducer";
 import { sendLocalNotification } from "../services/notifications/localNotification";
 
@@ -13,9 +13,11 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
   const [prayerTimes, setPrayerTime] = useState([]);
   const [currentPrayer, setCurrentPrayer] = useState<CurrentPrayerType>("dhuhr");
   const [increased, setIncreased] = useState(false);
+  const onlinePrayers = useAppSelector((state) => state.onlinePrayers);
 
   const keysToInclude = [
     "Imsak",
+    "Fajr",
     "Sunrise",
     "Dhuhr",
     "Asr",
@@ -36,11 +38,13 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
     const prayerTimesObject = Object.keys(prayerTimes)
       .filter((key) => keysToInclude.includes(key))
       .reduce((obj: Record<string, Date>, key: string) => {
-        const [hours, minutes] = prayerTimes[key].split(":");
+        const timeString = prayerTimes[key].split(' ')[0];
+        const [hours, minutes] = timeString.split(":");
         const prayerTime = new Date();
+
         prayerTime.setHours(Number(hours), Number(minutes), 0, 0);
+
         obj[key] = prayerTime;
-  
         return obj;
       }, {});
 
@@ -125,23 +129,15 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
   }, [activePrayers]);
 
   useEffect(() => {
-    const fetchPrayerTimes = async () => {
-      try {
-        const response = await fetch(
-          `https://api.aladhan.com/v1/timings/${currentDay}-${currentMonth}-${now.getFullYear()}?latitude=${
-            countrySelected.latitude
-          }&longitude=${countrySelected.longitude}&method=2`
-        );
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = new Intl.DateTimeFormat('en-US', { month: 'short' }).format(now);
+    const year = now.getFullYear();
+    const todayDate = `${day} ${month} ${year}`;
 
-        const data = await response.json();
-        setPrayerTime(data.data.timings);
-      } catch (error) {
-        console.error("Error fetching prayer times:", error);
-      }
-    };
-
-    fetchPrayerTimes();
-  }, [countrySelected, currentMonth, currentDay]);
+    const todayEntry = onlinePrayers.prayerTimes[currentMonth].find(entry => entry.date.readable === todayDate);
+    const specificTimings = todayEntry ? todayEntry.timings : null;
+    setPrayerTime(specificTimings);
+  }, [currentMonth, currentDay]);
   
 
   useEffect(() => {

@@ -9,12 +9,13 @@ import { useAppSelector } from "../redux/hooks";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useTranslation from "../hooks/useTranslation";
 
+const keysToInclude = ["Imsak", "Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
+const prayers = ["imsak", "fajr",  "sunrise", "dhuhr", "asr", "maghrib", "isha"];
+
 function PrayerTimeBoxes({ prayerTimes, isOnline }: any) {
   if(!prayerTimes){
     return
   }
-
-  const prayers = ["imsak", "fajr",  "sunrise", "dhuhr", "asr", "maghrib", "isha"];
   
   const renderPrayerTimeBox = (prayerName: string, prayerTime: string | Date) => (
     <PrayerTimeBox
@@ -26,14 +27,8 @@ function PrayerTimeBoxes({ prayerTimes, isOnline }: any) {
   );
 
   if (isOnline) {
-    const imsakTime = new Date(prayerTimes.Imsak);
-    const fajrTime = new Date(imsakTime.getTime() + 30 * 60000);
-    prayerTimes.Fajr = fajrTime;
-
-    const order = ["Imsak", "Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
-
     const orderedPrayerTimes = {};
-    order.forEach(key => {
+    keysToInclude.forEach(key => {
       orderedPrayerTimes[key] = prayerTimes[key];
     });
 
@@ -46,7 +41,7 @@ function PrayerTimeBoxes({ prayerTimes, isOnline }: any) {
     })
   } else {
     const now = new Date();
-    const targetDate = new Date('2024-03-25');
+    const targetDate = new Date('2024-03-31');
     const increaseHour = now.getTime() >= targetDate.getTime();
 
     const addOneHour = (timeString: any) => {
@@ -101,9 +96,9 @@ function PrayerTimes() {
   const [prayerTimes, setPrayerTime] = useState({});
   const { top } = useSafeAreaInsets();
   const t = useTranslation();
+  const onlinePrayers = useAppSelector((state) => state.onlinePrayers);
 
   const { filterPrayerTimesPerDayMonth } = usePrayerTimes();
-  const keysToInclude = ["Imsak", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
 
   const filterPrayerTimes = (
     prayerTimes: Record<string, string>
@@ -111,25 +106,26 @@ function PrayerTimes() {
     return Object.keys(prayerTimes)
       .filter((key) => keysToInclude.includes(key))
       .reduce((obj: Record<string, Date>, key: string) => {
-        const [hours, minutes] = prayerTimes[key].split(":");
+        const timeString = prayerTimes[key].split(' ')[0];
+        const [hours, minutes] = timeString.split(":");
         obj[key] = new Date();
         obj[key].setHours(Number(hours), Number(minutes), 0, 0);
         return obj;
       }, {});
   };
 
-  const getPrayerTimesForToday = async (month: string, day: string) => {
-    try {
-      const response = await fetch(
-        `https://api.aladhan.com/v1/timings/${day}-${month}-${today.getFullYear()}?latitude=${
-          country.countrySelected.latitude
-        }&longitude=${country.countrySelected.longitude}&method=2`
-      ).then((res) => res.json());
+  const getPrayerTimesForToday = async (month: number, day: string) => {
+    const months = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
 
-      setPrayerTime(filterPrayerTimes(response.data.timings));
-    } catch (error) {
-      console.error("Error fetching prayer times:", error);
-    }
+    const year = date.getFullYear();
+    const todayDate = `${day} ${months[month - 1]} ${year}`;
+
+    const todayEntry = onlinePrayers.prayerTimes[month].find(entry => entry.date.readable === todayDate);
+    const specificTimings = todayEntry ? todayEntry.timings : null;
+    setPrayerTime(filterPrayerTimes(specificTimings));
   };
 
   useEffect(() => {

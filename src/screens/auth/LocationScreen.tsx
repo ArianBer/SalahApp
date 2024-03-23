@@ -22,6 +22,10 @@ import {
   changeCountry,
   selectCountry,
 } from "../../redux/reducers/countryReducer";
+import {
+  onlinePrayers,
+} from "../../redux/reducers/onlinePrayers";
+
 import { TextBox, ViewBox } from "../../styles/theme";
 
 const languages = [
@@ -74,6 +78,8 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
       navigation.navigate("Setting");
     }
   };
+
+   
 
   const handleLocalLocationCitySelected = (city: any) => {
     if (!selectCountry) return;
@@ -134,7 +140,10 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
           latitude: latitude?.toString(),
         };
 
+        const prayersForFullYear = await fetchOnlinePrayers(new Date().getFullYear(), latitude?.toString(), longitude?.toString());
+        dispatch(onlinePrayers.actions.changePrayers(prayersForFullYear.data));
         dispatch(selectCountry.actions.changeCountry(address));
+
         navigation?.navigate("LocationSelected", { isFromSettings });
       }
     } catch (err) {
@@ -142,9 +151,18 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
     }
   };
 
-  const renderLocalLocations = () => {
-    if (!showLocalLocation) return;
+  const fetchOnlinePrayers = async (year: Number, latitude: string, longitude: string) => {
+    try {
+      const response = await fetch(
+        `https://api.aladhan.com/v1/calendar/${year}?latitude=${latitude}&longitude=${longitude}&method=3`
+      );
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching prayer times:", error);
+    }
+  }
 
+  const renderLocalLocations = () => {
     return languages.map((item, index) => (
       <LanguageButton
         key={index}
@@ -203,24 +221,22 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
       </TextBox>
       <ViewBox width="100%" paddingHorizontal="37" mt="20">
         {renderLocalLocations()}
-        {showOnlineLocation && (
-          <ViewBox mt="4">
-            <Pressable onPress={handleOnlineLocationRequest}>
-              <ViewBox
-                width="100%"
-                height={53}
-                justifyContent="center"
-                alignItems="center"
-                borderRadius="14"
-                backgroundColor={"lightGreen"}
-              >
-                <TextBox color="blackRussian" variant="lg_medium">
-                  {t("find-location")}
-                </TextBox>
-              </ViewBox>
-            </Pressable>
-          </ViewBox>
-        )}
+        <ViewBox mt="4">
+          <Pressable onPress={handleOnlineLocationRequest}>
+            <ViewBox
+              width="100%"
+              height={53}
+              justifyContent="center"
+              alignItems="center"
+              borderRadius="14"
+              backgroundColor={"lightGreen"}
+            >
+              <TextBox color="blackRussian" variant="lg_medium">
+                {t("find-location")}
+              </TextBox>
+            </ViewBox>
+          </Pressable>
+        </ViewBox>
       </ViewBox>
 
       <ViewBox style={styles.centeredView}>
