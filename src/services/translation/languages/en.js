@@ -7,7 +7,7 @@ export const en = {
   maghrib: "Maghrib",
   isha: "Isha",
   sunrise: "Sunrise",
-  "prayer-calendar": "Prayer calendar",
+  "prayer-calendar": "Prayer times",
   reciters: "Reciters",
   others: "More",
   imsak: "Imsak",
@@ -34,7 +34,7 @@ export const en = {
   "protection-from-god": "Auzubillah Minashaitan Nirajeem",
   "protection-from-god-translation":
     "I seek refuge in Allah from the outcast Shaitan",
-  preferences: "Preferences",
+  preferences: "Settings",
   location: "Location",
   "calibrate-the-compass": "Calibrate the compass",
   "allow-location-access": "Allow location access",
