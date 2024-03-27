@@ -19,7 +19,7 @@ export const usePrayerTimes = () => {
   const [currentDay, setCurrentDay] = useState(now.getDate());
   const dispatch = useAppDispatch();
   const country = useAppSelector((state) => state.country);
-  const notificationScheduled: Record<string, boolean> = {};
+  const [notificationScheduled, setNotificationScheduled] = useState<Record<string, boolean>>({});
   const [increased, setIncreased] = useState(false);
   const [prayerTimesToday, setPrayerTimesToday] = useState(null);
   const t = useTranslation();
@@ -37,26 +37,6 @@ export const usePrayerTimes = () => {
       hoursRemaining: hoursRemaining,
     };
   }
-
-  const schedulePrayerNotifications = () => {
-    if (!prayerTimesToday) {
-      return;
-    }
-    Object.entries(prayerTimesToday).forEach(
-      ([prayerName, prayerTime], index) => {
-        const timeRemaining = new Date(prayerTime).getTime() - now.getTime();
-
-      if (
-        timeRemaining > 0 &&
-        !notificationScheduled[prayerName] &&
-        index === 0
-      ) {
-        sendLocalNotification(t(prayerName), timeRemaining / 1000);
-        notificationScheduled[prayerName] = true;
-      }
-      }
-    );
-  };
 
   const extractPrayerTimes = (
     prayerTime: any,
@@ -129,11 +109,15 @@ export const usePrayerTimes = () => {
   };
 
   useEffect(() => {
-    schedulePrayerNotifications();
-
     const setActivePrayer = (prayer) => {
       dispatch(homeSlice.actions.setActivePrayer(prayer));
     };
+
+    if (!notificationScheduled[activePrayer]) {
+      sendLocalNotification(t(activePrayer), 0);
+      setNotificationScheduled({ ...notificationScheduled, [activePrayer]: true });
+      console.log('hini', activePrayer)
+    }
 
     if (activePrayer === "sunrise") {
       setActivePrayer("sunrise");
@@ -229,6 +213,7 @@ export const usePrayerTimes = () => {
 
     if (prayerTimesToday) {
       setPrayerTimesToday(addDefaultDate(prayerTimesToday));
+      schedulePrayerNotifications(addDefaultDate(prayerTimesToday));
     }
   }, [country, prayerTime, currentDay]);
 

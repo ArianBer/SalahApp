@@ -15,6 +15,10 @@ export const store = configureStore({
     language: languageReducer,
     onlinePrayers: onlinePrayers,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    immutableCheck: false,
+    serializableCheck: false,
+  })
 });
 
 export const persistor = persistStore(store);
