@@ -11,7 +11,8 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
   const currentMonth = now.getMonth() + 1;
   const [currentDay, setCurrentDay] = useState(now.getDate());
   const [prayerTimes, setPrayerTime] = useState([]);
-  const [currentPrayer, setCurrentPrayer] = useState<CurrentPrayerType>("dhuhr");
+  const [currentPrayer, setCurrentPrayer] =
+    useState<CurrentPrayerType>("dhuhr");
   const [increased, setIncreased] = useState(false);
   const onlinePrayers = useAppSelector((state) => state.onlinePrayers);
 
@@ -34,11 +35,11 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
     if (!prayerTimes) {
       return {};
     }
-  
+
     const prayerTimesObject = Object.keys(prayerTimes)
       .filter((key) => keysToInclude.includes(key))
       .reduce((obj: Record<string, Date>, key: string) => {
-        const timeString = prayerTimes[key].split(' ')[0];
+        const timeString = prayerTimes[key].split(" ")[0];
         const [hours, minutes] = timeString.split(":");
         const prayerTime = new Date();
 
@@ -53,28 +54,36 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
         prayerTimesObject[key].setDate(prayerTimesObject[key].getDate() + 1);
       });
     }
-  
+
     return prayerTimesObject;
   };
-  
 
   const schedulePrayerNotifications = (
     prayerTimesForToday: Record<string, Date>
   ) => {
-    Object.entries(prayerTimesForToday).forEach(([prayerName, prayerTime], index) => {
-      const timeRemaining = prayerTime.getTime() - now.getTime();
+    Object.entries(prayerTimesForToday).forEach(
+      ([prayerName, prayerTime], index) => {
+        const timeRemaining = prayerTime.getTime() - now.getTime();
 
-      if (timeRemaining > 0 && !notificationScheduled[prayerName] && index === 0) {
-        sendLocalNotification(prayerName, timeRemaining / 1000);
-        notificationScheduled[prayerName] = true;
+        if (
+          timeRemaining > 0 &&
+          !notificationScheduled[prayerName] &&
+          index === 0
+        ) {
+          sendLocalNotification(prayerName, timeRemaining / 1000);
+          notificationScheduled[prayerName] = true;
+        }
       }
-    });
+    );
   };
 
   const remainingTimeUntilNextPrayer = (
     prayerTimesForToday: Record<string, string>
   ) => {
-    const filteredPrayerTimes = filterPrayerTimes(prayerTimesForToday, increased);
+    const filteredPrayerTimes = filterPrayerTimes(
+      prayerTimesForToday,
+      increased
+    );
 
     const now1 = new Date();
     const remainingTimes = Object.entries(filteredPrayerTimes)
@@ -116,37 +125,43 @@ export const useOnlinePrayerTimes = (countrySelected: any) => {
     const setActivePrayer = (prayer: string) => {
       dispatch(homeSlice.actions.setActivePrayer(prayer));
     };
-    
-    if (activePrayers.toLowerCase() === 'sunrise') {
-      setActivePrayer('sunrise');
-    } else if (activePrayers.toLowerCase() !== 'dhuhr' && activePrayers.toLowerCase() === 'imsak') {
-      setActivePrayer('isha');
-    } else if (activePrayers.toLowerCase() !== 'dhuhr') {
+
+    if (activePrayers.toLowerCase() === "sunrise") {
+      setActivePrayer("sunrise");
+    } else if (
+      activePrayers.toLowerCase() !== "dhuhr" &&
+      activePrayers.toLowerCase() === "imsak"
+    ) {
+      setActivePrayer("isha");
+    } else if (activePrayers.toLowerCase() !== "dhuhr") {
       setActivePrayer(currentPrayer?.toLowerCase());
     } else {
-      setActivePrayer('sunrises');
+      setActivePrayer("sunrises");
     }
   }, [activePrayers]);
 
   useEffect(() => {
-    const day = String(now.getDate()).padStart(2, '0');
-    const month = new Intl.DateTimeFormat('en-US', { month: 'short' }).format(now);
+    const day = String(now.getDate()).padStart(2, "0");
+    const month = new Intl.DateTimeFormat("en-US", { month: "short" }).format(
+      now
+    );
     const year = now.getFullYear();
     const todayDate = `${day} ${month} ${year}`;
 
-    const todayEntry = onlinePrayers.prayerTimes[currentMonth].find(entry => entry.date.readable === todayDate);
+    const todayEntry = onlinePrayers.prayerTimes[currentMonth]?.find(
+      (entry) => entry.date.readable === todayDate
+    );
     const specificTimings = todayEntry ? todayEntry.timings : null;
     setPrayerTime(specificTimings);
   }, [currentMonth, currentDay]);
-  
 
   useEffect(() => {
     const filteredPrayerTimes = filterPrayerTimes(prayerTimes);
-  
-    const isIshaPassed = now.getTime() > filteredPrayerTimes['Isha']?.getTime();
-  
+
+    const isIshaPassed = now.getTime() > filteredPrayerTimes["Isha"]?.getTime();
+
     if (isIshaPassed && !increased) {
-      setCurrentDay(prev => prev + 1);
+      setCurrentDay((prev) => prev + 1);
       setIncreased(true);
     } else if (!isIshaPassed) {
       setIncreased(false);

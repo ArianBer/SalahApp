@@ -9,15 +9,26 @@ import { useAppSelector } from "../redux/hooks";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useTranslation from "../hooks/useTranslation";
 
-const keysToInclude = ["Imsak", "Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
-const prayers = ["imsak", "fajr",  "sunrise", "dhuhr", "asr", "maghrib", "isha"];
+const keysToInclude = [
+  "Imsak",
+  "Fajr",
+  "Sunrise",
+  "Dhuhr",
+  "Asr",
+  "Maghrib",
+  "Isha",
+];
+const prayers = ["imsak", "fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 
 function PrayerTimeBoxes({ prayerTimes, isOnline }: any) {
-  if(!prayerTimes){
-    return
+  if (!prayerTimes) {
+    return;
   }
-  
-  const renderPrayerTimeBox = (prayerName: string, prayerTime: string | Date) => (
+
+  const renderPrayerTimeBox = (
+    prayerName: string,
+    prayerTime: string | Date
+  ) => (
     <PrayerTimeBox
       key={prayerName}
       prayerName={prayerName.toLowerCase()}
@@ -28,31 +39,33 @@ function PrayerTimeBoxes({ prayerTimes, isOnline }: any) {
 
   if (isOnline) {
     const orderedPrayerTimes = {};
-    keysToInclude.forEach(key => {
+    keysToInclude.forEach((key) => {
       orderedPrayerTimes[key] = prayerTimes[key];
     });
 
     return Object.entries(orderedPrayerTimes).map(([prayerName, date]) => {
-      const hours = String(date?.getHours()).padStart(2, '0');
-      const minutes = String(date?.getMinutes()).padStart(2, '0');
-      const dateEx = hours + ':' + minutes;
-      
+      const hours = String(date?.getHours()).padStart(2, "0");
+      const minutes = String(date?.getMinutes()).padStart(2, "0");
+      const dateEx = hours + ":" + minutes;
+
       return renderPrayerTimeBox(prayerName, dateEx);
-    })
+    });
   } else {
     const now = new Date();
-    const targetDate = new Date('2024-03-31');
+    const targetDate = new Date("2024-03-31");
     const increaseHour = now.getTime() >= targetDate.getTime();
 
     const addOneHour = (timeString: any) => {
-      if(increaseHour) {
+      if (increaseHour) {
         const [hours, minutes] = timeString.split(":").map(Number);
         const totalSeconds = hours * 3600 + minutes * 60;
         const newTotalSeconds = totalSeconds + 3600;
         const newHours = Math.floor(newTotalSeconds / 3600) % 24;
         const newMinutes = Math.floor((newTotalSeconds % 3600) / 60);
 
-        return `${String(newHours).padStart(2, '0')}:${String(newMinutes).padStart(2, '0')}`;
+        return `${String(newHours).padStart(2, "0")}:${String(
+          newMinutes
+        ).padStart(2, "0")}`;
       }
 
       return timeString;
@@ -65,13 +78,12 @@ function PrayerTimeBoxes({ prayerTimes, isOnline }: any) {
     prayerTimes.fajr = formattedFajrTime;
 
     const orderedPrayerTimes = {};
-    prayers.forEach(key => {
+    prayers.forEach((key) => {
       orderedPrayerTimes[key] = prayerTimes[key];
     });
 
-
     const filteredData = Object.keys(orderedPrayerTimes)
-      .filter(key => prayers.includes(key))
+      .filter((key) => prayers.includes(key))
       .reduce((obj, key) => {
         obj[key] = prayerTimes[key].split(":").slice(0, 2).join(":");
         return obj;
@@ -79,12 +91,10 @@ function PrayerTimeBoxes({ prayerTimes, isOnline }: any) {
 
     return Object.entries(filteredData).map(([prayerName, prayerTime]) => {
       const hour = addOneHour(prayerTime);
-      return renderPrayerTimeBox(prayerName, hour)
-      }
-    );
+      return renderPrayerTimeBox(prayerName, hour);
+    });
   }
 }
-
 
 function PrayerTimes() {
   const today = new Date();
@@ -106,7 +116,7 @@ function PrayerTimes() {
     return Object.keys(prayerTimes)
       .filter((key) => keysToInclude.includes(key))
       .reduce((obj: Record<string, Date>, key: string) => {
-        const timeString = prayerTimes[key].split(' ')[0];
+        const timeString = prayerTimes[key].split(" ")[0];
         const [hours, minutes] = timeString.split(":");
         obj[key] = new Date();
         obj[key].setHours(Number(hours), Number(minutes), 0, 0);
@@ -116,14 +126,26 @@ function PrayerTimes() {
 
   const getPrayerTimesForToday = async (month: number, day: string) => {
     const months = [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
     ];
 
     const year = date.getFullYear();
     const todayDate = `${day} ${months[month - 1]} ${year}`;
 
-    const todayEntry = onlinePrayers.prayerTimes[month].find(entry => entry.date.readable === todayDate);
+    const todayEntry = onlinePrayers.prayerTimes[month]?.find(
+      (entry) => entry.date.readable === todayDate
+    );
     const specificTimings = todayEntry ? todayEntry.timings : null;
     setPrayerTime(filterPrayerTimes(specificTimings));
   };
@@ -150,16 +172,16 @@ function PrayerTimes() {
       <ViewBox height="auto">
         <DaysList onDateSelection={(date: any) => setSelectedDate(date)} />
       </ViewBox>
-      <ViewBox marginTop="xxl">
-        <ScrollView>
-            <PrayerTimeBoxes
-              prayerTimes={
-                !localLanguages.includes(country.countrySelected.country)
-                  ? prayerTimes
-                  : filterPrayerTimesPerDayMonth(day, month)
-              }
-              isOnline={!localLanguages.includes(country.countrySelected.country)}
-            />
+      <ViewBox marginTop="xxl" flex={1}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <PrayerTimeBoxes
+            prayerTimes={
+              !localLanguages.includes(country.countrySelected.country)
+                ? prayerTimes
+                : filterPrayerTimesPerDayMonth(day, month)
+            }
+            isOnline={!localLanguages.includes(country.countrySelected.country)}
+          />
         </ScrollView>
       </ViewBox>
     </ViewBox>

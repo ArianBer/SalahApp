@@ -67,6 +67,9 @@ function PrayerVideoItem({
         </ViewBox>
         <TextBox
           fontSize={20}
+          allowFontScaling
+          adjustsFontSizeToFit
+          numberOfLines={1}
           marginTop="16"
           fontWeight="bold"
           color={isActive ? "white" : "mainText"}

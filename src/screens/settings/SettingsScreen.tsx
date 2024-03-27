@@ -3,7 +3,7 @@ import { ScrollView, Share, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconShare } from "tabler-icons-react-native";
 import useTranslation from "../../hooks/useTranslation";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { TextBox, ViewBox } from "../../styles/theme";
 import OtherApplicationsComponent from "../components/OtherApplicationsComponent";
 import { SettingsRow } from "../components/SettingsRow";
@@ -12,9 +12,11 @@ import WebLogo from "../../assets/svgs/WebLogo";
 import LocationIcon from "../../assets/svgs/LocationIcon";
 import SettingsContactUsSection from "../components/SettingsContactUsSection";
 import { APP_DOWNLOAD_LINK } from "../../constants";
+import { setShowChangeLocationScreens } from "../../redux/reducers/authReducer";
 
 function SettingsScreen({ navigation }: { navigation: any }) {
   const { top } = useSafeAreaInsets();
+  const dispatch = useAppDispatch();
   const { city, country } = useAppSelector(
     (state) => state.country.countrySelected
   );
@@ -32,10 +34,9 @@ function SettingsScreen({ navigation }: { navigation: any }) {
 
   const onPressLanguage = () => navigation.navigate("ChangeLanguage");
 
-  const onPressLocation = () =>
-    navigation.navigate("ChangeLocation", { isFromSettings: true });
-
-  const onPressNotifications = () => navigation.navigate("ChangeNotifications");
+  const onPressChangeLocation = () => {
+    dispatch(setShowChangeLocationScreens(true));
+  };
 
   return (
     <ViewBox
@@ -69,7 +70,7 @@ function SettingsScreen({ navigation }: { navigation: any }) {
             subTitle={t("choose-language")}
           />
           <SettingsRow
-            onPress={onPressLocation}
+            onPress={onPressChangeLocation}
             icon={<LocationIcon />}
             title={t("select-location")}
             subTitle={(city ? city + ", " : "") + country}
