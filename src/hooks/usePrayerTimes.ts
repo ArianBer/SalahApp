@@ -13,8 +13,8 @@ export const usePrayerTimes = () => {
   const [activePrayer, setActivePrayer] = useState<CurrentPrayerType>("dhuhr");
   const [currentPrayer, setCurrentPrayer] =
     useState<CurrentPrayerType>("dhuhr");
-  const [hoursRemaining, setHoursRemaining] = useState("");
-  const [secondsRemaining, setSecondsRemaining] = useState("");
+  const [hoursRemaining, setHoursRemaining] = useState("00");
+  const [secondsRemaining, setSecondsRemaining] = useState("00");
   const [now, setNow] = useState(new Date());
   const [currentDay, setCurrentDay] = useState(now.getDate());
   const dispatch = useAppDispatch();
@@ -37,6 +37,37 @@ export const usePrayerTimes = () => {
       hoursRemaining: hoursRemaining,
     };
   }
+
+  const schedulePrayerNotifications = (
+    prayerTimesForToday: Record<string, Date>
+  ) => {
+
+    const filteredData = {
+      "asr": prayerTimesForToday["asr"],
+      "fajr": prayerTimesForToday["fajr"],
+      "isha": prayerTimesForToday["isha"],
+      "maghrib": prayerTimesForToday["maghrib"],
+      "dhuhr": prayerTimesForToday["dhuhr"]
+    };
+
+    if (!filteredData) {
+        return;
+    }
+
+    Object.entries(filteredData).forEach(
+      ([prayerName, prayerTime]) => {
+        const timeRemaining = new Date(prayerTime).getTime() - now.getTime();
+
+        if (
+          timeRemaining > 0 &&
+          !notificationScheduled[prayerName]
+        ) {
+          sendLocalNotification(t(prayerName), timeRemaining / 1000);
+          setNotificationScheduled({ ...notificationScheduled, [prayerName]: true });
+        }
+      }
+    );
+  };
 
   const extractPrayerTimes = (
     prayerTime: any,
@@ -112,12 +143,6 @@ export const usePrayerTimes = () => {
     const setActivePrayer = (prayer) => {
       dispatch(homeSlice.actions.setActivePrayer(prayer));
     };
-
-    if (!notificationScheduled[activePrayer]) {
-      sendLocalNotification(t(activePrayer), 0);
-      setNotificationScheduled({ ...notificationScheduled, [activePrayer]: true });
-      console.log('hini', activePrayer)
-    }
 
     if (activePrayer === "sunrise") {
       setActivePrayer("sunrise");
@@ -214,6 +239,7 @@ export const usePrayerTimes = () => {
     if (prayerTimesToday) {
       setPrayerTimesToday(addDefaultDate(prayerTimesToday));
       schedulePrayerNotifications(addDefaultDate(prayerTimesToday));
+
     }
   }, [country, prayerTime, currentDay]);
 

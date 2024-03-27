@@ -30,6 +30,24 @@ export const useOnlinePrayerTimes = () => {
   ];
   const dispatch = useAppDispatch();
 
+  const schedulePrayerNotifications = (
+    prayerTimesForToday: Record<string, Date>
+  ) => {
+    Object.entries(prayerTimesForToday).forEach(
+      ([prayerName, prayerTime]) => {
+        const timeRemaining = new Date(prayerTime).getTime() - now.getTime();
+
+        if (
+          timeRemaining > 0 &&
+          !notificationScheduled[prayerName]
+        ) {
+          sendLocalNotification(t(prayerName.toLowerCase()), timeRemaining / 1000);
+          setNotificationScheduled({ ...notificationScheduled, [prayerName]: true });
+        }
+      }
+    );
+  };
+
   const filterPrayerTimes = (
     prayerTimes: Record<string, string>,
     increased: Boolean
@@ -102,11 +120,6 @@ export const useOnlinePrayerTimes = () => {
   };
 
   useEffect(() => {
-    if (!notificationScheduled[activePrayers]) {
-      sendLocalNotification(t(activePrayers), 1000);
-      setNotificationScheduled({ ...notificationScheduled, [activePrayers]: true });
-    }
-
     const setActivePrayer = (prayer: string) => {
       dispatch(homeSlice.actions.setActivePrayer(prayer));
     };
@@ -138,6 +151,9 @@ export const useOnlinePrayerTimes = () => {
     );
     const specificTimings = todayEntry ? todayEntry.timings : null;
     setPrayerTime(specificTimings);
+    const filteredPrayerTimes = filterPrayerTimes(specificTimings);
+
+    schedulePrayerNotifications(filteredPrayerTimes)
   }, [currentMonth, currentDay]);
 
   useEffect(() => {
