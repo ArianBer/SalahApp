@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import { StackScreenProps } from "@react-navigation/stack";
 import React from "react";
 import { Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -6,11 +7,13 @@ import Button from "../../components/Button";
 import LocationImage from "../../components/onboarding/LocationImage";
 import useTranslation from "../../hooks/useTranslation";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { authSlice } from "../../redux/reducers/authReducer";
+import {
+  authSlice,
+  setShowChangeLocationScreens,
+} from "../../redux/reducers/authReducer";
 import { TextBox, ViewBox } from "../../styles/theme";
-import { StackScreenProps } from "@react-navigation/stack";
 
-const LocationScreen = ({ route }: StackScreenProps<any>) => {
+const LocationSelectedScreen = ({ route }: StackScreenProps<any>) => {
   const { top, bottom } = useSafeAreaInsets();
   const country = useAppSelector((state) => state.country);
   const navigation = useNavigation<any>();
@@ -20,10 +23,14 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
 
   const handleContinuePress = () => {
     if (isFromSettings) {
-      navigation.pop(2);
+      dispatch(setShowChangeLocationScreens(false));
       return;
     }
     dispatch(authSlice.actions.setIsOnBoarded(true));
+  };
+
+  const handleReselectLocationPress = () => {
+    navigation?.navigate("Location");
   };
 
   return (
@@ -56,18 +63,20 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
         width={190}
         mt="140"
       />
-      <Pressable onPress={() => navigation?.navigate("Location")}>
-        <TextBox
-          variant="md"
-          mt="20"
-          color="blackRussian"
-          textDecorationLine="underline"
-        >
-          {t("reselect-the-location")}
-        </TextBox>
-      </Pressable>
+      {!isFromSettings && (
+        <Pressable onPress={handleReselectLocationPress}>
+          <TextBox
+            variant="md"
+            mt="20"
+            color="blackRussian"
+            textDecorationLine="underline"
+          >
+            {t("reselect-the-location")}
+          </TextBox>
+        </Pressable>
+      )}
     </ViewBox>
   );
 };
 
-export default LocationScreen;
+export default LocationSelectedScreen;

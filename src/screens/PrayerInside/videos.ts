@@ -9,6 +9,7 @@ import SabahuVideo from "../../assets/videos/Sabahu.mp4";
 import AbdesiAl from "../../assets/videos/abdesti.mp4";
 import AbdesiTr from "../../assets/videos/abdesti-tr.mp4";
 import AbdesiEn from "../../assets/videos/abdesti-en.mp4";
+import AbdesiDe from "../../assets/videos/abdesti-de.mp4";
 
 import i18n, { languagesKeys } from "../../services/translation";
 
@@ -23,4 +24,5 @@ export const prayerVideos = {
   [Prayers.ablution + languagesKeys.al]: AbdesiAl,
   [Prayers.ablution + languagesKeys.en]: AbdesiEn,
   [Prayers.ablution + languagesKeys.tr]: AbdesiTr,
+  [Prayers.ablution + languagesKeys.de]: AbdesiDe,
 };

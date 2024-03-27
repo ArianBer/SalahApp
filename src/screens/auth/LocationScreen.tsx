@@ -22,11 +22,11 @@ import {
   changeCountry,
   selectCountry,
 } from "../../redux/reducers/countryReducer";
-import {
-  onlinePrayers,
-} from "../../redux/reducers/onlinePrayers";
+import { onlinePrayers } from "../../redux/reducers/onlinePrayers";
 
 import { TextBox, ViewBox } from "../../styles/theme";
+import LoadingModal from "../../components/LoadingModal";
+import { setShowChangeLocationScreens } from "../../redux/reducers/authReducer";
 
 const languages = [
   { name: "Kosovë", iconSource: flags.xk },
@@ -37,6 +37,7 @@ const languages = [
 const LocationScreen = ({ route }: StackScreenProps<any>) => {
   const t = useTranslation();
   const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false);
   const { top, bottom } = useSafeAreaInsets();
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -44,18 +45,15 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
   const country = useAppSelector((state) => state.country);
 
   const isFromSettings = route.params?.isFromSettings;
-  const isLocalLocation =
-    country.countrySelected.country?.length &&
-    localLanguages.includes(country.countrySelected.country);
-
-  const showOnlineLocation = isFromSettings ? !isLocalLocation : true;
-  const showLocalLocation = isFromSettings ? isLocalLocation : true;
 
   const openModal = (country: any) => {
     setSelectedCountry(country);
     setModalVisible(true);
   };
 
+  const handleBackPress = () => {
+    dispatch(setShowChangeLocationScreens(false));
+  };
   const handleKosovoLocationPress = () => {
     const selectedCountry = "Kosovë";
     const countrySelected = countriesData.find(
@@ -72,14 +70,8 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
 
     dispatch(changeCountry(address));
 
-    if (!isFromSettings) {
-      navigation?.navigate("LocationSelected", { isFromSettings });
-    } else {
-      navigation.navigate("Setting");
-    }
+    navigation?.navigate("LocationSelected", { isFromSettings });
   };
-
-   
 
   const handleLocalLocationCitySelected = (city: any) => {
     if (!selectCountry) return;
@@ -99,15 +91,12 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
     dispatch(changeCountry(address));
     setModalVisible(false);
 
-    if (!isFromSettings) {
-      navigation?.navigate("LocationSelected", { isFromSettings });
-    } else {
-      navigation.navigate("Setting");
-    }
+    navigation?.navigate("LocationSelected", { isFromSettings });
   };
 
   const handleOnlineLocationRequest = async () => {
     try {
+      setIsLoading(true);
       let { status } = await Location.requestForegroundPermissionsAsync();
 
       if (status !== Location.PermissionStatus.GRANTED) {
@@ -140,7 +129,11 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
           latitude: latitude?.toString(),
         };
 
-        const prayersForFullYear = await fetchOnlinePrayers(new Date().getFullYear(), latitude?.toString(), longitude?.toString());
+        const prayersForFullYear = await fetchOnlinePrayers(
+          new Date().getFullYear(),
+          latitude?.toString(),
+          longitude?.toString()
+        );
         dispatch(onlinePrayers.actions.changePrayers(prayersForFullYear.data));
         dispatch(selectCountry.actions.changeCountry(address));
 
@@ -148,10 +141,16 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const fetchOnlinePrayers = async (year: Number, latitude: string, longitude: string) => {
+  const fetchOnlinePrayers = async (
+    year: Number,
+    latitude: string,
+    longitude: string
+  ) => {
     try {
       const response = await fetch(
         `https://api.aladhan.com/v1/calendar/${year}?latitude=${latitude}&longitude=${longitude}&method=3`
@@ -160,7 +159,7 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
     } catch (error) {
       console.error("Error fetching prayer times:", error);
     }
-  }
+  };
 
   const renderLocalLocations = () => {
     return languages.map((item, index) => (
@@ -183,97 +182,100 @@ const LocationScreen = ({ route }: StackScreenProps<any>) => {
   };
 
   return (
-    <ViewBox
-      bg="twilightBlue"
-      flex={1}
-      borderColor="darkGreen"
-      alignItems={"center"}
-      style={{ paddingTop: top, paddingBottom: bottom }}
-    >
-      {isFromSettings ? (
-        <ViewBox
-          height={50}
-          alignItems="center"
-          width="100%"
-          flexDirection="row"
-        >
-          <TouchableOpacity
-            onPress={navigation.goBack}
-            hitSlop={{ top: 20, bottom: 10 }}
-            style={{ paddingHorizontal: 30 }}
+    <>
+      <ViewBox
+        bg="twilightBlue"
+        flex={1}
+        borderColor="darkGreen"
+        alignItems={"center"}
+        style={{ paddingTop: top, paddingBottom: bottom }}
+      >
+        {isFromSettings ? (
+          <ViewBox
+            height={50}
+            alignItems="center"
+            width="100%"
+            flexDirection="row"
           >
-            <IconArrowLeft size={28} />
-          </TouchableOpacity>
-          <ViewBox flex={1} justifyContent="center" alignItems="center">
-            <TextBox variant="2xl" color="mainText">
-              {t("location")}
-            </TextBox>
-          </ViewBox>
-          <ViewBox style={{ marginHorizontal: 30, width: 28 }} />
-        </ViewBox>
-      ) : (
-        <ViewBox width={"100%"} alignItems={"center"} pt="20">
-          <LocationImage />
-        </ViewBox>
-      )}
-      <TextBox variant="2xlBold" mt="37" color="blackRussian">
-        {t("select-location")}
-      </TextBox>
-      <ViewBox width="100%" paddingHorizontal="37" mt="20">
-        {renderLocalLocations()}
-        <ViewBox mt="4">
-          <Pressable onPress={handleOnlineLocationRequest}>
-            <ViewBox
-              width="100%"
-              height={53}
-              justifyContent="center"
-              alignItems="center"
-              borderRadius="14"
-              backgroundColor={"lightGreen"}
+            <TouchableOpacity
+              onPress={handleBackPress}
+              hitSlop={{ top: 20, bottom: 10 }}
+              style={{ paddingHorizontal: 30 }}
             >
-              <TextBox color="blackRussian" variant="lg_medium">
-                {t("find-location")}
+              <IconArrowLeft size={28} />
+            </TouchableOpacity>
+            <ViewBox flex={1} justifyContent="center" alignItems="center">
+              <TextBox variant="2xl" color="mainText">
+                {t("location")}
               </TextBox>
             </ViewBox>
-          </Pressable>
+            <ViewBox style={{ marginHorizontal: 30, width: 28 }} />
+          </ViewBox>
+        ) : (
+          <ViewBox width={"100%"} alignItems={"center"} pt="20">
+            <LocationImage />
+          </ViewBox>
+        )}
+        <TextBox variant="2xlBold" mt="37" color="blackRussian">
+          {t("select-location")}
+        </TextBox>
+        <ViewBox width="100%" paddingHorizontal="37" mt="20">
+          {renderLocalLocations()}
+          <ViewBox mt="4">
+            <Pressable onPress={handleOnlineLocationRequest}>
+              <ViewBox
+                width="100%"
+                height={53}
+                justifyContent="center"
+                alignItems="center"
+                borderRadius="14"
+                backgroundColor={"lightGreen"}
+              >
+                <TextBox color="blackRussian" variant="lg_medium">
+                  {t("find-location")}
+                </TextBox>
+              </ViewBox>
+            </Pressable>
+          </ViewBox>
+        </ViewBox>
+
+        <ViewBox style={styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <ViewBox style={styles.centeredView}>
+              <ViewBox style={styles.modalView}>
+                <Pressable
+                  style={styles.closeIcon}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <IconSquareRoundedX />
+                </Pressable>
+                {countriesData
+                  .find((country) => country.country === selectedCountry)
+                  ?.cities.map((city, index) => (
+                    <Pressable
+                      key={city.name + index}
+                      style={styles.itemStyle}
+                      onPress={() => handleLocalLocationCitySelected(city.name)}
+                    >
+                      <TextBox style={styles.textItem} key={city.name}>
+                        {city.name}
+                      </TextBox>
+                    </Pressable>
+                  ))}
+              </ViewBox>
+            </ViewBox>
+          </Modal>
         </ViewBox>
       </ViewBox>
-
-      <ViewBox style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <ViewBox style={styles.centeredView}>
-            <ViewBox style={styles.modalView}>
-              <Pressable
-                style={styles.closeIcon}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <IconSquareRoundedX />
-              </Pressable>
-              {countriesData
-                .find((country) => country.country === selectedCountry)
-                ?.cities.map((city, index) => (
-                  <Pressable
-                    key={city.name + index}
-                    style={styles.itemStyle}
-                    onPress={() => handleLocalLocationCitySelected(city.name)}
-                  >
-                    <TextBox style={styles.textItem} key={city.name}>
-                      {city.name}
-                    </TextBox>
-                  </Pressable>
-                ))}
-            </ViewBox>
-          </ViewBox>
-        </Modal>
-      </ViewBox>
-    </ViewBox>
+      <LoadingModal isLoading={isLoading} />
+    </>
   );
 };
 
