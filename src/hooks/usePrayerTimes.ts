@@ -38,32 +38,13 @@ export const usePrayerTimes = () => {
     };
   }
 
-  const schedulePrayerNotifications = (
-    prayerTimesForToday: Record<string, Date>
-  ) => {
-
-    const filteredData = {
-      "asr": prayerTimesForToday["asr"],
-      "fajr": prayerTimesForToday["fajr"],
-      "isha": prayerTimesForToday["isha"],
-      "maghrib": prayerTimesForToday["maghrib"],
-      "dhuhr": prayerTimesForToday["dhuhr"]
-    };
-
-    if (!filteredData) {
-        return;
-    }
-
-    Object.entries(filteredData).forEach(
+  const schedulePrayerNotifications = (prayerTimesForToday: Record<string, Date>) => {
+    Object.entries(prayerTimesForToday).forEach(
       ([prayerName, prayerTime]) => {
         const timeRemaining = new Date(prayerTime).getTime() - now.getTime();
 
-        if (
-          timeRemaining > 0 &&
-          !notificationScheduled[prayerName]
-        ) {
+        if (timeRemaining > 0) {
           sendLocalNotification(t(prayerName), timeRemaining / 1000);
-          setNotificationScheduled({ ...notificationScheduled, [prayerName]: true });
         }
       }
     );
@@ -123,6 +104,12 @@ export const usePrayerTimes = () => {
 
   const getPrayerTimesForToday = (): Record<string, Date> => {
     if (prayerTimesToday) {
+      const filteredData = Object.fromEntries(
+        Object.entries(prayerTimesToday)
+          .filter(([key]) => prayers.includes(key))
+      );
+
+      schedulePrayerNotifications(filteredData);
       return extractPrayerTimes(prayerTimesToday, now);
     }
     return {};
@@ -199,9 +186,6 @@ export const usePrayerTimes = () => {
     prayerTimesToday["fajr"] = String(`${hours}:${minutes}:00`);
 
     function addDefaultDate(prayerTimes) {
-      const targetDate = new Date("2024-03-31");
-      const increaseHour = now.getTime() >= targetDate.getTime();
-
       const updatedPrayerTimes = Object.entries(prayerTimes).map(
         ([prayerName, prayerTime]) => {
           const currentTime = new Date(
@@ -216,9 +200,7 @@ export const usePrayerTimes = () => {
             .padStart(2, "0")}-${currentTime
             .getDate()
             .toString()
-            .padStart(2, "0")} ${(increaseHour
-            ? currentTime.getHours() + 1
-            : currentTime.getHours()
+            .padStart(2, "0")} ${(currentTime.getHours()
           )
             .toString()
             .padStart(2, "0")}:${currentTime
@@ -238,8 +220,6 @@ export const usePrayerTimes = () => {
 
     if (prayerTimesToday) {
       setPrayerTimesToday(addDefaultDate(prayerTimesToday));
-      schedulePrayerNotifications(addDefaultDate(prayerTimesToday));
-
     }
   }, [country, prayerTime, currentDay]);
 
