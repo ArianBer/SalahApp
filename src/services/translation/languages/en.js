@@ -13,7 +13,7 @@ export const en = {
   imsak: "Imsak",
   language: "Language",
   "follow-us": "Follow us",
-  translate: "Translate: ",
+  translate: "Translation: ",
   "choose-language": "Choose language",
   notifications: "Notifications",
   edit: "Edit",
@@ -30,7 +30,7 @@ export const en = {
     "Subhaanaka Allaahumma wa bihamdika, wa tabaarakasmuka, wa ta'aalaa jadduka, wa laa 'ilaaha ghayruka.",
   "first-dua":
     "Glory is to You O Allah, and praise. Blessed is Your Name and Exalted is Your Majesty. There is none worthy of worship but You.",
-  "protection-from-god-title": "Istiadheja",
+  "protection-from-god-title": "",
   "protection-from-god": "Auzubillah Minashaitan Nirajeem",
   "protection-from-god-translation":
     "I seek refuge in Allah from the outcast Shaitan",
@@ -91,7 +91,7 @@ export const en = {
   "surah-an-masad": "Surah An-Masad",
   "surah-an-masad-desc":
     "May the hands of Abu Lahab perish, and he ˹himself˺ perish! 2. Neither his wealth nor ˹worldly˺ gains will benefit him. 3. He will burn in a flaming Fire, 4. and ˹so will˺ his wife, the carrier of ˹thorny˺ kindling, 5. around her neck will be a rope of palm-fibre.",
-  "bismilah-title": "Besmeleja",
+  "bismilah-title": "",
   bismilah: "Bismil-lâhirr-rrahmânirr-rrahîm.",
   "bismilah-translate":
     "In the Name of Allah—the Most Compassionate, Most Merciful.",

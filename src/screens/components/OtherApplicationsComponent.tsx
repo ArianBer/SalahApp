@@ -2,17 +2,17 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Linking } from "react-native";
 import LinkLogo from "../../assets/svgs/LinkLogo";
-import useTranslation from "../../hooks/useTranslation";
 import { useAppSelector } from "../../redux/hooks";
 import { LanguageType } from "../../services/translation/languges";
 import { settingsData } from "../settings/settings-data";
 import { SettingsRow } from "./SettingsRow";
 import { SettingsRowsContainer } from "./SettingsRowsContainer";
+import { useTranslation } from "react-i18next";
 
 const OtherApplicationsComponent = () => {
   const navigation = useNavigation<any>();
   const language = useAppSelector((state) => state.language);
-  const t = useTranslation();
+  const { t } = useTranslation();
 
   const webLinks = Object.entries(
     settingsData[language?.languageSelected.value as LanguageType]?.web

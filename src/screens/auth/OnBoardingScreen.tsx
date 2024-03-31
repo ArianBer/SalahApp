@@ -11,8 +11,7 @@ import SalahVideoImage from "../../components/onboarding/SalahVideoImage";
 import DuaImage from "../../components/onboarding/DuaImage";
 import Button from "../../components/Button";
 import { useNavigation } from "@react-navigation/native";
-import i18n from "../../services/translation";
-import useTranslation from "../../hooks/useTranslation";
+import { useTranslation } from "react-i18next";
 
 type SlideItemProps = {
   key: number;
@@ -26,7 +25,7 @@ const OnBoardingScreen = () => {
   const ref = React.useRef<AppIntroSlider<SlideItemProps>>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const navigation = useNavigation<any>();
-  const t = useTranslation();
+  const { t } = useTranslation();
 
   const slides: SlideItemProps[] = [
     {

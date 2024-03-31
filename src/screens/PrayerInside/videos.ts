@@ -10,8 +10,7 @@ import AbdesiAl from "../../assets/videos/abdesti.mp4";
 import AbdesiTr from "../../assets/videos/abdesti-tr.mp4";
 import AbdesiEn from "../../assets/videos/abdesti-en.mp4";
 import AbdesiDe from "../../assets/videos/abdesti-de.mp4";
-
-import i18n, { languagesKeys } from "../../services/translation";
+import { languagesKeys } from "../../services/translation/i18n";
 
 export type PrayerKey = keyof typeof Prayers;
 

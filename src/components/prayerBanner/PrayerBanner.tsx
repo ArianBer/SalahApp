@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { usePrayerTimes } from "../../hooks/usePrayerTimes";
 import { retrunIconPrayerTimes } from "../../services/returnIconsFromPrayerTime";
 import { TextBox, ViewBox } from "../../styles/theme";
-import useTranslation from "../../hooks/useTranslation";
 import { useAppSelector } from "../../redux/hooks";
+import { useTranslation } from "react-i18next";
 
 type PrayerBannerProps = {
   isAbsolute: boolean;
@@ -18,25 +18,24 @@ function PrayerBox({ isAbsolute, icon, customIcon }: PrayerBannerProps) {
     hoursRemaining,
     secondsRemaining,
   } = usePrayerTimes();
-  const t = useTranslation();
+  const { t } = useTranslation();
   const language = useAppSelector((state) => state.language);
-
 
   const returnPrayerNamesFromAlbanian = (prayer: string) => {
     const prayers = {
-      imsak: 'Imsak',
-      sunrise: 'Lindjen e diellit',
-      dhuhr: 'Drekë',
-      asr: 'Ikindi',
-      maghrib: 'Aksham',
-      isha: 'Jaci',
-      fajr: 'Sabah'
-    }
+      imsak: "Imsak",
+      sunrise: "Lindjen e diellit",
+      dhuhr: "Drekë",
+      asr: "Ikindi",
+      maghrib: "Aksham",
+      isha: "Jaci",
+      fajr: "Sabah",
+    };
 
-    if(prayers[prayer]){
+    if (prayers[prayer]) {
       return prayers[prayer];
     }
-  }
+  };
 
   useEffect(() => {
     const prayerTimesForToday = getPrayerTimesForToday();
@@ -71,7 +70,7 @@ function PrayerBox({ isAbsolute, icon, customIcon }: PrayerBannerProps) {
             fontSize={48}
             fontWeight="bold"
             color="mainText"
-            variant='2xlBold'
+            variant="2xlBold"
             lineHeight={58}
           >
             {hoursRemaining}
@@ -81,7 +80,7 @@ function PrayerBox({ isAbsolute, icon, customIcon }: PrayerBannerProps) {
             color="darkGreen"
             fontWeight="900"
             paddingLeft="sm"
-            variant='2xlBold'
+            variant="2xlBold"
           >
             {secondsRemaining}
           </TextBox>
@@ -92,7 +91,11 @@ function PrayerBox({ isAbsolute, icon, customIcon }: PrayerBannerProps) {
           fontWeight="400"
           lineHeight={15}
         >
-          {t("until") + " " + (language.languageSelected.value === 'al' ? returnPrayerNamesFromAlbanian(activePrayer.toLowerCase()) : t(activePrayer?.toLowerCase()))}
+          {t("until") +
+            " " +
+            (language.languageSelected.value === "al"
+              ? returnPrayerNamesFromAlbanian(activePrayer.toLowerCase())
+              : t(activePrayer?.toLowerCase()))}
         </TextBox>
       </ViewBox>
       <ViewBox>

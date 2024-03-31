@@ -4,10 +4,10 @@ import LPF from "lpf";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { SvgXml } from "react-native-svg";
-import useTranslation from "../hooks/useTranslation";
 import { Fonts } from "../styles";
 import { TextBox, ViewBox } from "../styles/theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
 
 function CompassSvg({ svgStyle }: { svgStyle?: any }) {
   const svgMarkup = `<svg width="394" height="394" viewBox="0 0 394 394" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -64,7 +64,7 @@ function RotatePhoneSvg() {
 }
 
 function Kibla() {
-  const t = useTranslation();
+  const { t } = useTranslation();
   const [subscription, setSubscription] = useState<any>(null);
   const [magnetometer, setMagnetometer] = useState<number>(0);
   const [sub, setSub] = useState<any>(null);
@@ -279,7 +279,7 @@ function Kibla() {
   );
 
   return (
-    <ViewBox flex={1} backgroundColor="white" style={{paddingTop: top + 10}}>
+    <ViewBox flex={1} backgroundColor="white" style={{ paddingTop: top + 10 }}>
       <TextBox
         fontSize={32}
         fontWeight="bold"

@@ -1,12 +1,11 @@
+import { useIsFocused } from "@react-navigation/native";
 import { Audio } from "expo-av";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import { FadeIn } from "react-native-reanimated";
 import { IconPlayerPause, IconPlayerPlay } from "tabler-icons-react-native";
-import useTranslation from "../../hooks/useTranslation";
-import i18n from "../../services/translation";
 import { AnimatedBox, TextBox, ViewBox } from "../../styles/theme";
-import { useIsFocused } from "@react-navigation/native";
 
 interface Props {
   title: string;
@@ -37,7 +36,7 @@ export function PlayableItem({
   const [playbackPosition, setPlaybackPosition] = useState<number | null>(null);
   const isFocused = useIsFocused();
 
-  const t = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     calculateSoundDuration();
@@ -99,9 +98,11 @@ export function PlayableItem({
       borderBottomColor={isPlaying ? "white" : "silver"}
       bg={isPlaying ? "white" : undefined}
     >
-      <TextBox color="mainText" variant="md-bold">
-        {title}
-      </TextBox>
+      {!!title && (
+        <TextBox color="mainText" variant="md-bold">
+          {title}
+        </TextBox>
+      )}
       <ViewBox mt="xxxl" width="100%" flexDirection="row" alignItems="center">
         <TouchableOpacity onPress={isPlaying ? pauseSound : playSound}>
           <ViewBox

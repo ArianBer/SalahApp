@@ -3,9 +3,9 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { IconPlayerPlay } from "tabler-icons-react-native";
 import { Prayers } from "../../constants";
-import useTranslation from "../../hooks/useTranslation";
 import { CurrentPrayerType } from "../../redux/reducers/homeReducer";
 import { TextBox, ThemeType, ViewBox } from "../../styles/theme";
+import { useTranslation } from "react-i18next";
 
 type PrayerVideoItemProps = {
   title: string;
@@ -29,7 +29,7 @@ function PrayerVideoItem({
 }: PrayerVideoItemProps) {
   const { colors } = useTheme<ThemeType>();
   const isActive = mapPrayerNames[activePrayer] === title;
-  const t = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <TouchableOpacity onPress={onPress} style={{ width: "32%" }}>

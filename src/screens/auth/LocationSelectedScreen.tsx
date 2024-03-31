@@ -5,20 +5,20 @@ import { Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Button from "../../components/Button";
 import LocationImage from "../../components/onboarding/LocationImage";
-import useTranslation from "../../hooks/useTranslation";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   authSlice,
   setShowChangeLocationScreens,
 } from "../../redux/reducers/authReducer";
 import { TextBox, ViewBox } from "../../styles/theme";
+import { useTranslation } from "react-i18next";
 
 const LocationSelectedScreen = ({ route }: StackScreenProps<any>) => {
   const { top, bottom } = useSafeAreaInsets();
   const country = useAppSelector((state) => state.country);
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
-  const t = useTranslation();
+  const { t } = useTranslation();
   const isFromSettings = route.params?.isFromSettings;
 
   const handleContinuePress = () => {

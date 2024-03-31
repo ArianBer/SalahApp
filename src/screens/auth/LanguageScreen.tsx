@@ -1,24 +1,30 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { IconArrowRight } from "tabler-icons-react-native";
 import Button from "../../components/Button";
 import LanguageButton from "../../components/LanguageButton";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { languageSlice } from "../../redux/reducers/languageReducer";
-import i18n from "../../services/translation";
 import { LanguageProps, languages } from "../../services/translation/languges";
 import { TextBox, ViewBox } from "../../styles/theme";
 
 const LanguageScreen = () => {
-  const [selectedLanguage, setSelectedLanguage] =
-    useState<LanguageProps | null>(null);
+  const selectedLanguage = useAppSelector(
+    (state) => state.language.languageSelected
+  );
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
+  const { i18n } = useTranslation();
 
   const onChangeLanguage = (language: LanguageProps) => {
-    setSelectedLanguage(language);
-    dispatch(languageSlice.actions.changeLanguage(language));
-    i18n.locale = language.value;
+    dispatch(
+      languageSlice.actions.changeLanguage({
+        name: language.name,
+        value: language.value,
+      })
+    );
+    i18n.changeLanguage(language.value);
   };
 
   const renderLanguages = () => {

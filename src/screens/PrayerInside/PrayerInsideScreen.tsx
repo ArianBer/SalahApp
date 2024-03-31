@@ -3,10 +3,10 @@ import { TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconArrowLeft, IconFile } from "tabler-icons-react-native";
 import { Prayers } from "../../constants";
-import useTranslation from "../../hooks/useTranslation";
 import { TextBox, ViewBox } from "../../styles/theme";
 import PrayersVideo from "./components/PrayersVideo";
 import { PrayerKey } from "./videos";
+import { useTranslation } from "react-i18next";
 
 export function PrayerInsideScreen({
   route,
@@ -15,7 +15,7 @@ export function PrayerInsideScreen({
   route: any;
   navigation: any;
 }) {
-  const t = useTranslation();
+  const { t } = useTranslation();
 
   const { top } = useSafeAreaInsets();
   const prayer = (route?.params?.prayer ?? "") as PrayerKey | "";

@@ -1,11 +1,11 @@
 import React from "react";
 import { TextBox, ViewBox } from "../../styles/theme";
-import useTranslation from "../../hooks/useTranslation";
 import SocialButton from "./SocialButton";
 import { Linking } from "react-native";
 import FacebookLargeIcon from "../../assets/svgs/FacebookLargeIcon";
 import YoutubeLargIcon from "../../assets/svgs/YoutubeLargIcon";
 import InstagramLargeIcon from "../../assets/svgs/InstagramLargeIcon";
+import { useTranslation } from "react-i18next";
 
 const youtubeLink = "https://youtube.com/@PrayerHub_App?si=Gi9EhA7U-9B7hUB9";
 const facebookLink =
@@ -14,7 +14,7 @@ const instagramLink =
   "https://www.instagram.com/prayerhub_app?igsh=MXQ1ejI4YTV0NjRxOQ==";
 
 const SettingsContactUsSection = () => {
-  const t = useTranslation();
+  const { t } = useTranslation();
 
   const openLink = (link: string) => () => Linking.openURL(link);
 

@@ -7,7 +7,7 @@ import PrayerTimeBox from "../components/prayerTimeBox/PrayerTimeBox";
 import { DaysList } from "../components/daysList/DaysList";
 import { useAppSelector } from "../redux/hooks";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import useTranslation from "../hooks/useTranslation";
+import { useTranslation } from "react-i18next";
 
 const keysToInclude = [
   "Imsak",
@@ -84,7 +84,7 @@ function PrayerTimes() {
   const country = useAppSelector((state) => state.country);
   const [prayerTimes, setPrayerTime] = useState({});
   const { top } = useSafeAreaInsets();
-  const t = useTranslation();
+  const { t } = useTranslation();
   const onlinePrayers = useAppSelector((state) => state.onlinePrayers);
 
   const { filterPrayerTimesPerDayMonth } = usePrayerTimes();

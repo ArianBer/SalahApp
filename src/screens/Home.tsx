@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { ScrollView } from "react-native";
 import { IconCalendarMinus } from "tabler-icons-react-native";
-import i18n from ".././services/translation";
+
 import PrayerBox from "../components/prayerBanner/PrayerBanner";
 import PrayerVideoItem from "../components/prayerVideoItem/prayerVideoitem";
 import { ViewBox } from "../styles/theme";
@@ -9,6 +9,7 @@ import { HomeHeaderBackground } from "./components/HomeHeaderBackground";
 import { useAppSelector } from "../redux/hooks";
 import { Prayers } from "../constants";
 import { registerForPushNotificationsAsync } from "../services/registerPushNotifications";
+import { useTranslation } from "react-i18next";
 
 const prayersArray = Object.values(Prayers).map((x) => ({
   title: x,
@@ -17,6 +18,7 @@ const prayersArray = Object.values(Prayers).map((x) => ({
 function Home({ navigation }: { navigation: any }) {
   const { activePrayer } = useAppSelector((state) => state.home);
   const language = useAppSelector((state) => state.language);
+  const { i18n } = useTranslation();
 
   const handlePrayerPress = (prayer: string) => {
     navigation?.navigate("PrayerInside", { prayer });
@@ -27,7 +29,7 @@ function Home({ navigation }: { navigation: any }) {
 
     if (!language) return;
 
-    i18n.locale = language.languageSelected.value;
+    i18n.changeLanguage(language.languageSelected.value);
   }, [language]);
 
   return (
@@ -44,7 +46,7 @@ function Home({ navigation }: { navigation: any }) {
           flexDirection="row"
           flexWrap="wrap"
           justifyContent="space-between"
-          marginTop='37'
+          marginTop="37"
           paddingHorizontal="24"
           maxWidth={430}
           style={{ marginLeft: "auto", marginRight: "auto" }}

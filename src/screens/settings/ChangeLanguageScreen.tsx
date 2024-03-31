@@ -1,39 +1,35 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconArrowLeft } from "tabler-icons-react-native";
 import LanguageButton from "../../components/LanguageButton";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { setLanguage } from "../../redux/reducers/authReducer";
 import { languageSlice } from "../../redux/reducers/languageReducer";
-import i18n from "../../services/translation";
-import { languages } from "../../services/translation/languges";
+import {
+  LanguageObjType,
+  languages,
+} from "../../services/translation/languges";
 import { TextBox, ViewBox } from "../../styles/theme";
-import useTranslation from "../../hooks/useTranslation";
 
 const ChangeLanguageScreen = () => {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const t = useTranslation();
-
-  const language = useAppSelector((state) => state.language);
+  const { t, i18n } = useTranslation();
+  const language = useAppSelector((state) => state.language.languageSelected);
 
   const onChangeLanguage = (lng: string) => {
-    i18n.locale = lng;
-    dispatch(setLanguage(lng));
-
-    const newLanguageObj = languages.find(
-      (x) => x.value === lng
-    ) as (typeof languages)[0];
-
+    i18n.changeLanguage(lng);
+    const newLanguageObj = languages.find((x) => x.value === lng);
+    if (!newLanguageObj) return;
     dispatch(languageSlice.actions.changeLanguage(newLanguageObj));
   };
 
   const renderLanguages = () => {
     return languages.map((lng) => {
-      const isSelected = language.languageSelected.value === lng.value;
+      const isSelected = language.value === lng.value;
 
       return (
         <LanguageButton

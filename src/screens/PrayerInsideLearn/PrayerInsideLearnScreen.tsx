@@ -11,20 +11,22 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconArrowLeft } from "tabler-icons-react-native";
 import FullScreenLoader from "../../components/FullScreenLoader";
 import { DuaType } from "../../data/duate";
-import useTranslation from "../../hooks/useTranslation";
 import { TextBox, ViewBox } from "../../styles/theme";
 import { PlayableItem } from "./PlayableItem";
-
-type SoundDataType = Omit<DuaType, "sound"> & { sound: Audio.Sound };
+import { useAppSelector } from "../../redux/hooks";
+import { useTranslation } from "react-i18next";
 
 export function PrayerInsideLearnScreen({ navigation }: { navigation: any }) {
   const { top } = useSafeAreaInsets();
   const listRef = useRef<FlatList>(null);
   const [currentSound, setCurrentSound] = useState<null | number>(null);
-  const [soundsData, setSoundsData] = useState<SoundDataType[]>([]);
+  const [soundsData, setSoundsData] = useState<Audio.Sound[]>([]);
   const [soundsLoading, setSoundsLoading] = useState(true);
   const attemptCount = useRef(0); // useRef to store attempt count
-  const t = useTranslation();
+  const { t } = useTranslation();
+  const language = useAppSelector(
+    (state) => state.language.languageSelected.value
+  );
 
   const duate: DuaType[] = useMemo(
     () => [
@@ -131,14 +133,11 @@ export function PrayerInsideLearnScreen({ navigation }: { navigation: any }) {
   const loadSoundsData = async () => {
     try {
       setSoundsLoading(true);
-      const data: SoundDataType[] = await Promise.all(
+      const data: Audio.Sound[] = await Promise.all(
         duate.map(async (x) => {
           const soundObj = await Audio.Sound.createAsync(x.sound);
 
-          return {
-            ...x,
-            sound: soundObj.sound,
-          };
+          return soundObj.sound;
         })
       );
       setSoundsData(data);
@@ -167,13 +166,13 @@ export function PrayerInsideLearnScreen({ navigation }: { navigation: any }) {
 
   useEffect(() => {
     return () => {
-      soundsData.forEach((x) => x.sound.unloadAsync());
+      soundsData.forEach((sound) => sound.unloadAsync());
     };
   }, [soundsData]);
 
   useEffect(() => {
     loadSoundWithRetry();
-  }, []);
+  }, [language]);
 
   const onPressBack = () => navigation?.goBack();
 
@@ -195,19 +194,15 @@ export function PrayerInsideLearnScreen({ navigation }: { navigation: any }) {
             currentSound !== null && currentSound !== index
           }
           onPressPlay={() => onPressPlay(index)}
-          sound={item.sound}
+          sound={soundsData[index]}
           title={item.title}
           transliteration={item.reading}
           translation={item.translation}
         />
       );
     },
-    [currentSound]
+    [currentSound, soundsData]
   );
-
-  useEffect(() => {
-    console.log("t changed");
-  }, [t]);
 
   return (
     <ViewBox style={{ paddingTop: top }} flex={1}>
@@ -233,7 +228,7 @@ export function PrayerInsideLearnScreen({ navigation }: { navigation: any }) {
         <FlatList
           ref={listRef}
           renderItem={renderItem}
-          data={soundsData}
+          data={duate}
           keyExtractor={keyExtractor}
           contentContainerStyle={{ paddingBottom: 10 }}
         />

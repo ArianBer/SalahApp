@@ -6,8 +6,8 @@ import {
   IconHome,
   IconSettings,
 } from "tabler-icons-react-native";
-import useTranslation from "../../../hooks/useTranslation";
 import { TextBox, ViewBox } from "../../../styles/theme";
+import { useTranslation } from "react-i18next";
 
 export type BottomTabKeys =
   | "HomeTab"
@@ -47,7 +47,7 @@ export function TabBarItem({
   name,
   onPress,
 }: TabBarItemProps) {
-  const t = useTranslation();
+  const { t } = useTranslation();
 
   const texts: Record<BottomTabKeys, string> = {
     HomeTab: t("home"),

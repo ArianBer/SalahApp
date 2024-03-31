@@ -16,7 +16,10 @@ const AuthNavigator = () => {
       <Stack.Screen name="Language" component={LanguageScreen} />
       <Stack.Screen name="OnBoarding" component={OnBoardingScreen} />
       <Stack.Screen name="Location" component={LocationScreen} />
-      <Stack.Screen name="LocationSelected" component={LocationSelectedScreen} />
+      <Stack.Screen
+        name="LocationSelected"
+        component={LocationSelectedScreen}
+      />
     </Stack.Navigator>
   );
 };

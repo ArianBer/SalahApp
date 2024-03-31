@@ -15,18 +15,17 @@ import { IconArrowLeft, IconSquareRoundedX } from "tabler-icons-react-native";
 import LanguageButton, { flags } from "../../components/LanguageButton";
 import LocationImage from "../../components/onboarding/LocationImage";
 import countriesData from "../../data/countriesData";
-import { localLanguages } from "../../hooks/usePrayerTimes";
-import useTranslation from "../../hooks/useTranslation";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppDispatch } from "../../redux/hooks";
 import {
   changeCountry,
   selectCountry,
 } from "../../redux/reducers/countryReducer";
 import { onlinePrayers } from "../../redux/reducers/onlinePrayers";
 
-import { TextBox, ViewBox } from "../../styles/theme";
+import { useTranslation } from "react-i18next";
 import LoadingModal from "../../components/LoadingModal";
 import { setShowChangeLocationScreens } from "../../redux/reducers/authReducer";
+import { TextBox, ViewBox } from "../../styles/theme";
 
 const languages = [
   { name: "Kosovë", iconSource: flags.xk },
@@ -35,14 +34,13 @@ const languages = [
 ];
 
 const LocationScreen = ({ route }: StackScreenProps<any>) => {
-  const t = useTranslation();
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const { top, bottom } = useSafeAreaInsets();
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation<any>();
-  const country = useAppSelector((state) => state.country);
 
   const isFromSettings = route.params?.isFromSettings;
 

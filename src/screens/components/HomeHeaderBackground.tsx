@@ -5,17 +5,16 @@ import { TextBox, ViewBox } from "../../styles/theme";
 
 import Asr from "../../assets/images/Asr.png";
 import Dhuhr from "../../assets/images/Dhuhr.png";
+import Fajr from "../../assets/images/Fajr.png";
 import Isha from "../../assets/images/Isha.png";
 import Maghrib from "../../assets/images/Maghrib.png";
 import Sunrise from "../../assets/images/Sunrise.png";
-import Fajr from "../../assets/images/Fajr.png";
 
-import { useAppSelector } from "../../redux/hooks";
-import i18n from "../../services/translation";
+import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconFileText } from "tabler-icons-react-native";
-import { useNavigation } from "@react-navigation/native";
-import useTranslation from "../../hooks/useTranslation";
+import { useAppSelector } from "../../redux/hooks";
 
 interface HomeHeaderBackgroundProps {
   children: ReactNode;
@@ -39,7 +38,7 @@ const backgroundImages: Record<CurrentPrayerType, any> = {
 
 export function HomeHeaderBackground({ children }: HomeHeaderBackgroundProps) {
   const { activePrayer } = useAppSelector((state) => state.home);
-  const t = useTranslation();
+  const { t } = useTranslation();
 
   const imageSourse =
     activePrayer === "sunrise" || activePrayer === "sunrises"

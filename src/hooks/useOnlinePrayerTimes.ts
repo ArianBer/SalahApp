@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { CurrentPrayerType, homeSlice } from "../redux/reducers/homeReducer";
 import { sendLocalNotification } from "../services/notifications/localNotification";
-import useTranslation from "./useTranslation";
+import { useTranslation } from "react-i18next";
 
 export const useOnlinePrayerTimes = () => {
   const [activePrayers, setActivePrayer] = useState<any>("dhuhr");
@@ -16,8 +16,10 @@ export const useOnlinePrayerTimes = () => {
     useState<CurrentPrayerType>("dhuhr");
   const [increased, setIncreased] = useState(false);
   const onlinePrayers = useAppSelector((state) => state.onlinePrayers);
-  const [notificationScheduled, setNotificationScheduled] = useState<Record<string, boolean>>({});
-  const t = useTranslation();
+  const [notificationScheduled, setNotificationScheduled] = useState<
+    Record<string, boolean>
+  >({});
+  const { t } = useTranslation();
 
   const keysToInclude = [
     "Imsak",
@@ -33,19 +35,20 @@ export const useOnlinePrayerTimes = () => {
   const schedulePrayerNotifications = (
     prayerTimesForToday: Record<string, Date>
   ) => {
-    Object.entries(prayerTimesForToday).forEach(
-      ([prayerName, prayerTime]) => {
-        const timeRemaining = new Date(prayerTime).getTime() - now.getTime();
+    Object.entries(prayerTimesForToday).forEach(([prayerName, prayerTime]) => {
+      const timeRemaining = new Date(prayerTime).getTime() - now.getTime();
 
-        if (
-          timeRemaining > 0 &&
-          !notificationScheduled[prayerName]
-        ) {
-          sendLocalNotification(t(prayerName.toLowerCase()), timeRemaining / 1000);
-          setNotificationScheduled({ ...notificationScheduled, [prayerName]: true });
-        }
+      if (timeRemaining > 0 && !notificationScheduled[prayerName]) {
+        sendLocalNotification(
+          t(prayerName.toLowerCase()),
+          timeRemaining / 1000
+        );
+        setNotificationScheduled({
+          ...notificationScheduled,
+          [prayerName]: true,
+        });
       }
-    );
+    });
   };
 
   const filterPrayerTimes = (
@@ -153,7 +156,7 @@ export const useOnlinePrayerTimes = () => {
     setPrayerTime(specificTimings);
     const filteredPrayerTimes = filterPrayerTimes(specificTimings);
 
-    schedulePrayerNotifications(filteredPrayerTimes)
+    schedulePrayerNotifications(filteredPrayerTimes);
   }, [currentMonth, currentDay]);
 
   useEffect(() => {

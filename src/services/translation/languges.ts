@@ -1,11 +1,13 @@
 export interface LanguageProps {
-  name: String;
+  name: string;
   value: LanguageType;
 }
 
 export type LanguageType = "al" | "en" | "tr" | "de" | "mk" | "xk";
 
-export const languages: { name: string; value: LanguageType }[] = [
+export type LanguageObjType = { name: string; value: LanguageType };
+
+export const languages: LanguageObjType[] = [
   {
     name: "Shqip",
     value: "al",
@@ -19,7 +21,7 @@ export const languages: { name: string; value: LanguageType }[] = [
     value: "tr",
   },
   {
-    name: "German",
+    name: "Deutsch",
     value: "de",
   },
 ];

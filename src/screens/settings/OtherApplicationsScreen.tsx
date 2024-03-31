@@ -6,17 +6,17 @@ import { IconArrowLeft } from "tabler-icons-react-native";
 import FacebookLogo from "../../assets/svgs/FacebookLogo";
 import LinkLogo from "../../assets/svgs/LinkLogo";
 import YoutubeLogo from "../../assets/svgs/YoutubeLogo";
-import useTranslation from "../../hooks/useTranslation";
 import { useAppSelector } from "../../redux/hooks";
 import { TextBox, ViewBox } from "../../styles/theme";
 import { isIos } from "../../utilts/isIos";
 import { SettingsRow } from "../components/SettingsRow";
 import { SettingsRowsContainer } from "../components/SettingsRowsContainer";
 import { ApplicationDataType, settingsData } from "./settings-data";
+import { useTranslation } from "react-i18next";
 
 const OtherApplicationsScreen = () => {
   const { top } = useSafeAreaInsets();
-  const t = useTranslation();
+  const { t } = useTranslation();
 
   const navigation = useNavigation();
   const language = useAppSelector((state) => state.language);

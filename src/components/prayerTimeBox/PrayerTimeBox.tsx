@@ -3,7 +3,7 @@ import React from "react";
 import { IconBell } from "tabler-icons-react-native";
 import { retrunIconPrayerTimes } from "../../services/returnIconsFromPrayerTime";
 import { ViewBox, TextBox } from "../../styles/theme";
-import useTranslation from "../../hooks/useTranslation";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   prayerName: string;
@@ -15,8 +15,8 @@ const PrayerTimeBox: React.FC<Props> = ({
   prayerName,
   prayerTime,
   iconPrayer,
-}:Props) => {
-  const t = useTranslation();
+}: Props) => {
+  const { t } = useTranslation();
 
   return (
     <ViewBox width="100%" backgroundColor="white">
@@ -30,7 +30,12 @@ const PrayerTimeBox: React.FC<Props> = ({
       >
         <ViewBox flexDirection="row" alignItems="center">
           {retrunIconPrayerTimes(iconPrayer, 30, "#56791D")}
-          <TextBox variant='md-bold' fontWeight="700" fontSize={18} marginLeft="lg">
+          <TextBox
+            variant="md-bold"
+            fontWeight="700"
+            fontSize={18}
+            marginLeft="lg"
+          >
             {t(prayerName)}
           </TextBox>
         </ViewBox>

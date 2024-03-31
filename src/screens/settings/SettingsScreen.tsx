@@ -2,7 +2,6 @@ import React from "react";
 import { ScrollView, Share, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconShare } from "tabler-icons-react-native";
-import useTranslation from "../../hooks/useTranslation";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { TextBox, ViewBox } from "../../styles/theme";
 import OtherApplicationsComponent from "../components/OtherApplicationsComponent";
@@ -13,6 +12,7 @@ import LocationIcon from "../../assets/svgs/LocationIcon";
 import SettingsContactUsSection from "../components/SettingsContactUsSection";
 import { APP_DOWNLOAD_LINK } from "../../constants";
 import { setShowChangeLocationScreens } from "../../redux/reducers/authReducer";
+import { useTranslation } from "react-i18next";
 
 function SettingsScreen({ navigation }: { navigation: any }) {
   const { top } = useSafeAreaInsets();
@@ -20,7 +20,7 @@ function SettingsScreen({ navigation }: { navigation: any }) {
   const { city, country } = useAppSelector(
     (state) => state.country.countrySelected
   );
-  const t = useTranslation();
+  const { t } = useTranslation();
 
   const onPressShare = () => {
     Share.share(
