@@ -1,15 +1,13 @@
 import React, { useEffect } from "react";
 import { ScrollView } from "react-native";
 import { IconCalendarMinus } from "tabler-icons-react-native";
-
 import PrayerBox from "../components/prayerBanner/PrayerBanner";
 import PrayerVideoItem from "../components/prayerVideoItem/prayerVideoitem";
 import { ViewBox } from "../styles/theme";
 import { HomeHeaderBackground } from "./components/HomeHeaderBackground";
 import { useAppSelector } from "../redux/hooks";
 import { Prayers } from "../constants";
-import { registerForPushNotificationsAsync } from "../services/registerPushNotifications";
-import { useTranslation } from "react-i18next";
+import i18n from "../services/translation/i18n";
 
 const prayersArray = Object.values(Prayers).map((x) => ({
   title: x,
@@ -18,15 +16,12 @@ const prayersArray = Object.values(Prayers).map((x) => ({
 function Home({ navigation }: { navigation: any }) {
   const { activePrayer } = useAppSelector((state) => state.home);
   const language = useAppSelector((state) => state.language);
-  const { i18n } = useTranslation();
 
   const handlePrayerPress = (prayer: string) => {
     navigation?.navigate("PrayerInside", { prayer });
   };
 
   useEffect(() => {
-    registerForPushNotificationsAsync();
-
     if (!language) return;
 
     i18n.changeLanguage(language.languageSelected.value);

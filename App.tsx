@@ -9,6 +9,7 @@ import { ThemeProvider } from "./src/components/theme";
 import { useLoadFonts } from "./src/hooks/useLoadFonts";
 import RootNavigator from "./src/navigation/RootNavigator";
 import { persistor, store } from "./src/redux/store";
+import { registerForPushNotificationsAsync } from "./src/services/registerPushNotifications";
 import { timeout } from "./src/utilts/timeout";
 import "./src/services/translation/i18n";
 
@@ -18,6 +19,8 @@ export default function App() {
   const fontsLoaded = useLoadFonts();
 
   useEffect(() => {
+    registerForPushNotificationsAsync();
+
     if (Platform.OS === "ios") {
       Audio.setAudioModeAsync({
         playsInSilentModeIOS: true,

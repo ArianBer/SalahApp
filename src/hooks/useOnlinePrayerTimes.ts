@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { CurrentPrayerType, homeSlice } from "../redux/reducers/homeReducer";
-import { sendLocalNotification } from "../services/notifications/localNotification";
-import { useTranslation } from "react-i18next";
+import { scheduleNotificationsForPrayerTimes } from "../services/notifications/localNotification";
 
 export const useOnlinePrayerTimes = () => {
   const [activePrayers, setActivePrayer] = useState<any>("dhuhr");
@@ -16,11 +16,9 @@ export const useOnlinePrayerTimes = () => {
     useState<CurrentPrayerType>("dhuhr");
   const [increased, setIncreased] = useState(false);
   const onlinePrayers = useAppSelector((state) => state.onlinePrayers);
-  const [notificationScheduled, setNotificationScheduled] = useState<
-    Record<string, boolean>
-  >({});
-  const { t } = useTranslation();
-
+  const { t, i18n } = useTranslation();
+  const language = useAppSelector((state) => state.language);
+  
   const keysToInclude = [
     "Imsak",
     "Fajr",
@@ -31,25 +29,6 @@ export const useOnlinePrayerTimes = () => {
     "Isha",
   ];
   const dispatch = useAppDispatch();
-
-  const schedulePrayerNotifications = (
-    prayerTimesForToday: Record<string, Date>
-  ) => {
-    Object.entries(prayerTimesForToday).forEach(([prayerName, prayerTime]) => {
-      const timeRemaining = new Date(prayerTime).getTime() - now.getTime();
-
-      if (timeRemaining > 0 && !notificationScheduled[prayerName]) {
-        sendLocalNotification(
-          t(prayerName.toLowerCase()),
-          timeRemaining / 1000
-        );
-        setNotificationScheduled({
-          ...notificationScheduled,
-          [prayerName]: true,
-        });
-      }
-    });
-  };
 
   const filterPrayerTimes = (
     prayerTimes: Record<string, string>,
@@ -154,14 +133,55 @@ export const useOnlinePrayerTimes = () => {
     );
     const specificTimings = todayEntry ? todayEntry.timings : null;
     setPrayerTime(specificTimings);
-    const filteredPrayerTimes = filterPrayerTimes(specificTimings);
 
-    schedulePrayerNotifications(filteredPrayerTimes);
-  }, [currentMonth, currentDay]);
+    function addDefaultDate(prayerTimes) {
+      const updatedPrayerTimes = Object.entries(prayerTimes).map(
+        ([prayerName, prayerTime]) => {
+          const currentTime = new Date(
+            `${now.getFullYear()}-${
+              now.getMonth() + 1
+            }-${currentDay} ${prayerTime}`
+          );
+          const formattedTime = `${currentTime.getFullYear()}-${(
+            currentTime.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${currentTime
+            .getDate()
+            .toString()
+            .padStart(2, "0")} ${(currentTime.getHours()
+          )
+            .toString()
+            .padStart(2, "0")}:${currentTime
+            .getMinutes()
+            .toString()
+            .padStart(2, "0")}:${currentTime
+            .getSeconds()
+            .toString()
+            .padStart(2, "0")}`;
+          return [prayerName, formattedTime];
+        }
+      );
+
+      const updatedPrayerTimesObject = Object.fromEntries(updatedPrayerTimes);
+      return updatedPrayerTimesObject;
+    }
+
+    const filteredPrayerTimes = Object.keys(specificTimings)
+      .filter(key => keysToInclude.includes(key))
+      .reduce((obj, key) => {
+        const time = specificTimings[key].replace(" (CEST)", "");
+        obj[t(key.toLowerCase())] = time;
+        return obj;
+      }, {}); 
+
+      if(i18n.language === language.languageSelected.value){
+        scheduleNotificationsForPrayerTimes(addDefaultDate(filteredPrayerTimes));
+      }
+  }, [currentMonth, currentDay, t]);
 
   useEffect(() => {
     const filteredPrayerTimes = filterPrayerTimes(prayerTimes);
-
     const isIshaPassed = now.getTime() > filteredPrayerTimes["Isha"]?.getTime();
 
     if (isIshaPassed && !increased) {
