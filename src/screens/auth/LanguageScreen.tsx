@@ -29,7 +29,7 @@ const LanguageScreen = () => {
 
   const renderLanguages = () => {
     return languages.map((lng) => {
-      const isSelected = selectedLanguage === lng;
+      const isSelected = selectedLanguage.value === lng.value;
 
       return (
         <LanguageButton

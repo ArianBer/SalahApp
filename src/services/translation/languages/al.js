@@ -131,7 +131,8 @@ export const al = {
   "dua-before-selam": "Duaja para selamit",
   "dua-before-selam-ar":
     "Allahumme Rabbena atina fid-dunja haseneten, ve fil-ahireti haseneten ve kina 'adhaben-nar. Rabbena'gfir li ve li validejje ve lil-mu’minine jevme jekumul-hisab.",
-  "dua-before-selam-translate": "",
+  "dua-before-selam-translate":
+    "Zoti ynë, na jep të mira në këtë jetë dhe në jetën tjetër! Dhe na ruaj nga dënimi i zjarrit! O Zoti ynë, më fal mua dhe prindërit e mi dhe besimtarët në Ditën kur do të jepet llogari!.",
   selam: "Selami në fund të namazit:",
   "selam-ar": "Es-Selāmu ‘alejkum we rahmetull-llāh",
   "selam-translate": "(Paqja dhe mëshira e Allahut qoftë me ju!)",
