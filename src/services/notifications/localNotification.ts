@@ -5,20 +5,20 @@ export async function scheduleNotificationsForPrayerTimes(filteredPrayerTimes: a
   await cancelAllScheduledNotificationsAsync();
   await Notifications.dismissAllNotificationsAsync();
 
-  Object.entries(filteredPrayerTimes).map(async (prayer) => {
-    const date = new Date(prayer[1]);
-    const minutes = date.getHours().toString() + ':' + date.getMinutes()
-      .toString()
-      .padStart(2, "0");
+  await Promise.all(
+    Object.entries(filteredPrayerTimes).map(async ([prayerName, time]) => {
+      const date = new Date(time);
+      const minutes = date.getHours().toString() + ':' + date.getMinutes().toString().padStart(2, "0");
 
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: `${prayer[0]} ${minutes}`,
-      },
-      trigger: {
-        date: date,
-        repeats: false
-      },
-    });
-  });
+      return Notifications.scheduleNotificationAsync({
+        content: {
+          title: ${prayerName} ${minutes},
+        },
+        trigger: {
+          date: date,
+          repeats: false,
+        },
+      });
+    })
+  );
 }
